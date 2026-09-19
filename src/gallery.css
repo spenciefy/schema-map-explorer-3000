@@ -204,3 +204,5 @@ button:active:not(:disabled){filter:brightness(.9)}
  .rider-settings footer button{min-height:44px}
 }
 .resort-identity{display:flex;align-items:center;justify-content:flex-start;margin:0 0 24px;min-height:48px}.resort-identity img{display:block;max-width:150px;max-height:56px;object-fit:contain}
+
+.lift-label:after{content:'';position:absolute;top:100%;left:50%;width:1px;height:var(--leader,0px);background:#9b492f77;pointer-events:none}
