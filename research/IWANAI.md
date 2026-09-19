@@ -36,3 +36,12 @@ The extraction now extends to 42.995 N, including Iwanai town and the Sea of Jap
 Two stationary passenger snowcats are illustrative models placed in mapped downhill clearings (OSM 1468762438 and course C). They do not represent live vehicle locations or a verified CAT itinerary. [The resort's CAT description](https://iwanairesort.com/en/cat-ski-niseko-japan) confirms passenger CAT access and coastal views.
 
 Lower-slope woodland is denser; upper tree cover still tapers to an open summit, with the illustrative transition ending at 1,020 m. Tree height stays consistent in geographic scale despite the expanded window.
+
+
+## Usability audit — September 19, 2026
+
+The earlier assertion that no useful access data was online was too broad. The official [Mountain Safety page](https://iwanairesort.com/en/-catski-safety-niseko) contains an [illustrated access map](https://images.squarespace-cdn.com/content/v1/59eac661fe54efb793a14c87/fb0949e1-77b3-4511-a6e6-c35bd787e592/Hikers%2BMap-01.png). It distinguishes terrain restricted to authorized resort/CAT skiing from the public touring side. The page prohibits touring in the CAT zone; the chairlift page prohibits hiking from the top of the chair.
+
+The access illustration is now linked and displayed in an in-app dialog. It is not georeferenced and has not been traced into an asserted 3D boundary. Exact CAT travel paths, pickup points, and condition-dependent operating limits remain unverified. Generic OSM forestry/service tracks must not be relabeled as CAT routes.
+
+Iwanai now opens on the chairlift and named A/B/C courses, with stronger course strokes and course names visible by default. A Mountain button returns to the full coastal extent. Unnamed OSM downhill segments are omitted from the Iwanai scene and rider paths, because they are not among the three officially described lift-served courses. The underlying extract remains unchanged. This is a readability and coverage-disclosure fix, not proof that the map is ready for navigation.
