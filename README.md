@@ -1,4 +1,4 @@
-# Ski Map Explorer 3000
+# topo.ski
 
 **Ski maps you can step into.**
 
