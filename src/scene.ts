@@ -1,3 +1,6 @@
+import { Line2 } from 'three/addons/lines/Line2.js';
+import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
+import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 import { addTouchRotation } from './touch-rotation';
 import { snowcatGeometry } from './snowcat-model';
 import { ecologyFor, treeAtElevation, type Ecology, type TreeForm } from './ecology';
@@ -14,7 +17,7 @@ import { surfaceElevationAt, elevationAt, inExtent, clipFeature, trailColor, fea
 function random(seed:number){let n=seed;return()=>{n=(n*1664525+1013904223)>>>0;return n/4294967296;};}
 const clamp=THREE.MathUtils.clamp;
 interface GeoLabel {el:HTMLButtonElement;point:THREE.Vector3;feature?:MapFeature;peak?:boolean;place?:MapPlace;road?:boolean;priority:number;}
-interface Route3D {feature:MapFeature;points:THREE.Vector3[];curve:THREE.CurvePath<THREE.Vector3>;length:number;line:THREE.Line;}
+interface Route3D {feature:MapFeature;points:THREE.Vector3[];curve:THREE.CurvePath<THREE.Vector3>;length:number;line:THREE.Line|Line2;}
 
 const cache=new Map<string,MountainData>();
 export class AtlasScene {
@@ -77,7 +80,7 @@ export class AtlasScene {
   }catch(error){if(request!==this.requestId)return;window.dispatchEvent(new CustomEvent('terrain-error',{detail:resort.id}));console.error('Terrain loading failed',error);}
   finally{if(request===this.requestId){this.host.classList.remove('terrain-loading');this.labelHost.classList.remove('terrain-loading');}}
  }
- clear(){this.snowcatPositions=[];this.wildlife=undefined;this.wildlifePoses=[];this.world.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Line){o.geometry.dispose();for(const m of Array.isArray(o.material)?o.material:[o.material]){if(m instanceof THREE.MeshStandardMaterial)m.map?.dispose();m.dispose();}}});this.world.clear();this.labels.forEach(l=>l.el.remove());this.labels=[];this.routes=[];this.lifts=[];this.actors=[];this.selectedFeature=undefined;this.highlight=undefined;this.geometryGroup=new THREE.Group();this.liftGroup=new THREE.Group();this.trailGroup=new THREE.Group();this.contextGroup=new THREE.Group();this.buildingGroup=new THREE.Group();this.world.add(this.geometryGroup,this.liftGroup,this.trailGroup,this.contextGroup,this.buildingGroup);}
+ clear(){this.snowcatPositions=[];this.wildlife=undefined;this.wildlifePoses=[];this.world.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Line){o.geometry.dispose();for(const m of Array.isArray(o.material)?o.material:[o.material]){if(m instanceof THREE.MeshStandardMaterial||m instanceof THREE.MeshBasicMaterial)m.map?.dispose();m.dispose();}}});this.world.clear();this.labels.forEach(l=>l.el.remove());this.labels=[];this.routes=[];this.lifts=[];this.actors=[];this.selectedFeature=undefined;this.highlight=undefined;this.geometryGroup=new THREE.Group();this.liftGroup=new THREE.Group();this.trailGroup=new THREE.Group();this.contextGroup=new THREE.Group();this.buildingGroup=new THREE.Group();this.world.add(this.geometryGroup,this.liftGroup,this.trailGroup,this.contextGroup,this.buildingGroup);}
  height(x:number,z:number){return this.data?(surfaceElevationAt(this.data,x/this.scale,z/this.scale)-this.minElevation)*this.scale*this.exaggeration:0;}
  project(p:Point,offset=0){return new THREE.Vector3(p[0]*this.scale,this.height(p[0]*this.scale,p[1]*this.scale)+offset,p[1]*this.scale);}
  makeTerrain(){const d=this.data!,n=d.gridSize,vertices:number[]=[],uv:number[]=[],indices:number[]=[],colors:number[]=[];
@@ -150,8 +153,7 @@ export class AtlasScene {
   for(const f of this.features){const pts=this.sampleFeature(f,f.kind==='lift'?.8:.12);if(pts.length<2)continue;
    if(f.kind==='lift'&&pts[0].y>pts[pts.length-1].y)pts.reverse();if(f.kind==='trail'&&pts[0].y<pts[pts.length-1].y)pts.reverse();
    const color=f.kind==='lift'?(f.access==='private'||f.proposed||f.retired?0x9b8d80:0xb54c37):(trailColor(this.selected,f.difficulty));
-   const mat=f.kind==='lift'?new THREE.LineDashedMaterial({color,dashSize:.8,gapSize:.35,transparent:true,opacity:.95}):new THREE.LineBasicMaterial({color,transparent:true,opacity:f.area?.35:.87});
-   const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),mat);line.computeLineDistances();line.userData.feature=f;(f.kind==='lift'?this.liftGroup:this.trailGroup).add(line);
+   const line=f.kind==='lift'?new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineDashedMaterial({color,dashSize:.8,gapSize:.35,transparent:true,opacity:.95})):new Line2(new LineGeometry().setPositions(pts.flatMap(p=>[p.x,p.y,p.z])),new LineMaterial({color,linewidth:2.2,transparent:true,opacity:f.area?.35:.87,resolution:new THREE.Vector2(this.host.clientWidth,this.host.clientHeight)}));line.computeLineDistances();line.userData.feature=f;(f.kind==='lift'?this.liftGroup:this.trailGroup).add(line);
    const curve=new THREE.CurvePath<THREE.Vector3>();for(let i=1;i<pts.length;i++)curve.add(new THREE.LineCurve3(pts[i-1],pts[i]));const route={feature:f,points:pts,curve,length:curve.getLength(),line};this.routes.push(route);
    if(f.kind==='lift')this.lifts.push(...makeLift(f,this.sampleFeature(f,0),this.scale,(x,z)=>this.height(x,z),this.liftGroup));
   }
@@ -194,7 +196,7 @@ export class AtlasScene {
   this.highlight=new THREE.Line(new THREE.BufferGeometry().setFromPoints(route.points.map(p=>p.clone().add(new THREE.Vector3(0,.2,0)))),new THREE.LineBasicMaterial({color:0xe88630,depthTest:false,transparent:true,opacity:1}));this.highlight.renderOrder=10;this.world.add(this.highlight);
   this.labels.forEach(l=>l.el.classList.toggle('chosen',l.feature?.id===id));this.flyTo(route.curve.getPoint(.5),Math.max(40,route.length*1.8));window.dispatchEvent(new CustomEvent('feature-selected',{detail:route.feature}));
  }
- followSelected(){const route=this.routes.find(r=>r.feature.id===this.selectedFeature?.id);if(!route)return;this.journey={route,start:this.elapsed};this.traveler.visible=true;this.targetCamera=null;this.targetLook=null;}
+ followSelected(){const route=this.routes.find(r=>r.feature.id===this.selectedFeature?.id);if(!route)return;this.journey={route,start:this.elapsed};this.traveler.visible=false;this.targetCamera=null;this.targetLook=null;}
  flyTo(point:THREE.Vector3,distance:number){const dir=this.camera.position.clone().sub(this.controls.target).normalize();this.targetLook=point.clone();this.targetCamera=point.clone().add(dir.multiplyScalar(Math.min(distance,260)));}
  clearFocus(){this.journey=undefined;this.traveler.visible=false;this.selectedFeature=undefined;if(this.highlight){this.world.remove(this.highlight);this.highlight.geometry.dispose();(this.highlight.material as THREE.Material).dispose();this.highlight=undefined;}this.labels.forEach(l=>l.el.classList.remove('chosen'));}
  home(immediate=false){if(!this.data)return;this.clearFocus();this.journey=undefined;this.traveler.visible=false;const d=this.data,height=(this.maxElevation-this.minElevation)*this.scale*this.exaggeration;const liftPoints=mapReferences[this.selected]?.frame==='terrain'?[]:this.features.filter(f=>f.kind==='lift'&&!f.proposed).flatMap(f=>f.points).filter(p=>inExtent(d,p));const xs=liftPoints.map(p=>p[0]*this.scale),zs=liftPoints.map(p=>p[1]*this.scale);const mx=xs.length?(Math.min(...xs)+Math.max(...xs))/2:0,mz=zs.length?(Math.min(...zs)+Math.max(...zs))/2:0;const look=new THREE.Vector3(mx,this.height(mx,mz)*.35,mz);const ref=mapReferences[this.selected];const v=new THREE.Vector3(ref?.view[0]||0,0,ref?.view[1]||1).normalize();const distance=this.mobile?Math.min(590,Math.max(430,390/this.camera.aspect)):325;const pos=this.topDown?look.clone().add(new THREE.Vector3(0,distance,.1)):look.clone().add(v.multiplyScalar(distance*.84)).add(new THREE.Vector3(0,distance*.61,0));
@@ -212,7 +214,7 @@ export class AtlasScene {
   if(this.wildlife){this.wildlife.visible=this.showWildlife;this.wildlifePoses.forEach((p,i)=>{this.dummy.position.set(p.x,p.y,p.z);this.dummy.rotation.set(0,p.angle,0);const size=this.ecology?.wildlife==='elk'?.38:.30;this.dummy.scale.set(size,size*(1+Math.sin(time*.8+i)*.012),size);this.dummy.updateMatrix();this.wildlife!.setMatrixAt(i,this.dummy.matrix);});this.wildlife.instanceMatrix.needsUpdate=true;}
   for(const lift of this.lifts)updateLift(lift,time,this.dummy);
   if(this.skiers&&this.boarders){this.skiers.visible=this.riderSettings.skiers;this.boarders.visible=this.riderSettings.snowboarders;this.actors.forEach(actor=>{
-   const speed=actor.board?this.riderSettings.snowboarderSpeed:this.riderSettings.skierSpeed;const size=(actor.board?this.riderSettings.snowboarderSize:this.riderSettings.skierSize)*(.92+actor.phase*.16);
+   const speed=actor.board?this.riderSettings.snowboarderSpeed:this.riderSettings.skierSpeed;const size=(actor.board?this.riderSettings.snowboarderSize:this.riderSettings.skierSize)*1.15*(.92+actor.phase*.16);
    if(moving)actor.motionTime+=delta*speed;
    const tangent=actor.route.curve.getTangent(actor.progress),grade=Math.max(0,-tangent.y)/Math.max(.2,Math.hypot(tangent.x,tangent.z));
    if(moving)actor.progress=(actor.progress+delta*speed*riderSpeed(actor.motionTime,actor.phase,grade,actor.board)*this.scale/actor.route.length)%1;
@@ -221,7 +223,7 @@ export class AtlasScene {
   });this.skiers.instanceMatrix.needsUpdate=true;this.boarders.instanceMatrix.needsUpdate=true;}
   this.snow.visible=this.showSnow;if(moving&&this.snowfall>0){for(let i=0;i<this.snowPositions.length;i+=3){this.snowPositions[i]+=delta*this.wind*.07;this.snowPositions[i+1]-=delta*3;if(this.snowPositions[i+1]<0)this.snowPositions[i+1]=140;if(this.snowPositions[i]>135)this.snowPositions[i]=-135;}this.snow.geometry.attributes.position.needsUpdate=true;}
   const w=this.host.clientWidth,h=this.host.clientHeight,occupied:{x:number,y:number,width:number}[]=[];const distance=this.camera.position.distanceTo(this.controls.target);
-  for(const label of [...this.labels].sort((a,b)=>(b.feature?.id===this.selectedFeature?.id?10:b.priority)-(a.feature?.id===this.selectedFeature?.id?10:a.priority))){const allowed=label.place ? this.showPlaces&&(label.place.kind==='lodge'||distance<180) : label.road ? this.showRoads&&this.showLabels : this.showLabels&&(label.feature?.kind==='lift'?this.showLifts:label.feature?.kind==='trail'?this.showTrails:true)&&(!label.feature||label.feature.kind==='lift'||distance<190||label.feature.id===this.selectedFeature?.id);
+  for(const label of [...this.labels].sort((a,b)=>(b.feature?.id===this.selectedFeature?.id?10:b.priority)-(a.feature?.id===this.selectedFeature?.id?10:a.priority))){const allowed=label.place ? this.showPlaces&&(label.place.kind==='lodge'||distance<180) : label.road ? this.showRoads&&this.showLabels : (label.feature?.kind==='lift'?this.showLifts:this.showLabels&&(label.feature?.kind==='trail'?this.showTrails:true))&&(!label.feature||label.feature.kind==='lift'||distance<190||label.feature.id===this.selectedFeature?.id);
    this.temp.copy(label.point).project(this.camera);const x=(this.temp.x*.5+.5)*w;let y=(-this.temp.y*.5+.5)*h;const originalY=y;const width=Math.min(190,label.el.textContent!.length*(this.mobile?4:5.3)+16);const collides=()=>occupied.some(o=>Math.abs(o.x-x)<(o.width+width)/2+5&&Math.abs(o.y-y)<23);if(label.place?.kind==='lodge'){for(let tries=0;tries<3&&collides();tries++)y-=26;}const collision=collides();label.el.style.setProperty('--leader',`${originalY-y}px`);const visible=allowed&&!collision&&this.temp.z<1&&x>35&&x<w-35&&y>30&&y<h-25&&this.world.visible;
    label.el.hidden=!visible;if(visible){occupied.push({x,y,width});label.el.style.transform=`translate(${x}px,${y}px) translate(-50%,-100%)`;}}
   this.renderer.render(this.scene,this.camera);

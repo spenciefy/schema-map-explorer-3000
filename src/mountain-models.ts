@@ -46,6 +46,21 @@ export function carrierGeometry(type:string,seats:number){
  return p.finish();
 }
 export interface LiftVisual {curve:THREE.CurvePath<THREE.Vector3>;length:number;mesh:THREE.InstancedMesh;count:number;size:number;spacing:number;speed:number;tram:boolean;phaseOffset:number;}
+// Physical signs on station fascias, with depth testing and world-space scale.
+function stationSigns(name:string,p:THREE.Vector3,size:number,spacing:number,group:THREE.Group){
+ if(!name||typeof document==='undefined')return;
+ const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=128;
+ const ctx=canvas.getContext('2d')!;ctx.fillStyle='#253d36';ctx.fillRect(0,0,1024,128);
+ ctx.fillStyle='#fff9e8';ctx.font='600 66px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(name,512,67,960);
+ const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;
+ const material=new THREE.MeshBasicMaterial({map:texture});
+ for(const side of [-1,1]){
+  const front=new THREE.Mesh(new THREE.PlaneGeometry(spacing*2.85,size*.62),material);
+  front.position.set(p.x,p.y+size*.4,p.z+side*size*2.005);front.rotation.y=side===1?0:Math.PI;group.add(front);
+  const flank=new THREE.Mesh(new THREE.PlaneGeometry(size*3.8,size*.62),material);
+  flank.position.set(p.x+side*spacing*1.505,p.y+size*.4,p.z);flank.rotation.y=side*Math.PI/2;group.add(flank);
+ }
+}
 export function makeLift(f:MapFeature,groundPoints:THREE.Vector3[],scale:number,height:(x:number,z:number)=>number,group:THREE.Group):LiftVisual[]{
  if(groundPoints.length<2||groundPoints.every(p=>p.distanceToSquared(groundPoints[0])<1e-10))return [];
  if(f.retired||f.proposed||f.access==='private'||['zip_line','yes','pylon'].includes(f.type))return [];
@@ -88,6 +103,7 @@ export function makeLift(f:MapFeature,groundPoints:THREE.Vector3[],scale:number,
   parts.rod(a,b,f.type==='magic_carpet'?size*.6:Math.max(.025,size*.055),f.type==='magic_carpet'?0x64736e:0x37494b);
  }
  if(!surface)for(const p of [supports[0],supports[supports.length-1],...stations.map(s=>new THREE.Vector3(s.point[0]*scale,height(s.point[0]*scale,s.point[1]*scale)+clearance,s.point[1]*scale))]){
+  stationSigns(f.name,p,size,spacing,group);
   parts.box(spacing*3,size*.7,size*4,0x9caba8,p.x,p.y+size*.4,p.z);parts.box(spacing*3.2,size*.16,size*4.2,red,p.x,p.y+size*.8,p.z);
  }
  if(parts.pieces.length)group.add(new THREE.Mesh(parts.finish(),modelMaterial()));
