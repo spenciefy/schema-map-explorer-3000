@@ -41,4 +41,4 @@ References checked September 19, 2026:
 - [Iwanai hiking field observations](https://hokkaidowilds.org/hiking/iwanai-dake-and-raiden-yama-hiking): forest gives way to shrubs and an open upper shoulder.
 - [Happo-one hiking guide](https://www.happo-one.jp/en/trekking/) and [upper alpine environment](https://www.happo-one.jp/happo-ike/).
 
-Forest placement still follows the supplied ESA/OSM masks, excluding mapped piste clearings. Terrain heights and trail geometry are unchanged. Species weights and the 950 m Iwanai / 1,150 m other Hokkaido / 2,100 m Hakuba transitions are **visual approximations**, not measured treelines or species-level mapping. Local aspect, sheltered gullies and individual tree positions are not resolved by this model.
+Forest placement still follows the supplied ESA/OSM masks, excluding mapped piste clearings. Terrain heights and trail geometry are unchanged. Species weights and the 1,020 m Iwanai / 1,150 m other Hokkaido / 2,100 m Hakuba transitions are **visual approximations**, not measured treelines or species-level mapping. Local aspect, sheltered gullies and individual tree positions are not resolved by this model.

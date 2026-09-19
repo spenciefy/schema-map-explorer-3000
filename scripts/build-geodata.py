@@ -77,6 +77,7 @@ def build(site,bbox):
   if len(geo)<2:continue
   pts=[local(p) for p in geo]
   if tags.get('natural')=='wood' or tags.get('landuse')=='forest':forests.append(pts);continue
+  if tags.get('natural')=='coastline':continue
   if tags.get('landuse')=='winter_sports' or tags.get('aerialway') in ['station','pylon','goods']:continue
   kind='lift' if 'aerialway' in tags else 'trail'
   if kind=='lift' and (tags.get('disused')=='yes' or tags.get('abandoned')=='yes'):continue
@@ -90,7 +91,7 @@ def build(site,bbox):
   return xy,Image.open(p).convert('RGB').load()
  with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
   for xy,img in pool.map(tile,coords):tiles[xy]=img
- N=257;heights=[]
+ N=next((r.get('gridSize',257) for r in json.loads((ROOT/'research/terrain-resorts.json').read_text()) if r['id']==site),257);heights=[]
  def elevation(px,py):
   ix=int(px);iy=int(py);tx,ty=ix//256,iy//256;r,g,b=tiles[(tx,ty)][ix%256,iy%256];return r*256+g+b/256-32768
  for j in range(N):

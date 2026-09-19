@@ -77,6 +77,6 @@ test('Iwanai includes the summit, one sourced double chair, and mapped supports'
  assert(lifts[0].capacitySource.includes('iwanairesort.com'));
  const peak=d.peaks.find(p=>p.name==='Mt. Iwanai');assert(peak);
  assert(Math.abs(elevationAt(d,...peak.point)-1085)<40);
- assert(d.depth>4500);assert(d.features.filter(f=>f.kind==='trail').length>=3);
+ assert.equal(d.gridSize,513);assert(d.bbox[2]>=42.99);assert(d.source.landcover);assert(d.depth>9000);assert(d.features.filter(f=>f.kind==='trail').length>=3);
  assert.equal(trailColor('iwanai','intermediate'),trailColor('niseko','intermediate'));
 });

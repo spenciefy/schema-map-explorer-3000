@@ -1,3 +1,4 @@
+import {snowcatGeometry} from '../src/snowcat-model.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {resorts} from '../src/data.ts';
@@ -24,4 +25,9 @@ test('Japanese winter forests thin to bare upper slopes without evergreen crowns
   assert.equal(treeAtElevation(profile,profile.treeline-100,.99).form,'birch');
  }
  assert(ecologyFor(resorts.find(r=>r.id==='iwanai')).treeline<1085);
+});
+
+test('snowcat geometry has finite vertices and rests on its track base',()=>{
+ const g=snowcatGeometry();assert([...g.attributes.position.array].every(Number.isFinite));
+ g.computeBoundingBox();assert(Math.abs(g.boundingBox.min.y)<.001);assert(g.boundingBox.max.z>2.8);g.dispose();
 });

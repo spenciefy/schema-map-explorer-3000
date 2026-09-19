@@ -1,6 +1,6 @@
 # Iwanai · Hokkaido
 
-The geographic window includes Mount Iwanai (OSM summit: 42.9230963 N, 140.5124010 E, 1,085 m), its north-facing slopes, the base area and neighboring ridges. The default camera frames the terrain, not just the small lift network. Terrain samples are approximately 21 × 19 m; this is not survey-grade or a navigation map.
+The geographic window includes Mount Iwanai (OSM summit: 42.9230963 N, 140.5124010 E, 1,085 m), its north-facing slopes, the base area and neighboring ridges. The default camera frames the terrain, not just the small lift network. Terrain samples are approximately 13 × 18 m; this is not survey-grade or a navigation map.
 
 ## References
 
@@ -11,7 +11,7 @@ The geographic window includes Mount Iwanai (OSM summit: 42.9230963 N, 140.51240
 
 Six mapped downhill segments include A/B/C and unnamed geometry. These are not six verified operating courses. CAT routes and pickup/drop-off points are not invented from the painted reference. The summit and surrounding terrain remain explorable without implying public ski access. Resort instructions prohibit hiking uphill from the chairlift top.
 
-The current map uses the existing Hokkaido birch/fir vegetation palette. Individual trees and wildlife are illustrative.
+The current map uses a denser Iwanai-specific winter birch/fir vegetation profile. Individual trees and wildlife are illustrative.
 
 ## Rebuild
 
@@ -28,3 +28,11 @@ node scripts/render-previews.mjs iwanai
 ```
 
 The preview step requires the local Vite server. Extraction scripts reuse cached downloads; remove the target generated JSON before intentionally rebuilding its terrain.
+
+## Coastal extent and snowcats
+
+The extraction now extends to 42.995 N, including Iwanai town and the Sea of Japan. A 513 × 513 DEM preserves roughly 13 × 18 m sample spacing over the wider window. Water is rendered at sea level from ESA WorldCover class 80; it is a satellite-classified shoreline, not a surveyed tidal boundary. Source elevation values remain unchanged.
+
+Two stationary passenger snowcats are illustrative models placed in mapped downhill clearings (OSM 1468762438 and course C). They do not represent live vehicle locations or a verified CAT itinerary. [The resort's CAT description](https://iwanairesort.com/en/cat-ski-niseko-japan) confirms passenger CAT access and coastal views.
+
+Lower-slope woodland is denser; upper tree cover still tapers to an open summit, with the illustrative transition ending at 1,020 m. Tree height stays consistent in geographic scale despite the expanded window.

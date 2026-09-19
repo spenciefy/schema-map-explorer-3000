@@ -167,3 +167,5 @@ button:active:not(:disabled){filter:brightness(.9)}
  .rider-settings .terrain-controls button{min-height:44px}
 }
 @media(max-height:520px) and (pointer:coarse){#scene,#map-labels{inset:88px 0 100px}}
+
+#snowcat-view{font-size:12px;min-height:44px;text-decoration:underline;text-underline-offset:4px}

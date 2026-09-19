@@ -39,7 +39,7 @@ for id in sys.argv[1:]:
    else:continue
    converted.append(record)
   stamp=time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime());base={'version':.6,'generator':'OpenStreetMap Map API','osm3s':{'timestamp_osm_base':stamp},'extractionNote':'Bounded OpenStreetMap Map API snapshot; timestamp is retrieval time.'}
-  core=[e for e in converted if (e['type']=='way' and (e['tags'].get('piste:type')=='downhill' or 'aerialway' in e['tags'] or e['tags'].get('natural')=='wood' or e['tags'].get('landuse') in ['forest','winter_sports'])) or (e['type']=='node' and (e['tags'].get('natural')=='peak' or e['tags'].get('aerialway') in ['pylon','station']))]
+  core=[e for e in converted if (e['type']=='way' and (e['tags'].get('piste:type')=='downhill' or 'aerialway' in e['tags'] or e['tags'].get('natural') in ['wood','coastline'] or e['tags'].get('landuse') in ['forest','winter_sports'])) or (e['type']=='node' and (e['tags'].get('natural')=='peak' or e['tags'].get('aerialway') in ['pylon','station']))]
   context=[e for e in converted if (e['type']=='way' and ('highway' in e['tags'] or 'building' in e['tags'])) or ('name' in e['tags'] and ('amenity' in e['tags'] or 'tourism' in e['tags']))]
   if not (C/f'{id}-osm.json').exists():(C/f'{id}-osm.json').write_text(json.dumps({**base,'elements':core}))
   if not (C/f'{id}-places.json').exists():(C/f'{id}-places.json').write_text(json.dumps({**base,'elements':context}))

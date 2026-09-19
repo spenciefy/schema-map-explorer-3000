@@ -17,7 +17,7 @@ export const mapReferences:Record<string,{url:string;coverage:string;view:[numbe
  whistler:{url:'https://www.whistlerblackcomb.com/the-mountain/about-the-mountain/trail-maps.aspx',coverage:'Whistler & Blackcomb',view:[-.5,-1]},
  revelstoke:{url:'https://www.revelstokemountainresort.com/discover/about/trail-maps/',coverage:'Mount Mackenzie',view:[-1,.4]},
  'park-city':{url:'https://www.parkcitymountain.com/the-mountain/about-the-mountain/trail-map.aspx',coverage:'Park City region · includes neighboring terrain',view:[.3,-1]},
- iwanai:{url:'https://iwanairesort.com/en/lift/iwanai',coverage:'Mount Iwanai · summit, north face & base',view:[.15,-1],frame:'terrain',note:'One double chair at the base. Upper terrain is guided CAT skiing; mapped lines are not a complete CAT route guide.'},
+ iwanai:{url:'https://iwanairesort.com/en/lift/iwanai',coverage:'Mount Iwanai · north face, town & Sea of Japan',view:[1,-.25],frame:'terrain',note:'One double chair at the base. Upper terrain is guided CAT skiing; mapped lines are not a complete CAT route guide.'},
  niseko:{url:'https://www.niseko.ne.jp/en/map/',coverage:'Niseko United / Annupuri',view:[.6,1]},
  rusutsu:{url:'https://rusutsu.com/en/ski/course/',coverage:'Rusutsu mountain group',view:[-1,-.3]},
  hakuba:{url:'https://www.hakubavalley.com/en/ski/',coverage:'Happo-One & central Hakuba sector',view:[1,.1]},

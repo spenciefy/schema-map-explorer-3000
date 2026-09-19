@@ -15,7 +15,7 @@ const profiles:Record<string,Ecology>={
 export function ecologyFor(resort:Pick<Resort,'id'|'region'|'area'|'lat'|'lon'>):Ecology{
  if(resort.region==='alps')return profiles.alps;
  if(resort.region==='japan'){
-  if(resort.id==='iwanai')return {...profiles.hokkaido,name:'Iwanai winter woodland',treeline:950,density:.5};
+  if(resort.id==='iwanai')return {...profiles.hokkaido,name:'Iwanai winter woodland',treeline:1020,density:.95};
   return profiles[resort.id==='hakuba'?'honshu':'hokkaido'];
  }
  if(resort.area==='Alaska')return profiles.alaska;
