@@ -1,3 +1,4 @@
+import { mountainRoute } from './routing';
 import { defaultRiderSettings, normalizeRiderSettings, type RiderSettings } from './rider-settings';
 import { liftDescription } from './mountain-models';
 import './style.css';
@@ -37,7 +38,7 @@ let explorer:'places'|'trails'|'lifts'|'stops'='places',mapFeatures:MapFeature[]
 let activeFeature:MapFeature|undefined;
 const app=document.querySelector<HTMLDivElement>('#app')!;
 app.innerHTML=`
-  <section id="mountain-gallery" aria-label="Mountains"><div class="gallery-heading"><h1>${projectName}</h1><span>${resorts.length} mountains</span></div><div class="mountain-grid">${resorts.map(r=>`<a class="mountain-tile" href="#${r.id}" aria-label="Explore ${r.name}"><div class="mountain-preview"><img src="/previews/${r.id}.png" alt="" width="720" height="520" loading="${resorts.indexOf(r)<6?'eager':'lazy'}" /></div><div class="tile-caption"><div><h2>${r.name}</h2><span>${r.area} · ${r.country}</span></div><span class="tile-arrow" aria-hidden="true">↗</span></div></a>`).join('')}</div><div class="gallery-footer"><span class="maker-credit">Made in an evening by Spencer and GPT-6 Astra</span><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap</a><a href="https://registry.opendata.aws/terrain-tiles/" target="_blank" rel="noopener">Mapzen terrain</a><a href="https://doi.org/10.5281/zenodo.7254221" target="_blank" rel="noopener">ESA WorldCover</a></div></section>
+  <section id="mountain-gallery" aria-label="Mountains"><div class="gallery-heading"><h1>${projectName}</h1><span>${resorts.length} mountains</span></div><div class="mountain-grid">${resorts.map(r=>`<a class="mountain-tile" href="/${r.id}" aria-label="Explore ${r.name}"><div class="mountain-preview"><img src="/previews/${r.id}.png" alt="" width="720" height="520" loading="${resorts.indexOf(r)<6?'eager':'lazy'}" /></div><div class="tile-caption"><div><h2>${r.name}</h2><span>${r.area} · ${r.country}</span></div><span class="tile-arrow" aria-hidden="true">↗</span></div></a>`).join('')}</div><div class="gallery-footer"><span class="maker-credit">Made in an evening by Spencer and GPT-6 Astra</span><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap</a><a href="https://registry.opendata.aws/terrain-tiles/" target="_blank" rel="noopener">Mapzen terrain</a><a href="https://doi.org/10.5281/zenodo.7254221" target="_blank" rel="noopener">ESA WorldCover</a></div></section>
   <div class="paper-grain" aria-hidden="true"></div><div id="scene"></div><div class="atmosphere"></div><div id="map-labels"></div>
   <header class="topbar">
     <button class="brand" id="brand-home" aria-label="Return to atlas overview"><span aria-hidden="true">←</span> Mountains</button>
@@ -76,12 +77,19 @@ const $=<T extends HTMLElement=HTMLElement>(s:string)=>document.querySelector<T>
 let atlas:AtlasScene | undefined;
 function ensureAtlas(){if(atlas)return;try{atlas=new AtlasScene($('#scene'),$('#map-labels'),id=>selectResort(id,true));atlas.riderSettings={...riderSettings};atlas.showWildlife=wildlifeVisible;}catch{$('#scene').innerHTML='<div class="canvas-error">3D map unavailable. Try a browser with WebGL enabled.</div>';}}
 let galleryScroll=0;
-function navigate(){toggleSettings(false);let id='';try{id=decodeURIComponent(location.hash.slice(1));}catch{}const resort=resorts.find(r=>r.id===id);const gallery=!resort;if(resort&&document.body.classList.contains('gallery-view'))galleryScroll=window.scrollY;document.body.classList.toggle('gallery-view',gallery);$('#mountain-gallery').hidden=!gallery;
- if(gallery){playing=false;$('#timeline-play').innerHTML=icon('play');$('#timeline-play').setAttribute('aria-label','Play forecast timeline');document.title=projectName;toggleGuide(false);if(atlas)atlas.suspended=true;requestAnimationFrame(()=>{window.scrollTo(0,galleryScroll);if(atlas)document.querySelector<HTMLAnchorElement>(`a[href="#${selected}"]`)?.focus({preventScroll:true});});return;}
+function navigate(){toggleSettings(false);const id=mountainRoute(location.pathname,location.hash);if(id&&(location.pathname!=='/'+id||location.hash))history.replaceState(null,'','/'+id+location.search);const resort=resorts.find(r=>r.id===id);const gallery=!resort;if(resort&&document.body.classList.contains('gallery-view'))galleryScroll=window.scrollY;document.body.classList.toggle('gallery-view',gallery);$('#mountain-gallery').hidden=!gallery;
+ if(gallery){playing=false;$('#timeline-play').innerHTML=icon('play');$('#timeline-play').setAttribute('aria-label','Play forecast timeline');document.title=projectName;toggleGuide(false);if(atlas)atlas.suspended=true;requestAnimationFrame(()=>{window.scrollTo(0,galleryScroll);if(atlas)document.querySelector<HTMLAnchorElement>(`a[href="/${selected}"]`)?.focus({preventScroll:true});});return;}
  window.scrollTo(0,0);toggleGuide(false);$('#route-card').hidden=true;activeFeature=undefined;ensureAtlas();region=resort.region;selected=resort.id;view='atlas';explorer='places';pass='all';if(atlas){atlas.suspended=false;atlas.resize();atlas.setRegion(currentRegion());}if(live&&!forecasts.has(resort.id))void fetchWeather();else render();document.title=resort.name+' · '+projectName;$('#brand-home').focus();
 }
-function showGallery(){location.hash='';}
+function goTo(path:string){history.pushState(null,'',path);navigate();}
+function showGallery(){goTo('/');}
 window.addEventListener('hashchange',navigate);
+window.addEventListener('popstate',navigate);
+$('#mountain-gallery').addEventListener('click',event=>{
+ const link=(event.target as HTMLElement).closest<HTMLAnchorElement>('a.mountain-tile');
+ if(!link||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+ event.preventDefault();goTo(link.pathname);
+});
 function currentRegion(){return resorts.filter(r=>r.region===region);}
 function visibleResorts(){return currentRegion().filter(r=>(pass==='all'||r.pass===pass)&&(view!=='saved'||saved.has(r.id)));}
 function getResort(){return resorts.find(r=>r.id===selected)!;}
@@ -117,7 +125,7 @@ function render(){
  renderDetail();renderList();updateTime();atlas?.select(selected);
 }
 function showMobileMap(){if(innerWidth<760)toggleGuide(false);}
-function selectResort(id:string,fly=false){if(location.hash!=='#'+id){location.hash=id;return;}showMobileMap();selected=id;explorer='places';activeFeature=undefined;$('#route-card').hidden=true;atlas?.select(id,fly);renderDetail();renderList();updateTime();$('.mountain-panel').scrollTop=0;}
+function selectResort(id:string,fly=false){if(mountainRoute(location.pathname,location.hash)!==id){goTo('/'+id);return;}showMobileMap();selected=id;explorer='places';activeFeature=undefined;$('#route-card').hidden=true;atlas?.select(id,fly);renderDetail();renderList();updateTime();$('.mountain-panel').scrollTop=0;}
 function setRegion(next:Region){document.body.classList.remove('mountain-focus');region=next;const available=visibleResorts();selected=(available[0]||currentRegion()[0]).id;atlas?.setRegion(currentRegion());if(live)fetchWeather();render();}
 let toastTimer:ReturnType<typeof setTimeout>;
 function notify(message:string){$('#toast').textContent=message;$('#toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),3600);}

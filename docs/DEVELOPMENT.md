@@ -13,7 +13,7 @@ Open http://localhost:5173. `npm run build` checks TypeScript and builds the sit
 
 ## Explore
 
-The landing page is a grid of all 61 mountains, with terrain previews, names and locations. Select a tile to open the animated map. **Mountains** returns to the grid and restores the scroll position. **Explore**, **Saved**, and **Weather** reveal map details on demand. Mountain routes use shareable URL hashes (for example `/#palisades`).
+The landing page is a grid of all 61 mountains, with terrain previews, names and locations. Select a tile to open the animated map. **Mountains** returns to the grid and restores the scroll position. **Explore**, **Saved**, and **Weather** reveal map details on demand. Mountain routes use shareable URL paths (for example `/palisades`).
 
 - Choose one of 61 destinations (53 in North America) across North America, the Alps, and Japan.
 - Drag to pan; right-drag to orbit, or choose the visible **Pan / Rotate** mode. One-finger touch follows the selected mode; pinch to zoom. Focus the canvas and use arrow keys to pan. Scroll to zoom. Switch between the oblique trail-map view and overhead view. The compass follows geographic north.

@@ -6,7 +6,7 @@ try{
  const page=await browser.newPage({viewport:{width:1440,height:960}});page.on('pageerror',e=>errors.push(e.message));
  await page.route(/\/src\/main.ts(?:\?.*)?$/,async r=>{const response=await r.fetch();await r.fulfill({response,body:(await response.text())+'\nwindow.getAtlas=()=>atlas;'});});
  await page.goto('http://localhost:5173/');assert.equal(await page.title(),'Ski Map Explorer 3000');assert.equal(await page.locator('.mountain-tile').count(),61);
- await page.locator('a.mountain-tile[href="#palisades"]').click();await page.waitForFunction(()=>window.getAtlas?.()?.data?.id==='palisades');
+ await page.locator('a.mountain-tile[href="/palisades"]').click();await page.waitForFunction(()=>window.getAtlas?.()?.data?.id==='palisades');
  const target=()=>page.evaluate(()=>window.getAtlas().controls.target.toArray());const before=await target();await page.mouse.move(620,430);await page.mouse.down();await page.mouse.move(800,450,{steps:20});await page.mouse.up();await page.waitForTimeout(300);assert.notDeepEqual(await target(),before);
  await page.locator('#atlas-tab').click();await page.locator('[data-pass="epic"]').click();assert.equal(new URL(page.url()).hash,'#palisades');assert.equal(await page.locator('#mountain-heading').textContent(),'Palisades Tahoe');
  await page.keyboard.press('Escape');assert.equal(await page.locator('#field-guide').isHidden(),true);assert.equal(await page.locator('#atlas-tab').evaluate(e=>e===document.activeElement),true);

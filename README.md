@@ -52,7 +52,7 @@ npm run build # TypeScript check and production build
 | Explore on touch | One finger follows Pan / Rotate mode; two fingers pan and pinch-zoom in either mode |
 | Return to the collection | Mountains button |
 
-Select a trail, lift, or lodge to explore it. **Explore** opens the searchable map guide; **Weather** opens the forecast and timeline. Each mountain has a shareable hash route, such as `/#palisades`.
+Select a trail, lift, or lodge to explore it. **Explore** opens the searchable map guide; **Weather** opens the forecast and timeline. Each mountain has a shareable URL, such as `/palisades`.
 
 ## How it works
 
@@ -77,3 +77,5 @@ This is an exploratory art project, not an official navigation map. Community ma
 Source datasets retain their respective licenses; see [data attribution](docs/DEVELOPMENT.md#sources-and-licensing).
 
 On phones and tablets, swipe the map toolbar sideways for layers and map links. Settings and Explore open as scrollable panels. Layouts account for safe areas, dynamic browser height, and landscape orientation.
+
+Direct mountain URLs such as `/breckenridge` and `/iwanai` work on refresh. `/iwawai` is an alias for Iwanai, and old hash links redirect to their clean paths. The production build includes an entry page for every mountain, so static hosts need no special SPA rewrite for these routes.
