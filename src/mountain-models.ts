@@ -1,3 +1,4 @@
+import { defaultLiftPalette, type LiftPalette } from './resort-identity.ts';
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import type { MapFeature } from './geography';
@@ -24,8 +25,8 @@ export function liftDescription(f:MapFeature){
  if(f.type==='mixed_lift')return f.chairSeats&&f.cabinOccupancy?`${f.chairSeats}-seat chairs / ${f.cabinOccupancy}-person gondolas`:'Mixed lift · capacities unverified';
  return f.occupancy?`${f.occupancy}-${f.type==='chair_lift'?'seat chair':`person ${type}`}`:`${type}${['chair_lift','gondola','cable_car'].includes(f.type)?' · capacity unverified':''}`;
 }
-export function carrierGeometry(type:string,seats:number){
- const p=new Parts();
+export function carrierGeometry(type:string,seats:number,palette:LiftPalette=defaultLiftPalette){
+ const p=new Parts(),steel=palette.structure,red=palette.carrier;
  if(type==='chair_lift'){
   const w=seats*.48;
   p.box(w+.12,.09,.10,steel,0,-1.15,.24);
@@ -34,7 +35,7 @@ export function carrierGeometry(type:string,seats:number){
   for(const x of [-w/2,w/2])p.rod(new THREE.Vector3(x,-1.13,-.24),new THREE.Vector3(x,-.67,.27),.035,steel);
  }else if(['gondola','funitel','cable_car','funicular'].includes(type)){
   const tram=type==='cable_car',w=tram?2.7:1.5,d=tram?Math.max(2.8,Math.sqrt(seats)*.47):Math.max(1.3,Math.sqrt(seats)*.55);
-  p.box(w,1.05,d,0x37576a,0,-1.25,0);p.box(w+.08,.33,d+.08,red,0,-1.9,0);p.box(w+.12,.13,d+.12,0xe2ded0,0,-.65,0);
+  p.box(w,1.05,d,palette.glazing,0,-1.25,0);p.box(w+.08,.33,d+.08,red,0,-1.9,0);p.box(w+.12,.13,d+.12,0xe2ded0,0,-.65,0);
   for(const x of [-w/2,0,w/2])p.box(.065,1.3,d+.03,steel,x,-1.28,0);
   for(const z of [-d/2,0,d/2])p.box(w+.03,1.3,.065,steel,0,-1.28,z);
   if(type==='funitel'){p.box(.09,.6,.09,steel,-.55,-.28,0);p.box(.09,.6,.09,steel,.55,-.28,0);}else p.box(.09,.6,.09,steel,0,-.28,0);
@@ -47,11 +48,11 @@ export function carrierGeometry(type:string,seats:number){
 }
 export interface LiftVisual {curve:THREE.CurvePath<THREE.Vector3>;length:number;mesh:THREE.InstancedMesh;count:number;size:number;spacing:number;speed:number;tram:boolean;phaseOffset:number;}
 // Physical signs on station fascias, with depth testing and world-space scale.
-function stationSigns(name:string,p:THREE.Vector3,size:number,spacing:number,group:THREE.Group){
+function stationSigns(name:string,p:THREE.Vector3,size:number,spacing:number,group:THREE.Group,palette:LiftPalette){
  if(!name||typeof document==='undefined')return;
  const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=128;
- const ctx=canvas.getContext('2d')!;ctx.fillStyle='#253d36';ctx.fillRect(0,0,1024,128);
- ctx.fillStyle='#fff9e8';ctx.font='600 66px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(name,512,67,960);
+ const ctx=canvas.getContext('2d')!;ctx.fillStyle='#'+palette.sign.toString(16).padStart(6,'0');ctx.fillRect(0,0,1024,128);
+ ctx.fillStyle='#'+palette.lettering.toString(16).padStart(6,'0');ctx.font='600 66px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(name,512,67,960);
  const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;
  const material=new THREE.MeshBasicMaterial({map:texture});
  for(const side of [-1,1]){
@@ -61,7 +62,8 @@ function stationSigns(name:string,p:THREE.Vector3,size:number,spacing:number,gro
   flank.position.set(p.x+side*spacing*1.505,p.y+size*.4,p.z);flank.rotation.y=side*Math.PI/2;group.add(flank);
  }
 }
-export function makeLift(f:MapFeature,groundPoints:THREE.Vector3[],scale:number,height:(x:number,z:number)=>number,group:THREE.Group):LiftVisual[]{
+export function makeLift(f:MapFeature,groundPoints:THREE.Vector3[],scale:number,height:(x:number,z:number)=>number,group:THREE.Group,palette:LiftPalette=defaultLiftPalette):LiftVisual[]{
+ const steel=palette.structure;
  if(groundPoints.length<2||groundPoints.every(p=>p.distanceToSquared(groundPoints[0])<1e-10))return [];
  if(f.retired||f.proposed||f.access==='private'||['zip_line','yes','pylon'].includes(f.type))return [];
  if(f.type==='magic_carpet'||f.type==='funicular'){
@@ -103,15 +105,15 @@ export function makeLift(f:MapFeature,groundPoints:THREE.Vector3[],scale:number,
   parts.rod(a,b,f.type==='magic_carpet'?size*.6:Math.max(.025,size*.055),f.type==='magic_carpet'?0x64736e:0x37494b);
  }
  if(!surface)for(const p of [supports[0],supports[supports.length-1],...stations.map(s=>new THREE.Vector3(s.point[0]*scale,height(s.point[0]*scale,s.point[1]*scale)+clearance,s.point[1]*scale))]){
-  stationSigns(f.name,p,size,spacing,group);
-  parts.box(spacing*3,size*.7,size*4,0x9caba8,p.x,p.y+size*.4,p.z);parts.box(spacing*3.2,size*.16,size*4.2,red,p.x,p.y+size*.8,p.z);
+  stationSigns(f.name,p,size,spacing,group,palette);
+  parts.box(spacing*3,size*.7,size*4,palette.station,p.x,p.y+size*.4,p.z);parts.box(spacing*3.2,size*.16,size*4.2,palette.roof,p.x,p.y+size*.8,p.z);
  }
  if(parts.pieces.length)group.add(new THREE.Mesh(parts.finish(),modelMaterial()));
  const specs=f.type==='mixed_lift'?(f.chairSeats&&f.cabinOccupancy?[{type:'chair_lift',occupancy:f.chairSeats},{type:'gondola',occupancy:f.cabinOccupancy}]:[]):[{type:f.type,occupancy:f.occupancy}];
  return specs.flatMap((spec,index)=>{
   if(spec.type==='magic_carpet'||spec.type==='rope_tow'||spec.type==='funicular'||!spec.occupancy)return [];
   const tram=spec.type==='cable_car',count=tram?2:Math.min(36,Math.max(4,Math.floor(length/(scale*65))));
-  const mesh=new THREE.InstancedMesh(carrierGeometry(spec.type,spec.occupancy),modelMaterial(),count);mesh.frustumCulled=false;group.add(mesh);
+  const mesh=new THREE.InstancedMesh(carrierGeometry(spec.type,spec.occupancy,palette),modelMaterial(),count);mesh.frustumCulled=false;group.add(mesh);
   return [{curve,length:curve.getLength(),mesh,count,size,spacing:surface?0:spacing,speed:(f.speedMps|| (surface?1.8:f.detachable?5:2.5))*scale,tram,phaseOffset:index*.5/count}];
  });
 }

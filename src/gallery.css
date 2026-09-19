@@ -203,3 +203,4 @@ button:active:not(:disabled){filter:brightness(.9)}
  .rider-settings footer a,.rider-settings footer button{font-size:10px}
  .rider-settings footer button{min-height:44px}
 }
+.resort-identity{display:flex;align-items:center;justify-content:flex-start;margin:0 0 24px;min-height:48px}.resort-identity img{display:block;max-width:150px;max-height:56px;object-fit:contain}

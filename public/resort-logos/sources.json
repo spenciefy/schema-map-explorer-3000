@@ -1,0 +1,20 @@
+{
+  "jackson": {
+    "file": "/resort-logos/jackson.png",
+    "assetUrl": "https://www.jacksonhole.com/images/jh-tapped-icon.png",
+    "source": "https://www.jacksonhole.com/aerial-tram",
+    "retrieved": "2026-09-19"
+  },
+  "iwanai": {
+    "file": "/resort-logos/iwanai.jpg",
+    "assetUrl": "https://static1.squarespace.com/static/59eac661fe54efb793a14c87/t/5f4c5a4041766f7b9b73346f/1638921464006/IR-logo-1000x1000.jpg?format=200w",
+    "source": "https://iwanairesort.com/en/home/catski-niseko",
+    "retrieved": "2026-09-19"
+  },
+  "palisades": {
+    "file": "/resort-logos/palisades.svg",
+    "assetUrl": "https://www.palisadestahoe.com/-/media/palisades-tahoe/footer/logos/pt-mobile.svg?h=40&iar=0&w=83&rev=ce36141308734e06b15a2d4be1abfbe3&hash=62E6F8EAEDDFD7438027ADB3EF512FBF",
+    "source": "https://www.palisadestahoe.com/",
+    "retrieved": "2026-09-19"
+  }
+}

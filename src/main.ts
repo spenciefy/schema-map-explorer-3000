@@ -1,3 +1,4 @@
+import { resortLogo } from './resort-identity';
 import { setupCollection } from './collection';
 import { mountainRoute } from './routing';
 import { defaultRiderSettings, normalizeRiderSettings, type RiderSettings } from './rider-settings';
@@ -92,13 +93,14 @@ $('#app').append(mapAttribution);
 const compactMap=matchMedia('(max-width:760px), (max-width:1024px) and (pointer:coarse), (max-height:520px) and (pointer:coarse)');
 function placeMapCredits(){if(compactMap.matches)$('#rider-settings').append(mapFooter);else $('#app').insertBefore(mapFooter,$('#about-dialog'));}
 compactMap.addEventListener('change',placeMapCredits);placeMapCredits();
+const identity=document.createElement('a');identity.className='resort-identity';identity.target='_blank';identity.rel='noopener';identity.hidden=true;$('.settings-heading').after(identity);
 const collection=setupCollection(goTo);
 let atlas:AtlasScene | undefined;
 function ensureAtlas(){if(atlas)return;try{atlas=new AtlasScene($('#scene'),$('#map-labels'),id=>selectResort(id,true));atlas.riderSettings={...riderSettings};atlas.showWildlife=wildlifeVisible;}catch{$('#scene').innerHTML='<div class="canvas-error">3D map unavailable. Try a browser with WebGL enabled.</div>';}}
 let galleryScroll=0;
 function navigate(){toggleSettings(false);const id=mountainRoute(location.pathname,location.hash);if(id&&(location.pathname!=='/'+id||location.hash))history.replaceState(null,'','/'+id+location.search);const resort=resorts.find(r=>r.id===id);const gallery=!resort;if(resort&&document.body.classList.contains('gallery-view'))galleryScroll=window.scrollY;document.body.classList.toggle('gallery-view',gallery);$('#mountain-gallery').hidden=!gallery;const aboutRoute=location.pathname.replace(/\/$/,'')==='/about';collection.setRoute(aboutRoute,gallery);
  if(gallery){playing=false;$('#timeline-play').innerHTML=icon('play');$('#timeline-play').setAttribute('aria-label','Play forecast timeline');document.title=aboutRoute?'About · '+projectName:projectName;toggleGuide(false);if(atlas)atlas.suspended=true;requestAnimationFrame(()=>{window.scrollTo(0,aboutRoute?0:galleryScroll);if(atlas&&!aboutRoute)document.querySelector<HTMLAnchorElement>(`a[href="/${selected}"]`)?.focus({preventScroll:true});});return;}
- window.scrollTo(0,0);toggleGuide(false);$('#route-card').hidden=true;activeFeature=undefined;ensureAtlas();region=resort.region;selected=resort.id;view='atlas';explorer='places';pass='all';if(atlas){atlas.suspended=false;atlas.resize();atlas.setRegion(currentRegion());}if(live&&!forecasts.has(resort.id))void fetchWeather();else render();document.title=resort.name+' · '+projectName;$('#brand-home').focus();
+ window.scrollTo(0,0);toggleGuide(false);$('#route-card').hidden=true;activeFeature=undefined;ensureAtlas();region=resort.region;selected=resort.id;view='atlas';explorer='places';pass='all';if(atlas){atlas.suspended=false;atlas.resize();atlas.setRegion(currentRegion());}if(live&&!forecasts.has(resort.id))void fetchWeather();else render();const logo=resortLogo(resort.id);identity.hidden=!logo;identity.href=resort.url;identity.replaceChildren();if(logo){const img=document.createElement('img');img.src=logo;img.alt=resort.name;identity.append(img);identity.setAttribute('aria-label',resort.name+' official website');}document.title=resort.name+' · '+projectName;$('#brand-home').focus();
 }
 function goTo(path:string){history.pushState(null,'',path);navigate();}
 function showGallery(){goTo('/');}

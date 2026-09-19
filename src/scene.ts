@@ -1,3 +1,4 @@
+import { liftPalette } from './resort-identity';
 import { loadMountain } from './mountain-cache';
 import { Line2 } from 'three/addons/lines/Line2.js';
 import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
@@ -160,7 +161,7 @@ export class AtlasScene {
    const color=f.kind==='lift'?(f.access==='private'||f.proposed||f.retired?0x9b8d80:0xb54c37):(trailColor(this.selected,f.difficulty));
    const line=f.kind==='lift'?new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineDashedMaterial({color,dashSize:.8,gapSize:.35,transparent:true,opacity:.95})):new Line2(new LineGeometry().setPositions(pts.flatMap(p=>[p.x,p.y,p.z])),new LineMaterial({color,linewidth:2.2,transparent:true,opacity:f.area?.35:.87,resolution:new THREE.Vector2(this.host.clientWidth,this.host.clientHeight)}));line.computeLineDistances();line.userData.feature=f;(f.kind==='lift'?this.liftGroup:this.trailGroup).add(line);
    const curve=new THREE.CurvePath<THREE.Vector3>();for(let i=1;i<pts.length;i++)curve.add(new THREE.LineCurve3(pts[i-1],pts[i]));const route={feature:f,points:pts,curve,length:curve.getLength(),line};this.routes.push(route);
-   if(f.kind==='lift')this.lifts.push(...makeLift(f,this.sampleFeature(f,0),this.scale,(x,z)=>this.height(x,z),this.liftGroup));
+   if(f.kind==='lift')this.lifts.push(...makeLift(f,this.sampleFeature(f,0),this.scale,(x,z)=>this.height(x,z),this.liftGroup,liftPalette(this.selected,f.name)));
   }
   this.trailGroup.visible=this.showTrails;this.liftGroup.visible=this.showLifts;
  }
