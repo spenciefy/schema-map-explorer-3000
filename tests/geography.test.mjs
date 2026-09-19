@@ -2,7 +2,7 @@ import { resorts } from '../src/data.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync, readdirSync, existsSync} from 'node:fs';
-import {elevationAt,clipFeature,featureLength,trailColor} from '../src/geography.ts';
+import {elevationAt,clipFeature,featureLength,trailColor,mapReferences} from '../src/geography.ts';
 const flat={width:100,depth:100,gridSize:2,heights:[0,100,200,300]};
 const feature=points=>({id:1,kind:'trail',name:'Test',difficulty:'easy',type:'downhill',area:false,access:'',points});
 test('north/south and east/west coordinate orientation and bilinear height',()=>{
@@ -24,7 +24,7 @@ test('all destination geographic extracts have valid terrain, coverage, and sour
  const ids=resorts.map(r=>r.id);assert.deepEqual(files.map(f=>f.replace('.json','')).sort(),ids.sort());
  for(const file of files){const d=JSON.parse(readFileSync(new URL('../public/geodata/'+file,import.meta.url)));
   assert.equal(d.heights.length,d.gridSize**2,file);assert(d.heights.every(Number.isFinite),file);
-  assert(d.features.length>10,file);assert(d.source.osmTimestamp,file);assert(d.width>0&&d.depth>0,file);
+  assert(d.features.length>0,file);assert(d.source.osmTimestamp,file);assert(d.width>0&&d.depth>0,file);
   const [south,west,north,east]=d.bbox;
   assert(Math.abs(d.depth-(north-south)*111320)<.1,file);
   assert(Math.abs(d.width-(east-west)*111320*Math.cos(d.center[1]*Math.PI/180))<.1,file);
@@ -64,4 +64,19 @@ test('new mountains preserve landmark lifts and separate neighboring resort netw
  assert(!get('snowbird').features.some(f=>f.kind==='lift'&&f.name==='Collins'));
  assert(!get('breckenridge').features.some(f=>f.kind==='lift'&&['Resolution','Alpine'].includes(f.name)));
  for(const id of ['alta','snowbird','breckenridge'])assert(get(id).source.resortBoundary);
+});
+
+// Small lift networks must still preserve full mountain terrain.
+test('Iwanai includes the summit, one sourced double chair, and mapped supports',()=>{
+ const d=JSON.parse(readFileSync(new URL('../public/geodata/iwanai.json',import.meta.url)));
+ const lifts=d.features.filter(f=>f.kind==='lift'&&!f.retired&&!f.proposed);
+ assert.equal(mapReferences.iwanai.frame,'terrain');
+ assert(existsSync(new URL('../public/previews/iwanai.png',import.meta.url)));
+ assert.equal(lifts.length,1);assert.equal(lifts[0].name,'Center Pair Lift');
+ assert.equal(lifts[0].occupancy,2);assert(lifts[0].supports.length>5);
+ assert(lifts[0].capacitySource.includes('iwanairesort.com'));
+ const peak=d.peaks.find(p=>p.name==='Mt. Iwanai');assert(peak);
+ assert(Math.abs(elevationAt(d,...peak.point)-1085)<40);
+ assert(d.depth>4500);assert(d.features.filter(f=>f.kind==='trail').length>=3);
+ assert.equal(trailColor('iwanai','intermediate'),trailColor('niseko','intermediate'));
 });

@@ -13,9 +13,9 @@ Open http://localhost:5173. `npm run build` checks TypeScript and builds the sit
 
 ## Explore
 
-The landing page is a grid of all 60 mountains, with terrain previews, names and locations. Select a tile to open the animated map. **Mountains** returns to the grid and restores the scroll position. **Explore**, **Saved**, and **Weather** reveal map details on demand. Mountain routes use shareable URL hashes (for example `/#palisades`).
+The landing page is a grid of all 61 mountains, with terrain previews, names and locations. Select a tile to open the animated map. **Mountains** returns to the grid and restores the scroll position. **Explore**, **Saved**, and **Weather** reveal map details on demand. Mountain routes use shareable URL hashes (for example `/#palisades`).
 
-- Choose one of 60 destinations (53 in North America) across North America, the Alps, and Japan.
+- Choose one of 61 destinations (53 in North America) across North America, the Alps, and Japan.
 - Drag to pan; right-drag to orbit, or choose the visible **Pan / Rotate** mode. One-finger touch follows the selected mode; pinch to zoom. Focus the canvas and use arrow keys to pan. Scroll to zoom. Switch between the oblique trail-map view and overhead view. The compass follows geographic north.
 - Search named trails or lifts, select a mapped segment, then **Follow this line** or **Ride this lift**. Drag to leave the guided camera. Proposed and private lifts have no ride action.
 - Toggle trails, lifts, names, roads, and lodge/building landmarks. **Lodges & stops** searches mapped lodges, restaurants, and accommodation; selecting a place flies to it and provides Google Maps and original OSM links. Open the resort's official trail map alongside the model.
@@ -43,7 +43,7 @@ Pass filters indicate destination partnerships, not a guarantee of access for a 
 
 ## Roads and lodge landmarks
 
-OSM road centerlines and building footprints are included for all 60 destinations. Roads follow the DEM; tracks use dashed lines. Road width is stylized, buildings use an illustrative 6 m extrusion, and point landmarks use small roof symbols. Road geometry is not a guarantee of winter vehicle access. Hospitality classifications distinguish lodges, dining, and lodging; access tags are preserved where supplied. Names and coverage depend on community mapping.
+OSM road centerlines and building footprints are included for all 61 destinations. Roads follow the DEM; tracks use dashed lines. Road width is stylized, buildings use an illustrative 6 m extrusion, and point landmarks use small roof symbols. Road geometry is not a guarantee of winter vehicle access. Hospitality classifications distinguish lodges, dining, and lodging; access tags are preserved where supplied. Names and coverage depend on community mapping.
 
 Powder Mountain's Hidden Lake, Timberline, and Sundown lodge names were checked against its [official lodge page](https://powdermountain.com/lodges-and-dinning); OSM positions agree within 100 m of that page's linked Google Maps locations. Google Maps is an external reference, not the source of the rendered geometry or imagery. Other resort POIs have not been individually verified against official listings.
 
@@ -75,7 +75,7 @@ Use the destination IDs in `scripts/build-geodata.py`. Omit IDs from the terrain
 
 Vite, TypeScript, and Three.js. `scene.ts` owns terrain, actors, cameras, and labels; `geography.ts` defines coordinate sampling/clipping; `weather.ts` validates forecasts; `main.ts` owns UI state. Terrain and trees are GPU meshes/instances; paths use source coordinates.
 
-Validated: all 60 destination models load; landmark search and route selection; guided lift camera; layer visibility; overhead view; desktop/mobile layout; and geographic unit/data checks. Build passes, with a size advisory for the Three.js vendor chunk. The preceding weather prototype was also checked with a real API response and an intercepted failure/retry. This is an exploratory art prototype, not an official resort trail map.
+Validated: the original 60 destination models load; Iwanai was subsequently checked with its full terrain view and single double chair; landmark search and route selection; guided lift camera; layer visibility; overhead view; desktop/mobile layout; and geographic unit/data checks. Build passes, with a size advisory for the Three.js vendor chunk. The preceding weather prototype was also checked with a real API response and an intercepted failure/retry. This is an exploratory art prototype, not an official resort trail map.
 
 ### Lift and mountain detail pass
 
@@ -91,7 +91,7 @@ Palisades' field guide has direct links to Palisades, Alpine Meadows and Base to
 
 The brand heading, taglines, descriptive introductions, decorative captions and repeated source prose were removed in favor of the mountain grid and essential controls. Source/accuracy details remain under Sources. The full WebGL scene is created only after selecting a mountain, and rendering is suspended while viewing the grid.
 
-Generate all previews from the actual AtlasScene models with `node scripts/render-previews.mjs` while Vite runs on port 5173. The grid uses these static renders to avoid 60 concurrent WebGL scenes; selecting a mountain opens the full interactive version.
+Generate all previews from the actual AtlasScene models with `node scripts/render-previews.mjs` while Vite runs on port 5173. The grid uses these static renders to avoid 61 concurrent WebGL scenes; selecting a mountain opens the full interactive version.
 
 ### Western expansion
 

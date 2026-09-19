@@ -6,6 +6,7 @@ import json,sys,time,urllib.request,urllib.error,xml.etree.ElementTree as ET
 from pathlib import Path
 R=Path(__file__).resolve().parents[1];C=R/'research/geodata-cache'
 rows={r['id']:r for r in json.loads((R/'research/western-resorts.json').read_text())}
+rows.update({r['id']:r for r in json.loads((R/'research/terrain-resorts.json').read_text())})
 def read_box(bbox,depth=0):
  s,w,n,e=bbox;url=f'https://api.openstreetmap.org/api/0.6/map?bbox={w},{s},{e},{n}'
  try:

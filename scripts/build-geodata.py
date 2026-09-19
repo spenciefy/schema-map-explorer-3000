@@ -28,6 +28,7 @@ SITES={
  'dolomites':(46.450,11.760,46.555,11.940),
 }
 SITES.update({r['id']:tuple(r['bbox']) for r in json.loads((ROOT/'research/western-resorts.json').read_text())})
+SITES.update({r['id']:tuple(r['bbox']) for r in json.loads((ROOT/'research/terrain-resorts.json').read_text())})
 AT='https://github.com/tilezen/joerd/blob/master/docs/attribution.md'
 def download(url,data=None):
  if data is not None and 'overpass' in url:url+='?'+data.decode();data=None

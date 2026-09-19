@@ -1,8 +1,14 @@
 """Attach OSM tower/station coordinates to lifts, leaving height illustrative."""
-import json,math,urllib.request,urllib.parse
+import json,math,urllib.request,urllib.parse,sys
 from pathlib import Path
 R=Path(__file__).resolve().parents[1];files=list((R/'public/geodata').glob('*.json'));cache=R/'research/geodata-cache/lift-supports.json'
-if not cache.exists():
+if sys.argv[1:]:files=[p for p in files if p.stem in sys.argv[1:]]
+# Prefer the bounded per-resort extract when enriching individual mountains.
+localNodes=[]
+for p in files if sys.argv[1:] else []:
+ localCache=R/'research/geodata-cache'/f'{p.stem}-osm.json'
+ if localCache.exists():localNodes.extend(e for e in json.loads(localCache.read_text())['elements'] if e['type']=='node' and e.get('tags',{}).get('aerialway') in ['pylon','station'])
+if not cache.exists() and not localNodes:
  queries=[]
  for p in files:
   b=','.join(map(str,json.loads(p.read_text())['bbox']));queries.append(f'node["aerialway"~"^(pylon|station)$"]({b});')
@@ -11,7 +17,7 @@ if not cache.exists():
  raw=json.load(urllib.request.urlopen(req,timeout=95))
  if 'remark' in raw:raise RuntimeError(raw['remark'])
  cache.write_text(json.dumps(raw))
-raw=json.loads(cache.read_text());total=0
+raw={'elements':localNodes} if localNodes else json.loads(cache.read_text());total=0
 for path in files:
  d=json.loads(path.read_text());rawWays={f['id']:f for f in json.loads((R/'research/geodata-cache'/f'{path.stem}-osm.json').read_text())['elements'] if f['type']=='way'};cx,cy=d['center'];cos=math.cos(math.radians(cy));s,w,n,e=d['bbox']
  nodes=[{'id':p['id'],'point':[(p['lon']-cx)*111320*cos,(cy-p['lat'])*111320],'kind':p['tags']['aerialway']} for p in raw['elements'] if s<=p['lat']<=n and w<=p['lon']<=e]

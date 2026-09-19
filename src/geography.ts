@@ -4,7 +4,7 @@ export interface MapFeature { id:number; kind:'trail'|'lift'; name:string; diffi
 export interface MapPlace {id:string;name:string;kind:string;point:Point;source:string;url:string;access?:string;}
 export interface MapRoad {id:number;name:string;type:string;access:string;surface:string;points:Point[];}
 export interface MountainData {roads?:MapRoad[];buildings?:{id:number;name:string;points:Point[]}[];places?:MapPlace[];id:string;bbox:number[];center:Point;width:number;depth:number;gridSize:number;heights:number[];features:MapFeature[];peaks:{name:string;point:Point;elevation?:string}[];forests:Point[][];landcover?:string;forestHoles?:Point[][];source:{terrain:string;terrainAttribution:string;osmTimestamp:string;downloadedAt:string;sampleSpacingMeters:Point};}
-export const mapReferences:Record<string,{url:string;coverage:string;view:[number,number];note?:string;label?:string}>={
+export const mapReferences:Record<string,{url:string;coverage:string;view:[number,number];note?:string;label?:string;frame?:'terrain'}>={
  ...westernMapReferences,
  northstar:{url:'https://www.northstarcalifornia.com/the-mountain/about-the-mountain/trail-map.aspx',coverage:'Mt. Pluto, Lookout Mountain & the Backside',view:[.3,-1]},
  alta:{url:'https://www.alta.com/plan-your-trip',coverage:'Alta · Little Cottonwood Canyon',view:[0,-1],note:'Alta is a skiers-only mountain.'},
@@ -17,6 +17,7 @@ export const mapReferences:Record<string,{url:string;coverage:string;view:[numbe
  whistler:{url:'https://www.whistlerblackcomb.com/the-mountain/about-the-mountain/trail-maps.aspx',coverage:'Whistler & Blackcomb',view:[-.5,-1]},
  revelstoke:{url:'https://www.revelstokemountainresort.com/discover/about/trail-maps/',coverage:'Mount Mackenzie',view:[-1,.4]},
  'park-city':{url:'https://www.parkcitymountain.com/the-mountain/about-the-mountain/trail-map.aspx',coverage:'Park City region · includes neighboring terrain',view:[.3,-1]},
+ iwanai:{url:'https://iwanairesort.com/en/lift/iwanai',coverage:'Mount Iwanai · summit, north face & base',view:[.15,-1],frame:'terrain',note:'One double chair at the base. Upper terrain is guided CAT skiing; mapped lines are not a complete CAT route guide.'},
  niseko:{url:'https://www.niseko.ne.jp/en/map/',coverage:'Niseko United / Annupuri',view:[.6,1]},
  rusutsu:{url:'https://rusutsu.com/en/ski/course/',coverage:'Rusutsu mountain group',view:[-1,-.3]},
  hakuba:{url:'https://www.hakubavalley.com/en/ski/',coverage:'Happo-One & central Hakuba sector',view:[1,.1]},
@@ -42,7 +43,7 @@ export function inExtent(data:MountainData,p:Point){return Math.abs(p[0])<=data.
 export function featureLength(f:MapFeature){let d=0;for(let i=1;i<f.points.length;i++)d+=Math.hypot(f.points[i][0]-f.points[i-1][0],f.points[i][1]-f.points[i-1][1]);return d;}
 
 export function trailColor(resortId:string,difficulty:string){
- const alps=['chamonix','verbier','zermatt','dolomites'].includes(resortId);const japan=['niseko','rusutsu','hakuba'].includes(resortId);
+ const alps=['chamonix','verbier','zermatt','dolomites'].includes(resortId);const japan=['niseko','rusutsu','hakuba','iwanai'].includes(resortId);
  if(alps&&difficulty==='easy')return 0x317aad;
  if((alps||japan)&&difficulty==='intermediate')return 0xc34843;
  return difficultyColors[difficulty]||difficultyColors.unknown;

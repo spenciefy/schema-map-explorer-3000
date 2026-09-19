@@ -2,7 +2,7 @@
 
 **Ski maps you can step into.**
 
-An interactive 3D collection of 60 ski mountains. Explore the ridgelines, follow a familiar run, watch the lifts turn, and find somewhere to spend your next powder day.
+An interactive 3D collection of 61 ski mountains. Explore the ridgelines, follow a familiar run, watch the lifts turn, and find somewhere to spend your next powder day.
 
 Inspired by the artistry of painted ski trail maps, Powder Mountain’s 3D map, and the tiny skiers in Werner Bronkhorst’s paintings. Built around real geography, with a little artistic license in the snow, trees, and people.
 
@@ -12,7 +12,7 @@ Inspired by the artistry of painted ski trail maps, Powder Mountain’s 3D map, 
 
 ## Explore
 
-- **60 destinations**, including 53 across North America, plus selected mountains in the Alps and Japan.
+- **61 destinations**, including 53 across North America, plus selected mountains in the Alps and Japan.
 - **Real terrain and mapped trails**, with named runs, lifts, roads, buildings, and lodge landmarks.
 - **Local nature:** eight regional winter palettes, varied tree silhouettes, elevation-sensitive vegetation, and subtle wildlife you can hide in Settings. [Ecology notes](research/ECOLOGY.md) explain the references and limits.
 - **Animated mountain life:** chairs, gondolas, trams, skiers, and snowboarders. Carrier capacities come from mapped tags and linked research; unknown capacities are left unmodeled.
@@ -23,7 +23,7 @@ Inspired by the artistry of painted ski trail maps, Powder Mountain’s 3D map, 
 
 ![The mountain collection](docs/images/collection.png)
 
-The collection includes Palisades and Alpine Meadows with their Base to Base connection, Whistler, Jackson Hole, Alta, Snowbird, Mammoth, the four Aspen mountains, Big Sky, Vail, Telluride, Lake Louise, Revelstoke, and many more. The [western resort manifest](research/western-resorts.json) documents the latest 42 additions.
+The collection includes Palisades and Alpine Meadows with their Base to Base connection, Whistler, Jackson Hole, Alta, Snowbird, Mammoth, the four Aspen mountains, Big Sky, Vail, Telluride, Lake Louise, Revelstoke, and many more. Iwanai in Hokkaido includes the full mountain above its single double chair, with terrain framing for exploring the cat-ski landscape. See [Iwanai source notes](research/IWANAI.md). The [western resort manifest](research/western-resorts.json) documents the latest 42 additions.
 
 ## Run locally
 

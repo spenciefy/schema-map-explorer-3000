@@ -6,7 +6,7 @@ import {mapReferences} from '../src/geography.ts';
 const rows=JSON.parse(readFileSync(new URL('../research/western-resorts.json',import.meta.url)));
 const get=id=>JSON.parse(readFileSync(new URL('../public/geodata/'+id+'.json',import.meta.url)));
 test('western expansion has real terrain, previews and source links for every catalog tile',()=>{
- assert.equal(rows.length,42);assert.equal(resorts.length,60);assert.equal(new Set(resorts.map(r=>r.id)).size,60);
+ assert.equal(rows.length,42);assert.equal(resorts.length,61);assert.equal(new Set(resorts.map(r=>r.id)).size,61);
  for(const row of rows){const resort=resorts.find(r=>r.id===row.id);assert(resort,row.id);assert.equal(resort.region,'north-america');assert.equal(resort.pass,row.passType);assert.deepEqual(get(row.id).bbox,row.bbox);assert(existsSync(new URL('../public/previews/'+row.id+'.png',import.meta.url)),row.id);assert(mapReferences[row.id].url.startsWith('https://'));assert(resort.elevation>0);}
 });
 test('adjacent western mountains retain their own lift networks',()=>{

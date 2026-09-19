@@ -3,6 +3,7 @@ import json,re,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 OVERRIDES={
+ 1030295081:{'name':'Center Pair Lift','occupancy':2,'capacitySource':'https://iwanairesort.com/en/lift/iwanai'},
  32781149:{'occupancy':15,'capacitySource':'https://sc.mammothmountain.com/-/media/project/mammoth/library/pdfs/maps/241022_mmsa_trailmap_brochure_web.pdf'},
  104087780:{'occupancy':4,'capacitySource':'https://www.deervalley.com/-/media/deer-valley/media/DeerValleyResortPressKit24-25.pdf'},
  40233630:{'occupancy':2,'capacitySource':'https://liftblog.com/panda-peak-buttermilk-co/'},
