@@ -20,7 +20,7 @@ Inspired by the artistry of painted ski trail maps, Powder Mountain’s 3D map, 
 - **Pan, orbit, zoom**, switch to an overhead view, follow a trail, or ride a lift.
 - **Find your next mountain** with Ikon/Epic filters, saved favorites, and optional live snowfall forecasts.
 - **Search the collection** by mountain, region, country, or pass. Drag a preview to rotate its terrain; click to explore.
-- **A globe view** places mountain miniatures at their geographic coordinates. Rotate, zoom, or search to find a mountain.
+- **A globe view** groups nearby resorts into tappable counts, revealing named markers as you zoom. Regional shortcuts, search, and selectable resort lists make crowded areas easy to explore.
 - **About the project** at `/about`, with inspiration, sources, and credits.
 
 ![The mountain collection](docs/images/collection.png)
