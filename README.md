@@ -19,7 +19,9 @@ Inspired by the artistry of painted ski trail maps, Powder Mountain’s 3D map, 
 - **Tune the mountain:** Controls offers separate skier and snowboarder visibility, size, and speed controls, saved locally.
 - **Pan, orbit, zoom**, switch to an overhead view, follow a trail, or ride a lift.
 - **Find your next mountain** with Ikon/Epic filters, saved favorites, and optional live snowfall forecasts.
-- **A quiet collection view:** terrain portraits first, details when you want them.
+- **Search the collection** by mountain, region, country, or pass. Drag a preview to rotate its terrain; click to explore.
+- **A globe view** places mountain miniatures at their geographic coordinates. Rotate, zoom, or search to find a mountain.
+- **About the project** at `/about`, with inspiration, sources, and credits.
 
 ![The mountain collection](docs/images/collection.png)
 
@@ -56,7 +58,7 @@ Select a trail, lift, or lodge to explore it. **Controls** reveals the map tools
 
 ## How it works
 
-TypeScript, Three.js, and Vite. Each mountain combines a 257 × 257 elevation grid with geographic trail and lift geometry, forest classification, roads, and buildings. Small repeated objects use instanced meshes. The collection uses prerendered mountain portraits; the interactive scene loads when you select a mountain.
+TypeScript, Three.js, and Vite. Each mountain combines a 257 × 257 elevation grid with geographic trail and lift geometry, forest classification, roads, and buildings. Small repeated objects use instanced meshes. The collection starts with prerendered mountain portraits and shares one lightweight terrain renderer across interactive previews. The globe loads on demand, and full mountain scenes load when selected.
 
 Maps ship as static data, so exploring does not trigger live map extraction requests. Rebuild scripts, source notes, and implementation details are in the [development guide](docs/DEVELOPMENT.md).
 
@@ -67,6 +69,7 @@ Maps ship as static data, so exploring does not trigger live map extraction requ
 | Elevation | [Mapzen Terrain Tiles](https://registry.opendata.aws/terrain-tiles/) and their [underlying DEM sources](https://github.com/tilezen/joerd/blob/master/docs/attribution.md) |
 | Trails, lifts, roads, buildings | [© OpenStreetMap contributors](https://www.openstreetmap.org/copyright), ODbL |
 | Forest cover | [ESA WorldCover 2021 v200](https://doi.org/10.5281/zenodo.7254221), CC BY 4.0 |
+| Globe coastlines | [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/), public domain |
 | Live weather forecasts | [Open-Meteo](https://open-meteo.com/en/docs), CC BY 4.0 |
 | Pass affiliations | [Ikon](https://www.ikonpass.com/en/destinations) and [Epic](https://www.epicpass.com/regions.aspx) |
 

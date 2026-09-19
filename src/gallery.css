@@ -169,3 +169,15 @@ button:active:not(:disabled){filter:brightness(.9)}
 @media(max-height:520px) and (pointer:coarse){#scene,#map-labels{inset:88px 0 100px}}
 
 #snowcat-view{font-size:12px;min-height:44px;text-decoration:underline;text-underline-offset:4px}
+
+.gallery-heading{gap:24px;align-items:center}.gallery-heading h1 a{text-decoration:none;color:inherit}
+.collection-tools{margin-left:auto;display:flex;align-items:center;gap:24px}.collection-search input{width:220px;border:0;border-bottom:1px solid #293e3540;background:transparent;padding:10px 0;font:inherit;font-size:13px;color:var(--ink);border-radius:0}
+.collection-switch{display:flex;gap:16px}.collection-switch button,#collection-about{font-size:13px;min-height:44px;display:inline-flex;align-items:center;color:var(--muted);text-decoration:none}.collection-switch button[aria-pressed=true]{color:var(--ink);text-decoration:underline;text-underline-offset:6px}
+#collection-about{margin-left:auto}.collection-tools+#collection-about{margin-left:0}
+.mountain-preview{position:relative;touch-action:pan-y;cursor:grab}.mountain-preview:active{cursor:grabbing}.mountain-preview canvas{position:absolute;inset:0;pointer-events:none}.mountain-preview.preview-active img{visibility:hidden}.mountain-preview.preview-active{background:var(--paper)}
+#about-page{max-width:630px;margin:72px auto 100px;line-height:1.8;font-size:15px}#about-page h2{font:500 48px/1.08 'Barlow Condensed',sans-serif;margin:0 0 32px}#about-page h3{font-size:15px;margin-top:48px}#about-page p{margin:0 0 24px}#about-page a{color:inherit;text-underline-offset:4px}.maker-credit a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+#globe-view{position:relative}#globe-canvas{height:min(70vh,720px);min-height:360px;touch-action:none}#globe-canvas canvas{display:block;width:100%;height:100%}#globe-results{display:flex;gap:10px 20px;flex-wrap:wrap;padding:24px 0}#globe-results button{font-size:12px;min-height:36px;color:var(--muted)}#globe-results button:hover{color:var(--ink)}
+#globe-card{position:absolute;left:0;top:24px;width:190px;background:var(--paper);padding:12px}#globe-card a{display:block;color:inherit;text-decoration:none}#globe-card img{display:block;width:100%;aspect-ratio:720/520;object-fit:contain}#globe-card strong,#globe-card span{display:block}#globe-card strong{font:500 24px 'Barlow Condensed',sans-serif}#globe-card span{font-size:12px;margin-top:4px}
+@media(max-width:760px){.gallery-heading{gap:12px;flex-wrap:wrap}.collection-tools{order:3;flex-basis:100%;gap:20px}.collection-search{flex:1;min-width:0}.collection-search input{width:100%;font-size:16px}.collection-tools+#collection-about{margin-left:auto}#about-page{margin:40px 0 64px}#about-page h2{font-size:38px}#globe-card{top:8px;width:140px;padding:8px}#globe-canvas{height:58vh;min-height:320px}}
+
+.globe-directory{margin-top:12px}.globe-directory summary{cursor:pointer;font-size:13px;color:var(--muted);padding:10px 0}
