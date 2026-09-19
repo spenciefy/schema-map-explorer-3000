@@ -1,4 +1,4 @@
-# Mountains
+# Schema Map Explorer 3000
 
 A geographic, animated ski-trail atlas: familiar ridgelines, real mapped runs, moving lifts, and a little anticipation of winter.
 
@@ -110,3 +110,7 @@ python3 scripts/sync-western-catalog.py
 ```
 
 The western enrichment retains mapped lift supports and applies complete ski-area boundaries where available, separating adjacent Aspen and Cottonwood networks. Incomplete sector boundaries do not trim away the rest of a resort. Wider terrain, roads, and buildings remain visible. Some source extracts lack mapped pylons, so those lifts retain illustrative support spacing. Direct Map API extracts record retrieval time rather than a replication timestamp. Lift-table overrides and their source links are retained in `research/lift-table-overrides.json`; the underlying Vail, Beaver Creek, and Heavenly table extracts are in `research/lift-source-tables/`.
+
+### Interaction checks
+
+Run `node scripts/check-interactions.mjs` with the dev server on port 5173 and Chrome installed. Checks cover panning, URL consistency when filtering, panel focus restoration, pause/resume, live reduced-motion changes, rapid navigation, malformed hashes, and mobile overflow. Camera easing uses elapsed time, skiers ease into route endpoints, and panels use brief motion with reduced-motion alternatives. Saved mountains migrate from the original local storage key.

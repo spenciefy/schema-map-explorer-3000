@@ -1,4 +1,4 @@
-# Slope Atlas
+# Schema Map Explorer 3000
 
 **Ski maps you can step into.**
 
