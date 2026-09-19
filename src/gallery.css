@@ -181,3 +181,25 @@ button:active:not(:disabled){filter:brightness(.9)}
 @media(max-width:760px){.gallery-heading{gap:12px;flex-wrap:wrap}.collection-tools{order:3;flex-basis:100%;gap:20px}.collection-search{flex:1;min-width:0}.collection-search input{width:100%;font-size:16px}.collection-tools+#collection-about{margin-left:auto}#about-page{margin:40px 0 64px}#about-page h2{font-size:38px}#globe-card{top:8px;width:140px;padding:8px}#globe-canvas{height:58vh;min-height:320px}}
 
 .globe-directory{margin-top:12px}.globe-directory summary{cursor:pointer;font-size:13px;color:var(--muted);padding:10px 0}
+
+/* On the mountain, the phone viewport is a map with one compact header. */
+.mobile-map-attribution{display:none}
+@media(max-width:760px),(max-width:1024px) and (pointer:coarse),(max-height:520px) and (pointer:coarse){
+ body:not(.gallery-view){--map-header:calc(60px + env(safe-area-inset-top));}
+ body:not(.gallery-view) #app{height:100dvh;min-height:0;padding:0;overflow:hidden}
+ body:not(.gallery-view) .topbar{position:absolute;inset:0 0 auto;height:var(--map-header);margin:0;padding:env(safe-area-inset-top) max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left));background:var(--paper);border:0;z-index:10}
+ body:not(.gallery-view) .brand{min-height:44px;min-width:96px;font-size:12px}
+ body:not(.gallery-view) .intro{position:absolute;top:env(safe-area-inset-top);left:128px;right:max(16px,env(safe-area-inset-right));height:60px;max-width:none;margin:0;display:flex;align-items:center;z-index:11}
+ body:not(.gallery-view) .intro h1{font-size:25px!important;line-height:1.1;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0!important}
+ body:not(.gallery-view) #scene,body:not(.gallery-view) #map-labels{position:absolute;inset:var(--map-header) 0 0;height:auto;min-height:0}
+ body:not(.gallery-view) .bottom-deck{position:absolute;left:auto;right:max(16px,env(safe-area-inset-right));bottom:calc(28px + env(safe-area-inset-bottom));height:auto;width:auto;margin:0;padding:0;border:0;background:none;box-shadow:none;z-index:12}
+ body:not(.gallery-view) #settings-toggle{min-height:48px;padding:0 18px;background:var(--paper);border:1px solid #293e3520;box-shadow:0 2px 12px #293e3514;border-radius:4px;font-size:13px}
+ body:not(.gallery-view) .terrain-status{bottom:calc(90px + env(safe-area-inset-bottom));left:16px;right:16px}
+ body:not(.gallery-view) .mobile-map-attribution{display:flex;position:absolute;left:max(8px,env(safe-area-inset-left));bottom:calc(4px + env(safe-area-inset-bottom));gap:6px;z-index:5;font-size:8px;line-height:1.5;color:var(--ink);background:#f5f3ebc9;padding:2px 5px}
+ .mobile-map-attribution a{color:inherit;text-decoration:none}
+ .rider-settings footer{position:static;inset:auto;display:flex;flex-wrap:wrap;height:auto;min-height:0;width:auto;margin:24px 0 0;padding:16px 0 0;gap:12px;border-top:1px solid #293e3525}
+ .rider-settings footer>span:first-child{flex-wrap:wrap;gap:8px}
+ .rider-settings footer .maker-credit{font-size:10px;order:3;flex-basis:100%}
+ .rider-settings footer a,.rider-settings footer button{font-size:10px}
+ .rider-settings footer button{min-height:44px}
+}

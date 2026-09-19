@@ -85,6 +85,13 @@ weatherOptions.setAttribute('aria-label','Weather controls');
 for(const selector of ['#weather-switch','#weather-drawer','#weather-timeline'])weatherOptions.append($(selector));
 mapOptions.after(weatherOptions);
 const snowcatButton=document.createElement('button');snowcatButton.id='snowcat-view';snowcatButton.textContent='Snowcats';snowcatButton.hidden=true;snowcatButton.onclick=()=>{atlas?.focusSnowcats();toggleSettings(false);};mapOptions.append(snowcatButton);
+// Keep mobile credits accessible without reserving a strip beneath the map.
+const mapFooter=$('footer');
+const mapAttribution=document.createElement('div');mapAttribution.className='mobile-map-attribution';mapAttribution.innerHTML='<a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap</a><a href="https://registry.opendata.aws/terrain-tiles/" target="_blank" rel="noopener">Mapzen</a>';
+$('#app').append(mapAttribution);
+const compactMap=matchMedia('(max-width:760px), (max-width:1024px) and (pointer:coarse), (max-height:520px) and (pointer:coarse)');
+function placeMapCredits(){if(compactMap.matches)$('#rider-settings').append(mapFooter);else $('#app').insertBefore(mapFooter,$('#about-dialog'));}
+compactMap.addEventListener('change',placeMapCredits);placeMapCredits();
 const collection=setupCollection(goTo);
 let atlas:AtlasScene | undefined;
 function ensureAtlas(){if(atlas)return;try{atlas=new AtlasScene($('#scene'),$('#map-labels'),id=>selectResort(id,true));atlas.riderSettings={...riderSettings};atlas.showWildlife=wildlifeVisible;}catch{$('#scene').innerHTML='<div class="canvas-error">3D map unavailable. Try a browser with WebGL enabled.</div>';}}
