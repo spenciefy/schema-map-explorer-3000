@@ -15,3 +15,13 @@ test('winter tree forms and wildlife have finite, distinct geometry',()=>{
  for(const kind of ['deer','elk','chamois','serow','hare']){const g=wildlifeGeometry(kind);assert([...g.attributes.position.array].every(Number.isFinite));assert(g.attributes.position.count>100);g.dispose();}
  for(const evergreen of [true,false])shrubGeometry(evergreen).dispose();
 });
+
+test('Japanese winter forests thin to bare upper slopes without evergreen crowns',()=>{
+ for(const id of ['iwanai','niseko','rusutsu','hakuba']){
+  const profile=ecologyFor(resorts.find(r=>r.id===id));
+  assert(profile.winterTint<.3);
+  assert.equal(treeAtElevation(profile,profile.treeline+50,.99).density,0);
+  assert.equal(treeAtElevation(profile,profile.treeline-100,.99).form,'birch');
+ }
+ assert(ecologyFor(resorts.find(r=>r.id==='iwanai')).treeline<1085);
+});

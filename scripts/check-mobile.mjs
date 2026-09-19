@@ -15,6 +15,6 @@ try{
   before=after;await gesture([{x,y,id:1},{x:x+60,y,id:2}],[{x:x+35,y:y+8},{x:x+95,y:y+8}]);after=await snap();assert(Math.hypot(...after.target.map((v,i)=>v-before.target[i]))>1);assert(Math.abs(before.distance-after.distance)<1);
   before=after;await gesture([{x,y,id:1},{x:x+60,y,id:2}],[{x:x-15,y},{x:x+75,y}]);after=await snap();assert(after.distance<before.distance);assert.equal(await page.evaluate(()=>!!window.getAtlas().selectedFeature),false);
   await page.locator('#settings-toggle').click();await page.locator('#wildlife-visible').scrollIntoViewIfNeeded();assert(await page.locator('#wildlife-visible').isVisible());await page.locator('#close-settings').scrollIntoViewIfNeeded();await page.locator('#close-settings').click();
-  await page.locator('#reset-view').click();await page.waitForTimeout(1500);await page.screenshot({path:`/tmp/mobile-${width}.png`});assert.deepEqual(errors,[]);console.log(`${width}×${height}: drag, two-finger pan, pinch, panels and bounds passed`);await page.close();
+  await page.locator('#settings-toggle').click();await page.locator('#reset-view').click();await page.locator('#close-settings').click();await page.waitForTimeout(1500);await page.screenshot({path:`/tmp/mobile-${width}.png`});assert.deepEqual(errors,[]);console.log(`${width}×${height}: drag, two-finger pan, pinch, panels and bounds passed`);await page.close();
  }
 }finally{await browser.close();}

@@ -6,6 +6,19 @@ export function localeTreeGeometry(form:TreeForm,snow=false){
  const p=new Parts(),bare=['birch','aspen','larch'].includes(form),height=form==='hemlock'?2.3:form==='pine'?1.9:form==='spruce'?2.05:1.8;
  const bark=form==='birch'||form==='aspen'?0xe2ded0:0x756954;
  if(!snow)p.add(new THREE.CylinderGeometry(.023,.065,height,5),bark,0,height/2,0);
+ // Birch crowns fork upward irregularly; they are not tiered evergreen silhouettes.
+ if(form==='birch'){
+  for(let branch=0;branch<9;branch++){
+   const angle=branch*2.399,y=.45+branch*.12,start=v(0,y,0);
+   const elbow=v(Math.cos(angle)*(.20+branch%3*.045),y+.22,Math.sin(angle)*(.20+branch%3*.045));
+   const end=elbow.clone().add(v(Math.cos(angle+.3)*.17,.25,Math.sin(angle+.3)*.17));
+   p.rod(start,elbow,snow?.008:.018,snow?0xeeeede:bark);
+   p.rod(elbow,end,snow?.006:.011,snow?0xeeeede:bark);
+   if(!snow){const fork=elbow.clone().add(v(Math.cos(angle+1)*.2,.18,Math.sin(angle+1)*.2));p.rod(elbow,fork,.008,bark);}
+  }
+  if(!snow)for(let i=0;i<6;i++)p.box(.055,.025,.06,0x776f62,.012,.2+i*.23,0);
+  return p.finish();
+ }
  const tiers=bare?4:5;
  for(let tier=0;tier<tiers;tier++)for(let branch=0;branch<4;branch++){
   const angle=branch*Math.PI/2+tier*1.7,y=.38+tier*height/6;
@@ -18,7 +31,7 @@ export function localeTreeGeometry(form:TreeForm,snow=false){
    const g=new THREE.TetrahedronGeometry(1);g.scale(radius,snow?.055:.16,radius*.52);g.rotateY(-angle);p.add(g,snow?0xececdf:0xffffff,end.x*.5,y+(snow?.1:0),end.z*.5);
   }
  }
- if(!snow&&(form==='birch'||form==='aspen'))for(let i=0;i<6;i++)p.box(.055,.025,.06,0x776f62,.012,.2+i*.23,0);
+ if(!snow&&form==='aspen')for(let i=0;i<6;i++)p.box(.055,.025,.06,0x776f62,.012,.2+i*.23,0);
  return p.finish();
 }
 export function shrubGeometry(evergreen:boolean){

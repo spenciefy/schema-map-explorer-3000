@@ -16,7 +16,7 @@ Inspired by the artistry of painted ski trail maps, Powder Mountain’s 3D map, 
 - **Real terrain and mapped trails**, with named runs, lifts, roads, buildings, and lodge landmarks.
 - **Local nature:** eight regional winter palettes, varied tree silhouettes, elevation-sensitive vegetation, and subtle wildlife you can hide in Settings. [Ecology notes](research/ECOLOGY.md) explain the references and limits.
 - **Animated mountain life:** chairs, gondolas, trams, skiers, and snowboarders. Carrier capacities come from mapped tags and linked research; unknown capacities are left unmodeled.
-- **Tune the mountain:** Settings offers separate skier and snowboarder visibility, size, and speed controls, saved locally.
+- **Tune the mountain:** Controls offers separate skier and snowboarder visibility, size, and speed controls, saved locally.
 - **Pan, orbit, zoom**, switch to an overhead view, follow a trail, or ride a lift.
 - **Find your next mountain** with Ikon/Epic filters, saved favorites, and optional live snowfall forecasts.
 - **A quiet collection view:** terrain portraits first, details when you want them.
@@ -52,7 +52,7 @@ npm run build # TypeScript check and production build
 | Explore on touch | One finger follows Pan / Rotate mode; two fingers pan and pinch-zoom in either mode |
 | Return to the collection | Mountains button |
 
-Select a trail, lift, or lodge to explore it. **Explore** opens the searchable map guide; **Weather** opens the forecast and timeline. Each mountain has a shareable URL, such as `/palisades`.
+Select a trail, lift, or lodge to explore it. **Controls** reveals the map tools, searchable **Explore** guide, **Weather** timeline, and rider settings. Each mountain has a shareable URL, such as `/palisades`.
 
 ## How it works
 
@@ -76,6 +76,6 @@ This is an exploratory art project, not an official navigation map. Community ma
 
 Source datasets retain their respective licenses; see [data attribution](docs/DEVELOPMENT.md#sources-and-licensing).
 
-On phones and tablets, swipe the map toolbar sideways for layers and map links. Settings and Explore open as scrollable panels. Layouts account for safe areas, dynamic browser height, and landscape orientation.
+On phones and tablets, Controls and Explore open as scrollable panels. Layouts account for safe areas, dynamic browser height, and landscape orientation.
 
 Direct mountain URLs such as `/breckenridge` and `/iwanai` work on refresh. `/iwawai` is an alias for Iwanai, and old hash links redirect to their clean paths. The production build includes an entry page for every mountain, so static hosts need no special SPA rewrite for these routes.

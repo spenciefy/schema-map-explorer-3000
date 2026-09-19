@@ -142,3 +142,28 @@ button:active:not(:disabled){filter:brightness(.9)}
  .timeline{bottom:96px;max-height:calc(100dvh - 112px)}
 }
 @media(max-height:520px) and (pointer:coarse){.map-tools .zoom-tools{flex-direction:row}.map-tools{flex-wrap:nowrap}}
+
+/* One opt-in control surface; the landscape fills the resting view. */
+.touch-hint,.compass-rose{display:none!important}
+#scene,#map-labels{inset:112px 0 82px}
+.rider-settings .main-nav,.rider-settings .terrain-controls,.rider-settings .map-tools,.rider-settings .weather-switch,.rider-settings .timeline{position:static;inset:auto;transform:none;width:auto;height:auto;max-height:none;margin:0}
+.rider-settings .main-nav{display:flex;justify-content:flex-start;gap:24px}
+.rider-settings .terrain-controls{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:16px;overflow:visible;padding:12px 0}
+.rider-settings .terrain-controls>a{position:static;font-size:12px;min-height:32px;display:inline-flex;align-items:center}
+.rider-settings .terrain-controls button{font-size:12px;min-height:36px}
+.rider-settings .layer-toggles{flex-wrap:wrap;gap:14px}
+.rider-settings .map-tools{display:flex;flex-direction:row;gap:8px;border:0;background:none}
+.rider-settings .zoom-tools{display:flex;flex-direction:row}
+.rider-settings .map-tools button{width:40px;height:40px}
+.map-options,.weather-options{padding:0 0 18px;margin-bottom:20px;border-bottom:1px solid #293e3525}
+.weather-options{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.rider-settings .weather-switch{display:inline-flex;min-height:40px;font-size:12px}
+.rider-settings .timeline{flex-basis:100%;padding:12px 0;border:0;box-shadow:none;background:none}
+.rider-settings #weather-drawer{font-size:12px;min-height:40px}
+.rider-settings .timeline-controls{min-width:0}.rider-settings .slider-wrap{min-width:0}
+@media(max-width:760px),(max-width:1024px) and (pointer:coarse){
+ #scene,#map-labels{inset:104px 0 calc(124px + env(safe-area-inset-bottom))}
+ .intro{top:72px}.rider-settings .main-nav{height:auto}
+ .rider-settings .terrain-controls button{min-height:44px}
+}
+@media(max-height:520px) and (pointer:coarse){#scene,#map-labels{inset:88px 0 100px}}
