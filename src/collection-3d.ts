@@ -1,7 +1,8 @@
+import { loadMountain } from './mountain-cache';
 import { addTouchRotation } from './touch-rotation';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { clipFeature, elevationAt, mapReferences, type MountainData } from './geography';
+import { clipFeature, elevationAt, mapReferences } from './geography';
 import { resorts, type Resort } from './data';
 
 export class TerrainPreview {
@@ -24,7 +25,7 @@ export class TerrainPreview {
   if(this.host===host)return;this.host?.classList.remove('preview-active');this.host=host;this.yaw=Math.atan2(mapReferences[id].view[0],mapReferences[id].view[1]);this.pitch=.75;const request=++this.request;
   try{
    if(!this.renderer){this.renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});this.renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.domElement.setAttribute('aria-hidden','true');this.scene.add(new THREE.HemisphereLight(0xfffaf0,0x839388,1.5));const sun=new THREE.DirectionalLight(0xffffff,2);sun.position.set(-80,150,-100);this.scene.add(sun);}
-   this.renderer.domElement.remove();const response=await fetch('/geodata/'+id+'.json');if(!response.ok)throw Error();const d=await response.json() as MountainData;if(request!==this.request)return;
+   this.renderer.domElement.remove();const d=await loadMountain(id);if(request!==this.request)return;
    if(this.mountain){this.scene.remove(this.mountain);this.mountain.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Line){o.geometry.dispose();(o.material as THREE.Material).dispose();}});}
    let cover:ImageData|undefined;if(d.landcover){try{const img=new Image();img.src=d.landcover;await img.decode();const c=document.createElement('canvas');c.width=c.height=97;const ctx=c.getContext('2d')!;ctx.imageSmoothingEnabled=false;ctx.drawImage(img,0,0,97,97);cover=ctx.getImageData(0,0,97,97);}catch{}}if(request!==this.request)return;
    const group=new THREE.Group(),scale=240/Math.max(d.width,d.depth),min=d.heights.reduce((a,b)=>Math.min(a,b),Infinity),max=d.heights.reduce((a,b)=>Math.max(a,b),-Infinity);

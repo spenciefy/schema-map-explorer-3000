@@ -1,3 +1,4 @@
+import { loadMountain } from './mountain-cache';
 import { Line2 } from 'three/addons/lines/Line2.js';
 import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
 import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
@@ -19,7 +20,7 @@ const clamp=THREE.MathUtils.clamp;
 interface GeoLabel {el:HTMLButtonElement;point:THREE.Vector3;feature?:MapFeature;peak?:boolean;place?:MapPlace;road?:boolean;priority:number;}
 interface Route3D {feature:MapFeature;points:THREE.Vector3[];curve:THREE.CurvePath<THREE.Vector3>;length:number;line:THREE.Line|Line2;}
 
-const cache=new Map<string,MountainData>();
+
 export class AtlasScene {
  renderer:THREE.WebGLRenderer;scene=new THREE.Scene();camera:THREE.PerspectiveCamera;controls:OrbitControls;world=new THREE.Group();
  sun:THREE.DirectionalLight;ambient:THREE.HemisphereLight;clock=new THREE.Clock();
@@ -35,18 +36,19 @@ export class AtlasScene {
  snow:THREE.Points;snowPositions:Float32Array;snowMaterial:THREE.PointsMaterial;snowfall=0;wind=5;
  selectedFeature?:MapFeature;highlight?:THREE.Line;journey?:{route:Route3D;start:number};traveler:THREE.Mesh;
  raycaster=new THREE.Raycaster();pointer=new THREE.Vector2();hovered:number|null=null;mobile=innerWidth<760;geometryGroup=new THREE.Group();liftGroup=new THREE.Group();trailGroup=new THREE.Group();
+ private lastFrame=0;private interacting=false;private interactionUntil=0;private labelState="";
  private touchPointers=new Set<number>();private suppressPick=false;
  private coverImage?:HTMLImageElement;private temp=new THREE.Vector3();private dummy=new THREE.Object3D();private down={x:0,y:0};private tooltip:HTMLDivElement;
  constructor(public host:HTMLElement,public labelHost:HTMLElement,public onSelect:(id:string)=>void){
-  this.renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});this.renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.03;this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+  this.renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});this.renderer.setPixelRatio(Math.min(devicePixelRatio,this.mobile?1.25:1.75));this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.03;this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.autoUpdate=false;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
   this.renderer.domElement.setAttribute('role','img');this.renderer.domElement.setAttribute('aria-label','Geographic 3D trail map. Drag or use arrow keys to pan, right-drag to rotate, scroll to zoom. On touch, pinch to zoom and twist two fingers to rotate. Search and select named trails and lifts in the mountain explorer.');this.renderer.domElement.tabIndex=0;host.append(this.renderer.domElement);
   this.camera=new THREE.PerspectiveCamera(35,1,.1,1800);this.controls=new OrbitControls(this.camera,this.renderer.domElement);this.controls.enablePan=true;this.controls.screenSpacePanning=false;this.controls.panSpeed=1.2;this.setInteractionMode('pan');this.controls.enableDamping=true;this.controls.dampingFactor=.08;this.controls.minDistance=15;this.controls.maxDistance=600;this.controls.maxPolarAngle=Math.PI*.47;this.controls.minPolarAngle=.015;this.controls.rotateSpeed=.6;this.controls.zoomSpeed=.7;this.controls.maxTargetRadius=200;this.controls.target.set(0,20,0);this.camera.position.set(-130,160,-210);
   addTouchRotation(this.renderer.domElement,angle=>{const offset=this.camera.position.clone().sub(this.controls.target);offset.applyAxisAngle(new THREE.Vector3(0,1,0),angle);this.camera.position.copy(this.controls.target).add(offset);this.controls.update();});
   this.controls.listenToKeyEvents(this.renderer.domElement);this.controls.keyPanSpeed=22;
   matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',event=>{this.reducedMotion=event.matches;this.motionOverride=false;this.controls.enableDamping=!event.matches;window.dispatchEvent(new Event('motion-preference-changed'));});this.controls.enableDamping=!this.reducedMotion;
-  this.controls.addEventListener('start',()=>{this.tooltip.hidden=true;this.targetCamera=null;this.targetLook=null;this.journey=undefined;this.traveler.visible=false;this.host.style.cursor='grabbing';});this.controls.addEventListener('end',()=>this.host.style.cursor='grab');
+  this.controls.addEventListener('start',()=>{this.interacting=true;this.tooltip.hidden=true;this.targetCamera=null;this.targetLook=null;this.journey=undefined;this.traveler.visible=false;this.host.style.cursor='grabbing';});this.controls.addEventListener('end',()=>{this.interacting=false;this.interactionUntil=performance.now()+500;this.host.style.cursor='grab';});
   this.scene.add(this.world);this.ambient=new THREE.HemisphereLight(0xd8eaff,0x9fa69c,2.25);this.scene.add(this.ambient);
-  this.sun=new THREE.DirectionalLight(0xfff6e5,2.8);this.sun.position.set(-100,85,100);this.sun.castShadow=true;this.sun.shadow.mapSize.set(2048,2048);Object.assign(this.sun.shadow.camera,{left:-180,right:180,top:180,bottom:-180,far:600});this.sun.shadow.bias=-.0002;this.sun.shadow.normalBias=.06;this.scene.add(this.sun);
+  this.sun=new THREE.DirectionalLight(0xfff6e5,2.8);this.sun.position.set(-100,85,100);this.sun.castShadow=true;this.sun.shadow.mapSize.set(this.mobile?1024:2048,this.mobile?1024:2048);Object.assign(this.sun.shadow.camera,{left:-180,right:180,top:180,bottom:-180,far:600});this.sun.shadow.bias=-.0002;this.sun.shadow.normalBias=.06;this.scene.add(this.sun);
   const floor=new THREE.Mesh(new THREE.PlaneGeometry(1200,1200),new THREE.ShadowMaterial({color:0x547080,opacity:.16}));floor.rotation.x=-Math.PI/2;floor.position.y=-4;floor.receiveShadow=true;this.scene.add(floor);
   this.snowPositions=new Float32Array(3000*3);const rnd=random(419);for(let i=0;i<3000;i++){this.snowPositions[i*3]=(rnd()-.5)*270;this.snowPositions[i*3+1]=rnd()*150;this.snowPositions[i*3+2]=(rnd()-.5)*270;}
   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(this.snowPositions,3));this.snowMaterial=new THREE.PointsMaterial({color:0xffffff,size:.35,transparent:true,opacity:.7,depthWrite:false});this.snow=new THREE.Points(g,this.snowMaterial);this.scene.add(this.snow);
@@ -69,13 +71,16 @@ export class AtlasScene {
  select(id:string,fly=false){if(this.selected===id&&this.data){if(fly)this.home();return;}if(this.selected===id&&!this.data&&this.host.classList.contains('terrain-loading'))return;const resort=this.active.find(r=>r.id===id);if(!resort)return;this.selected=id;void this.load(resort);}
  async load(resort:Resort){const request=++this.requestId;this.host.classList.add('terrain-loading');this.labelHost.classList.add('terrain-loading');this.data=undefined;this.features=[];this.world.visible=false;this.labels.forEach(l=>l.el.hidden=true);this.tooltip.hidden=true;this.journey=undefined;this.traveler.visible=false;
   window.dispatchEvent(new CustomEvent('terrain-loading',{detail:resort.id}));
-  try{let data=cache.get(resort.id);if(!data){const response=await fetch(`/geodata/${resort.id}.json`);if(!response.ok)throw new Error('Mountain data unavailable');data=await response.json() as MountainData;if(data.gridSize**2!==data.heights.length)throw new Error('Invalid terrain grid');cache.set(resort.id,data);}if(request!==this.requestId)return;
+  try{const data=await loadMountain(resort.id);if(request!==this.requestId)return;
    let coverImage:HTMLImageElement|undefined;
    if(data.landcover){try{const cover=new Image();await new Promise<void>((resolve,reject)=>{cover.onload=()=>resolve();cover.onerror=reject;cover.src=data!.landcover!;});coverImage=cover;}catch{console.warn('Land cover unavailable; using mapped forest polygons.');}}
    if(request!==this.requestId)return;
    this.clear();this.ecology=ecologyFor(resort);this.data=data;this.coverImage=coverImage;this.scale=240/Math.max(data.width,data.depth);this.minElevation=data.heights.reduce((a,b)=>Math.min(a,b),Infinity);this.maxElevation=data.heights.reduce((a,b)=>Math.max(a,b),-Infinity);
    this.features=data.features.flatMap(f=>clipFeature(data!,f));
-   this.makeTerrain();this.makeContext();this.makePaths();this.makeActors();this.makeSnowcats();this.makeLabels();this.world.visible=true;this.home(true);
+   for(const build of [()=>this.makeTerrain(),()=>this.makeContext(),()=>this.makePaths(),()=>this.makeActors(),()=>this.makeSnowcats(),()=>this.makeLabels()]){
+    await new Promise<void>(resolve=>setTimeout(resolve,0));if(request!==this.requestId)return;build();
+   }
+   this.world.visible=true;this.labelState='';this.renderer.shadowMap.needsUpdate=true;this.home(true);
    window.dispatchEvent(new CustomEvent('terrain-ready',{detail:{id:resort.id,data,features:this.features}}));
   }catch(error){if(request!==this.requestId)return;window.dispatchEvent(new CustomEvent('terrain-error',{detail:resort.id}));console.error('Terrain loading failed',error);}
   finally{if(request===this.requestId){this.host.classList.remove('terrain-loading');this.labelHost.classList.remove('terrain-loading');}}
@@ -204,16 +209,18 @@ export class AtlasScene {
  }
  zoom(factor:number){this.journey=undefined;const offset=(this.targetCamera||this.camera.position).clone().sub(this.controls.target).multiplyScalar(factor);offset.clampLength(15,600);this.targetCamera=this.controls.target.clone().add(offset);this.targetLook=this.controls.target.clone();}
  filter(_ids:Set<string>){/* Resort filters affect the destination list, never alter geographic geometry. */}
- toggleLayer(layer:'trails'|'lifts'|'labels'|'roads'|'places',show:boolean){if(layer==='trails'){this.showTrails=show;this.trailGroup.visible=show;}if(layer==='lifts'){this.showLifts=show;this.liftGroup.visible=show;}if(layer==='labels')this.showLabels=show;if(layer==='roads'){this.showRoads=show;this.contextGroup.visible=show;}if(layer==='places'){this.showPlaces=show;this.buildingGroup.visible=show;}}
+ toggleLayer(layer:'trails'|'lifts'|'labels'|'roads'|'places',show:boolean){this.renderer.shadowMap.needsUpdate=true;if(layer==='trails'){this.showTrails=show;this.trailGroup.visible=show;}if(layer==='lifts'){this.showLifts=show;this.liftGroup.visible=show;}if(layer==='labels')this.showLabels=show;if(layer==='roads'){this.showRoads=show;this.contextGroup.visible=show;}if(layer==='places'){this.showPlaces=show;this.buildingGroup.visible=show;}}
  setWeather(hour:number,snowfall:number,wind:number,cloud:number){const light=Math.max(.25,Math.sin(((hour%24)-6)/12*Math.PI));this.sun.intensity=1.5+light*2.5;this.sun.color.set(light<.35?0xffcf9c:0xfff6e5);this.ambient.intensity=.95+light*.5;this.ambient.color.set(light<.3?0x96b1d4:0xd8eaff);this.snowfall=snowfall;this.wind=wind;this.snow.geometry.setDrawRange(0,Math.round(clamp(snowfall*1200,0,3000)));this.host.style.filter=`saturate(${1-cloud*.001})`;}
- animate=()=>{this.animationId=requestAnimationFrame(this.animate);if(document.hidden||this.suspended){this.clock.getDelta();return;}const delta=Math.min(this.clock.getDelta(),.05),moving=!this.paused&&(!this.reducedMotion||this.motionOverride);if(moving)this.elapsed+=delta;const time=this.elapsed;
+ animate=(now=performance.now())=>{this.animationId=requestAnimationFrame(this.animate);if(document.hidden||this.suspended){this.clock.getDelta();return;}if(this.mobile&&!this.interacting&&now>this.interactionUntil&&!this.targetCamera&&!this.journey&&now-this.lastFrame<32)return;this.lastFrame=now;const delta=Math.min(this.clock.getDelta(),.1),moving=!this.paused&&(!this.reducedMotion||this.motionOverride);if(moving)this.elapsed+=delta;const time=this.elapsed;
   if(this.targetCamera&&this.targetLook){const a=this.reducedMotion?1:1-Math.exp(-delta*4);this.camera.position.lerp(this.targetCamera,a);this.controls.target.lerp(this.targetLook,a);if(this.camera.position.distanceTo(this.targetCamera)<.1){this.targetCamera=null;this.targetLook=null;}}
   if(this.journey){const {route,start}=this.journey;const t=Math.min((time-start)/24,1),p=route.curve.getPoint(t),ahead=route.curve.getPoint(Math.min(1,t+.04));this.traveler.position.copy(p).add(new THREE.Vector3(0,.5,0));if(moving){const direction=p.clone().sub(ahead);direction.y=0;direction.normalize();const pos=p.clone().add(direction.multiplyScalar(16)).add(new THREE.Vector3(0,12,0));this.camera.position.lerp(pos,1-Math.exp(-delta*1.83));this.controls.target.lerp(ahead,1-Math.exp(-delta*3.71));}if(t>=1){this.journey=undefined;this.traveler.visible=false;}}
   this.controls.dampingFactor=1-Math.exp(-delta*5);this.controls.update(delta);
-  const compass=document.querySelector<HTMLElement>('.compass-rose');if(compass){const north=this.controls.target.clone().add(new THREE.Vector3(0,0,-10)).project(this.camera),origin=this.controls.target.clone().project(this.camera);const angle=Math.atan2((north.x-origin.x)*this.camera.aspect,north.y-origin.y)*180/Math.PI;compass.style.transform=`rotate(${angle}deg)`;compass.querySelector<HTMLElement>('span')!.style.transform=`rotate(${-angle}deg)`;}
-  if(this.wildlife){this.wildlife.visible=this.showWildlife;this.wildlifePoses.forEach((p,i)=>{this.dummy.position.set(p.x,p.y,p.z);this.dummy.rotation.set(0,p.angle,0);const size=this.ecology?.wildlife==='elk'?.38:.30;this.dummy.scale.set(size,size*(1+Math.sin(time*.8+i)*.012),size);this.dummy.updateMatrix();this.wildlife!.setMatrixAt(i,this.dummy.matrix);});this.wildlife.instanceMatrix.needsUpdate=true;}
-  for(const lift of this.lifts)updateLift(lift,time,this.dummy);
-  if(this.skiers&&this.boarders){this.skiers.visible=this.riderSettings.skiers;this.boarders.visible=this.riderSettings.snowboarders;this.actors.forEach(actor=>{
+  const labelState=[...this.camera.position.toArray(),...this.camera.quaternion.toArray(),this.showLabels,this.showLifts,this.showTrails,this.showRoads,this.showPlaces,this.selectedFeature?.id,this.labels.length,this.world.visible,this.host.clientWidth,this.host.clientHeight].join(',');const labelsChanged=labelState!==this.labelState;this.labelState=labelState;
+  if(labelsChanged){const compass=document.querySelector<HTMLElement>('.compass-rose');if(compass){const north=this.controls.target.clone().add(new THREE.Vector3(0,0,-10)).project(this.camera),origin=this.controls.target.clone().project(this.camera);const angle=Math.atan2((north.x-origin.x)*this.camera.aspect,north.y-origin.y)*180/Math.PI;compass.style.transform=`rotate(${angle}deg)`;compass.querySelector<HTMLElement>('span')!.style.transform=`rotate(${-angle}deg)`;}}
+  if(this.wildlife)this.wildlife.visible=this.showWildlife;
+  if(this.wildlife&&this.showWildlife){this.wildlifePoses.forEach((p,i)=>{this.dummy.position.set(p.x,p.y,p.z);this.dummy.rotation.set(0,p.angle,0);const size=this.ecology?.wildlife==='elk'?.38:.30;this.dummy.scale.set(size,size*(1+Math.sin(time*.8+i)*.012),size);this.dummy.updateMatrix();this.wildlife!.setMatrixAt(i,this.dummy.matrix);});this.wildlife.instanceMatrix.needsUpdate=true;}
+  if(this.showLifts)for(const lift of this.lifts)updateLift(lift,time,this.dummy);
+  if(this.skiers&&this.boarders){this.skiers.visible=this.riderSettings.skiers;this.boarders.visible=this.riderSettings.snowboarders;this.actors.forEach(actor=>{if(!(actor.board?this.riderSettings.snowboarders:this.riderSettings.skiers))return;
    const speed=actor.board?this.riderSettings.snowboarderSpeed:this.riderSettings.skierSpeed;const size=(actor.board?this.riderSettings.snowboarderSize:this.riderSettings.skierSize)*1.15*(.92+actor.phase*.16);
    if(moving)actor.motionTime+=delta*speed;
    const tangent=actor.route.curve.getTangent(actor.progress),grade=Math.max(0,-tangent.y)/Math.max(.2,Math.hypot(tangent.x,tangent.z));
@@ -222,10 +229,11 @@ export class AtlasScene {
    const reveal=THREE.MathUtils.smoothstep(Math.min(t,1-t),0,.025);placeRider(this.dummy,p,v,(x,z)=>this.height(x,z),carve,size*reveal);(actor.board?this.boarders!:this.skiers!).setMatrixAt(actor.index,this.dummy.matrix);
   });this.skiers.instanceMatrix.needsUpdate=true;this.boarders.instanceMatrix.needsUpdate=true;}
   this.snow.visible=this.showSnow;if(moving&&this.snowfall>0){for(let i=0;i<this.snowPositions.length;i+=3){this.snowPositions[i]+=delta*this.wind*.07;this.snowPositions[i+1]-=delta*3;if(this.snowPositions[i+1]<0)this.snowPositions[i+1]=140;if(this.snowPositions[i]>135)this.snowPositions[i]=-135;}this.snow.geometry.attributes.position.needsUpdate=true;}
-  const w=this.host.clientWidth,h=this.host.clientHeight,occupied:{x:number,y:number,width:number}[]=[];const distance=this.camera.position.distanceTo(this.controls.target);
+  if(labelsChanged){const w=this.host.clientWidth,h=this.host.clientHeight,occupied:{x:number,y:number,width:number}[]=[];const distance=this.camera.position.distanceTo(this.controls.target);
   for(const label of [...this.labels].sort((a,b)=>(b.feature?.id===this.selectedFeature?.id?10:b.priority)-(a.feature?.id===this.selectedFeature?.id?10:a.priority))){const allowed=label.place ? this.showPlaces&&(label.place.kind==='lodge'||distance<180) : label.road ? this.showRoads&&this.showLabels : (label.feature?.kind==='lift'?this.showLifts:this.showLabels&&(label.feature?.kind==='trail'?this.showTrails:true))&&(!label.feature||label.feature.kind==='lift'||distance<190||label.feature.id===this.selectedFeature?.id);
    this.temp.copy(label.point).project(this.camera);const x=(this.temp.x*.5+.5)*w;let y=(-this.temp.y*.5+.5)*h;const originalY=y;const width=Math.min(190,label.el.textContent!.length*(this.mobile?4:5.3)+16);const collides=()=>occupied.some(o=>Math.abs(o.x-x)<(o.width+width)/2+5&&Math.abs(o.y-y)<23);if(label.place?.kind==='lodge'){for(let tries=0;tries<3&&collides();tries++)y-=26;}const collision=collides();label.el.style.setProperty('--leader',`${originalY-y}px`);const visible=allowed&&!collision&&this.temp.z<1&&x>35&&x<w-35&&y>30&&y<h-25&&this.world.visible;
    label.el.hidden=!visible;if(visible){occupied.push({x,y,width});label.el.style.transform=`translate(${x}px,${y}px) translate(-50%,-100%)`;}}
+  }
   this.renderer.render(this.scene,this.camera);
  }
 }
