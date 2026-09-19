@@ -82,3 +82,13 @@ Source datasets retain their respective licenses; see [data attribution](docs/DE
 On phones and tablets, Controls and Explore open as scrollable panels. Layouts account for safe areas, dynamic browser height, and landscape orientation.
 
 Direct mountain URLs such as `/breckenridge` and `/iwanai` work on refresh. `/iwawai` is an alias for Iwanai, and old hash links redirect to their clean paths. The production build includes an entry page for every mountain, so static hosts need no special SPA rewrite for these routes.
+
+### Iwanai aerial pilot
+
+Iwanai offers **Aerial** and **Winter** views of the same geographic terrain.
+Elevation and aerial imagery are created by editing [GSI Tiles](https://maps.gsi.go.jp/development/ichiran.html).
+The pilot uses DEM10B (10 m source), resampled to the existing 513² mobile-friendly
+grid, with original Mapzen elevations retained at GSI nodata. Photography is
+archival, not live conditions. See [coverage and processing notes](research/IWANAI.md).
+The aerial view removes illustrative vegetation and riders so photographed forest
+clearings remain visible. CAT routes and access boundaries are still unverified.

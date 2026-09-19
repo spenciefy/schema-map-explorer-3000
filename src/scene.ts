@@ -37,6 +37,7 @@ export class AtlasScene {
  snow:THREE.Points;snowPositions:Float32Array;snowMaterial:THREE.PointsMaterial;snowfall=0;wind=5;
  selectedFeature?:MapFeature;highlight?:THREE.Line;journey?:{route:Route3D;start:number};traveler:THREE.Mesh;
  raycaster=new THREE.Raycaster();pointer=new THREE.Vector2();hovered:number|null=null;mobile=innerWidth<760;geometryGroup=new THREE.Group();liftGroup=new THREE.Group();trailGroup=new THREE.Group();
+ aerial=false;private preferAerial=true;private aerialTexture?:THREE.Texture;private terrainMaterial?:THREE.MeshStandardMaterial;
  private lastFrame=0;private interacting=false;private interactionUntil=0;private labelState="";
  private touchPointers=new Set<number>();private suppressPick=false;
  private coverImage?:HTMLImageElement;private temp=new THREE.Vector3();private dummy=new THREE.Object3D();private down={x:0,y:0};private tooltip:HTMLDivElement;
@@ -76,17 +77,34 @@ export class AtlasScene {
    let coverImage:HTMLImageElement|undefined;
    if(data.landcover){try{const cover=new Image();await new Promise<void>((resolve,reject)=>{cover.onload=()=>resolve();cover.onerror=reject;cover.src=data!.landcover!;});coverImage=cover;}catch{console.warn('Land cover unavailable; using mapped forest polygons.');}}
    if(request!==this.requestId)return;
-   this.clear();this.iwanaiOverview=false;this.ecology=ecologyFor(resort);this.data=data;this.coverImage=coverImage;this.scale=240/Math.max(data.width,data.depth);this.minElevation=data.heights.reduce((a,b)=>Math.min(a,b),Infinity);this.maxElevation=data.heights.reduce((a,b)=>Math.max(a,b),-Infinity);
+   this.clear();this.preferAerial=true;this.iwanaiOverview=false;this.ecology=ecologyFor(resort);this.data=data;this.coverImage=coverImage;this.scale=240/Math.max(data.width,data.depth);this.minElevation=data.heights.reduce((a,b)=>Math.min(a,b),Infinity);this.maxElevation=data.heights.reduce((a,b)=>Math.max(a,b),-Infinity);
    this.features=data.features.flatMap(f=>clipFeature(data!,f));
    for(const build of [()=>this.makeTerrain(),()=>this.makeContext(),()=>this.makePaths(),()=>this.makeActors(),()=>this.makeSnowcats(),()=>this.makeLabels()]){
     await new Promise<void>(resolve=>setTimeout(resolve,0));if(request!==this.requestId)return;build();
    }
    this.world.visible=true;this.labelState='';this.renderer.shadowMap.needsUpdate=true;this.home(true);
    window.dispatchEvent(new CustomEvent('terrain-ready',{detail:{id:resort.id,data,features:this.features}}));
+   if(data.imagery)void this.loadAerial(data.imagery,request);
   }catch(error){if(request!==this.requestId)return;window.dispatchEvent(new CustomEvent('terrain-error',{detail:resort.id}));console.error('Terrain loading failed',error);}
   finally{if(request===this.requestId){this.host.classList.remove('terrain-loading');this.labelHost.classList.remove('terrain-loading');}}
  }
- clear(){this.snowcatPositions=[];this.wildlife=undefined;this.wildlifePoses=[];this.world.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Line){o.geometry.dispose();for(const m of Array.isArray(o.material)?o.material:[o.material]){if(m instanceof THREE.MeshStandardMaterial||m instanceof THREE.MeshBasicMaterial)m.map?.dispose();m.dispose();}}});this.world.clear();this.labels.forEach(l=>l.el.remove());this.labels=[];this.routes=[];this.lifts=[];this.actors=[];this.selectedFeature=undefined;this.highlight=undefined;this.geometryGroup=new THREE.Group();this.liftGroup=new THREE.Group();this.trailGroup=new THREE.Group();this.contextGroup=new THREE.Group();this.buildingGroup=new THREE.Group();this.world.add(this.geometryGroup,this.liftGroup,this.trailGroup,this.contextGroup,this.buildingGroup);}
+ clear(){this.aerialTexture?.dispose();this.aerialTexture=undefined;this.terrainMaterial=undefined;this.aerial=false;this.snowcatPositions=[];this.wildlife=undefined;this.wildlifePoses=[];this.world.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Line){o.geometry.dispose();for(const m of Array.isArray(o.material)?o.material:[o.material]){if(m instanceof THREE.MeshStandardMaterial||m instanceof THREE.MeshBasicMaterial)m.map?.dispose();m.dispose();}}});this.world.clear();this.labels.forEach(l=>l.el.remove());this.labels=[];this.routes=[];this.lifts=[];this.actors=[];this.selectedFeature=undefined;this.highlight=undefined;this.geometryGroup=new THREE.Group();this.liftGroup=new THREE.Group();this.trailGroup=new THREE.Group();this.contextGroup=new THREE.Group();this.buildingGroup=new THREE.Group();this.world.add(this.geometryGroup,this.liftGroup,this.trailGroup,this.contextGroup,this.buildingGroup);}
+ async loadAerial(imagery:NonNullable<MountainData['imagery']>,request:number){
+  try{
+   const texture=await new THREE.TextureLoader().loadAsync(this.mobile?imagery.mobileUrl:imagery.url);
+   if(request!==this.requestId){texture.dispose();return;}
+   texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=Math.min(8,this.renderer.capabilities.getMaxAnisotropy());
+   this.aerialTexture=texture;this.setAerial(this.preferAerial);
+   window.dispatchEvent(new CustomEvent('imagery-ready'));
+  }catch{if(request===this.requestId)window.dispatchEvent(new CustomEvent('imagery-error'));}
+ }
+ setAerial(enabled:boolean){
+  this.preferAerial=enabled;this.aerial=enabled&&!!this.aerialTexture;
+  if(this.terrainMaterial){const m=this.terrainMaterial;m.map=this.aerial?this.aerialTexture!:null;m.vertexColors=!this.aerial;m.color.setHex(0xffffff);m.needsUpdate=true;}
+  this.geometryGroup.children.forEach(child=>{if(child.userData.illustrative)child.visible=!this.aerial;});
+  this.buildingGroup.visible=this.showPlaces&&!this.aerial;
+  this.renderer.shadowMap.needsUpdate=true;
+ }
  height(x:number,z:number){return this.data?(surfaceElevationAt(this.data,x/this.scale,z/this.scale)-this.minElevation)*this.scale*this.exaggeration:0;}
  project(p:Point,offset=0){return new THREE.Vector3(p[0]*this.scale,this.height(p[0]*this.scale,p[1]*this.scale)+offset,p[1]*this.scale);}
  makeTerrain(){const d=this.data!,n=d.gridSize,vertices:number[]=[],uv:number[]=[],indices:number[]=[],colors:number[]=[];
@@ -106,7 +124,7 @@ export class AtlasScene {
   for(let j=0;j<n;j++)for(let i=0;i<n;i++){const x=(i/(n-1)-.5)*d.width,z=(j/(n-1)-.5)*d.depth,h=d.heights[j*n+i];vertices.push(x*this.scale,((waterAt(x,z)?0:h)-this.minElevation)*this.scale*this.exaggeration,z*this.scale);uv.push(i/(n-1),1-j/(n-1));const dx=(d.heights[j*n+Math.min(n-1,i+1)]-d.heights[j*n+Math.max(0,i-1)])/(2*d.width/(n-1)),dz=(d.heights[Math.min(n-1,j+1)*n+i]-d.heights[Math.max(0,j-1)*n+i])/(2*d.depth/(n-1));const slope=Math.hypot(dx,dz);const forest=forestAt(x,z);const c=snow.clone().lerp(green,forest*(this.ecology!.winterTint??.80)*(this.ecology!.bareUpper?Math.max(0,Math.min(1,(this.ecology!.treeline-h)/220)):1));if(slope>.8)c.lerp(rock,clamp((slope-.8)*.75,0,.75));const aspect=clamp((dx*.4+dz*.25),-.2,.2);c.lerp(new THREE.Color(0x8aa4b6),Math.max(0,-aspect));if(waterAt(x,z))c.setHex(0x729da8);colors.push(c.r,c.g,c.b);}
   for(let j=0;j<n-1;j++)for(let i=0;i<n-1;i++){const a=j*n+i,b=a+1,c=a+n,e=c+1;indices.push(a,c,b,b,c,e);}
   const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));geometry.setAttribute('normal',new THREE.Float32BufferAttribute(new Float32Array(vertices.length),3));geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.setIndex(indices);geometry.computeVertexNormals();
-  const mesh=new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({vertexColors:true,roughness:1,metalness:0}));mesh.receiveShadow=true;mesh.castShadow=true;this.geometryGroup.add(mesh);
+  const mesh=new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({vertexColors:true,roughness:1,metalness:0}));mesh.receiveShadow=true;mesh.castShadow=true;this.geometryGroup.add(mesh);this.terrainMaterial=mesh.material;
   // Vertical edges expose the real relief without modifying the sampled heightfield.
   const edge:number[]=[];for(let i=0;i<n;i++)edge.push(i);for(let j=1;j<n;j++)edge.push(j*n+n-1);for(let i=n-2;i>=0;i--)edge.push((n-1)*n+i);for(let j=n-2;j>0;j--)edge.push(j*n);
   const side:number[]=[],si:number[]=[];edge.forEach(k=>{side.push(vertices[k*3],vertices[k*3+1],vertices[k*3+2],vertices[k*3],-3,vertices[k*3+2]);});edge.forEach((_,i)=>{const a=i*2,b=((i+1)%edge.length)*2;si.push(a,b,a+1,a+1,b,b+1);});const sideGeo=new THREE.BufferGeometry();sideGeo.setAttribute('position',new THREE.Float32BufferAttribute(side,3));sideGeo.setIndex(si);sideGeo.computeVertexNormals();this.geometryGroup.add(new THREE.Mesh(sideGeo,new THREE.MeshStandardMaterial({color:0xc5c7b7,roughness:1,side:THREE.DoubleSide})));
@@ -122,10 +140,10 @@ export class AtlasScene {
    const group=trees.filter(t=>t.form===form);if(!group.length)continue;
    const trunk=new THREE.InstancedMesh(localeTreeGeometry(form),modelMaterial(),group.length),cap=new THREE.InstancedMesh(localeTreeGeometry(form,true),modelMaterial(),group.length);
    const color=new THREE.Color();group.forEach((t,i)=>{this.dummy.position.set(t.x,t.y,t.z);this.dummy.scale.set(t.size,t.size,t.size);this.dummy.rotation.set(0,i*2.4,0);this.dummy.updateMatrix();trunk.setMatrixAt(i,this.dummy.matrix);cap.setMatrixAt(i,this.dummy.matrix);color.setHex(['birch','aspen','larch'].includes(form)?0xffffff:profile.colors[i%profile.colors.length]);trunk.setColorAt(i,color);});
-   trunk.receiveShadow=true;trunk.userData.treeForm=form;this.geometryGroup.add(trunk,cap);this.trees=trunk;
+   trunk.userData.illustrative=true;cap.userData.illustrative=true;trunk.receiveShadow=true;trunk.userData.treeForm=form;this.geometryGroup.add(trunk,cap);this.trees=trunk;
   }
   const shrubs=trees.filter((_,i)=>i%53===0).slice(0,350),shrub=new THREE.InstancedMesh(shrubGeometry(['sierra','alps','honshu'].includes(profile.id)),modelMaterial(),shrubs.length);
-  shrubs.forEach((t,i)=>{this.dummy.position.set(t.x,t.y,t.z);this.dummy.rotation.set(0,i*2.4,0);this.dummy.scale.setScalar(.5);this.dummy.updateMatrix();shrub.setMatrixAt(i,this.dummy.matrix);});this.geometryGroup.add(shrub);
+  shrubs.forEach((t,i)=>{this.dummy.position.set(t.x,t.y,t.z);this.dummy.rotation.set(0,i*2.4,0);this.dummy.scale.setScalar(.5);this.dummy.updateMatrix();shrub.setMatrixAt(i,this.dummy.matrix);});shrub.userData.illustrative=true;this.geometryGroup.add(shrub);
   // Sparse, stationary animals in forest habitat: illustrative encounters, never live sightings.
   for(let i=17;i<trees.length&&this.wildlifePoses.length<12;i+=113){const t=trees[i],x=t.x+.8,z=t.z+.8;
    if(forestAt(x/this.scale,z/this.scale)<.5)continue;
@@ -178,7 +196,7 @@ export class AtlasScene {
    mesh.rotation.y=index?-.4:.7;mesh.castShadow=true;mesh.userData.illustrative=true;
    // Raise the tracks over the highest terrain beneath the vehicle footprint.
    let floor=mesh.position.y;for(const dx of [-size*2.1,size*2.1])for(const dz of [-size*3,size*3])floor=Math.max(floor,this.height(x+dx,z+dz)+.04);
-   mesh.position.y=floor;this.geometryGroup.add(mesh);this.snowcatPositions.push(mesh.position.clone());
+   mesh.position.y=floor;mesh.userData.illustrative=true;this.geometryGroup.add(mesh);this.snowcatPositions.push(mesh.position.clone());
   });
  }
  makeActors(){const d=this.data!;const candidates=this.routes.filter(r=>r.feature.kind==='trail'&&!r.feature.area&&r.feature.access!=='private'&&!r.feature.proposed&&!r.feature.retired).flatMap(route=>downhillPaths(route.points,(x,z)=>this.height(x,z),d.width*this.scale,d.depth*this.scale,d.gridSize).map(points=>{const curve=new THREE.CurvePath<THREE.Vector3>();for(let i=1;i<points.length;i++)curve.add(new THREE.LineCurve3(points[i-1],points[i]));return {...route,points,curve,length:curve.getLength()};})).filter(r=>r.length>3).sort((a,b)=>b.length-a.length).slice(0,100);let ski=0,board=0;
@@ -217,7 +235,7 @@ export class AtlasScene {
  }
  zoom(factor:number){this.journey=undefined;const offset=(this.targetCamera||this.camera.position).clone().sub(this.controls.target).multiplyScalar(factor);offset.clampLength(15,600);this.targetCamera=this.controls.target.clone().add(offset);this.targetLook=this.controls.target.clone();}
  filter(_ids:Set<string>){/* Resort filters affect the destination list, never alter geographic geometry. */}
- toggleLayer(layer:'trails'|'lifts'|'labels'|'roads'|'places',show:boolean){this.renderer.shadowMap.needsUpdate=true;if(layer==='trails'){this.showTrails=show;this.trailGroup.visible=show;}if(layer==='lifts'){this.showLifts=show;this.liftGroup.visible=show;}if(layer==='labels')this.showLabels=show;if(layer==='roads'){this.showRoads=show;this.contextGroup.visible=show;}if(layer==='places'){this.showPlaces=show;this.buildingGroup.visible=show;}}
+ toggleLayer(layer:'trails'|'lifts'|'labels'|'roads'|'places',show:boolean){this.renderer.shadowMap.needsUpdate=true;if(layer==='trails'){this.showTrails=show;this.trailGroup.visible=show;}if(layer==='lifts'){this.showLifts=show;this.liftGroup.visible=show;}if(layer==='labels')this.showLabels=show;if(layer==='roads'){this.showRoads=show;this.contextGroup.visible=show;}if(layer==='places'){this.showPlaces=show;this.buildingGroup.visible=show&&!this.aerial;}}
  setWeather(hour:number,snowfall:number,wind:number,cloud:number){const light=Math.max(.25,Math.sin(((hour%24)-6)/12*Math.PI));this.sun.intensity=1.5+light*2.5;this.sun.color.set(light<.35?0xffcf9c:0xfff6e5);this.ambient.intensity=.95+light*.5;this.ambient.color.set(light<.3?0x96b1d4:0xd8eaff);this.snowfall=snowfall;this.wind=wind;this.snow.geometry.setDrawRange(0,Math.round(clamp(snowfall*1200,0,3000)));this.host.style.filter=`saturate(${1-cloud*.001})`;}
  animate=(now=performance.now())=>{this.animationId=requestAnimationFrame(this.animate);if(document.hidden||this.suspended){this.clock.getDelta();return;}if(this.mobile&&!this.interacting&&now>this.interactionUntil&&!this.targetCamera&&!this.journey&&now-this.lastFrame<32)return;this.lastFrame=now;const delta=Math.min(this.clock.getDelta(),.1),moving=!this.paused&&(!this.reducedMotion||this.motionOverride);if(moving)this.elapsed+=delta;const time=this.elapsed;
   if(this.targetCamera&&this.targetLook){const a=this.reducedMotion?1:1-Math.exp(-delta*4);this.camera.position.lerp(this.targetCamera,a);this.controls.target.lerp(this.targetLook,a);if(this.camera.position.distanceTo(this.targetCamera)<.1){this.targetCamera=null;this.targetLook=null;}}
@@ -225,10 +243,10 @@ export class AtlasScene {
   this.controls.dampingFactor=1-Math.exp(-delta*5);this.controls.update(delta);
   const labelState=[...this.camera.position.toArray(),...this.camera.quaternion.toArray(),this.showLabels,this.showLifts,this.showTrails,this.showRoads,this.showPlaces,this.selectedFeature?.id,this.labels.length,this.world.visible,this.host.clientWidth,this.host.clientHeight].join(',');const labelsChanged=labelState!==this.labelState;this.labelState=labelState;
   if(labelsChanged){const compass=document.querySelector<HTMLElement>('.compass-rose');if(compass){const north=this.controls.target.clone().add(new THREE.Vector3(0,0,-10)).project(this.camera),origin=this.controls.target.clone().project(this.camera);const angle=Math.atan2((north.x-origin.x)*this.camera.aspect,north.y-origin.y)*180/Math.PI;compass.style.transform=`rotate(${angle}deg)`;compass.querySelector<HTMLElement>('span')!.style.transform=`rotate(${-angle}deg)`;}}
-  if(this.wildlife)this.wildlife.visible=this.showWildlife;
+  if(this.wildlife)this.wildlife.visible=this.showWildlife&&!this.aerial;
   if(this.wildlife&&this.showWildlife){this.wildlifePoses.forEach((p,i)=>{this.dummy.position.set(p.x,p.y,p.z);this.dummy.rotation.set(0,p.angle,0);const size=this.ecology?.wildlife==='elk'?.38:.30;this.dummy.scale.set(size,size*(1+Math.sin(time*.8+i)*.012),size);this.dummy.updateMatrix();this.wildlife!.setMatrixAt(i,this.dummy.matrix);});this.wildlife.instanceMatrix.needsUpdate=true;}
   if(this.showLifts)for(const lift of this.lifts)updateLift(lift,time,this.dummy);
-  if(this.skiers&&this.boarders){this.skiers.visible=this.riderSettings.skiers;this.boarders.visible=this.riderSettings.snowboarders;this.actors.forEach(actor=>{if(!(actor.board?this.riderSettings.snowboarders:this.riderSettings.skiers))return;
+  if(this.skiers&&this.boarders){this.skiers.visible=this.riderSettings.skiers&&!this.aerial;this.boarders.visible=this.riderSettings.snowboarders&&!this.aerial;this.actors.forEach(actor=>{if(this.aerial||!(actor.board?this.riderSettings.snowboarders:this.riderSettings.skiers))return;
    const speed=actor.board?this.riderSettings.snowboarderSpeed:this.riderSettings.skierSpeed;const size=(actor.board?this.riderSettings.snowboarderSize:this.riderSettings.skierSize)*1.15*(.92+actor.phase*.16);
    if(moving)actor.motionTime+=delta*speed;
    const tangent=actor.route.curve.getTangent(actor.progress),grade=Math.max(0,-tangent.y)/Math.max(.2,Math.hypot(tangent.x,tangent.z));
@@ -236,7 +254,7 @@ export class AtlasScene {
    const t=actor.progress,p=actor.route.curve.getPoint(t),v=actor.route.curve.getTangent(t),carve=Math.sin(actor.motionTime*(actor.board?1.4:1.9)+actor.phase*19);
    const reveal=THREE.MathUtils.smoothstep(Math.min(t,1-t),0,.025);placeRider(this.dummy,p,v,(x,z)=>this.height(x,z),carve,size*reveal);(actor.board?this.boarders!:this.skiers!).setMatrixAt(actor.index,this.dummy.matrix);
   });this.skiers.instanceMatrix.needsUpdate=true;this.boarders.instanceMatrix.needsUpdate=true;}
-  this.snow.visible=this.showSnow;if(moving&&this.snowfall>0){for(let i=0;i<this.snowPositions.length;i+=3){this.snowPositions[i]+=delta*this.wind*.07;this.snowPositions[i+1]-=delta*3;if(this.snowPositions[i+1]<0)this.snowPositions[i+1]=140;if(this.snowPositions[i]>135)this.snowPositions[i]=-135;}this.snow.geometry.attributes.position.needsUpdate=true;}
+  this.snow.visible=this.showSnow&&!this.aerial;if(moving&&this.snowfall>0){for(let i=0;i<this.snowPositions.length;i+=3){this.snowPositions[i]+=delta*this.wind*.07;this.snowPositions[i+1]-=delta*3;if(this.snowPositions[i+1]<0)this.snowPositions[i+1]=140;if(this.snowPositions[i]>135)this.snowPositions[i]=-135;}this.snow.geometry.attributes.position.needsUpdate=true;}
   if(labelsChanged){const w=this.host.clientWidth,h=this.host.clientHeight,occupied:{x:number,y:number,width:number}[]=[];const distance=this.camera.position.distanceTo(this.controls.target);
   for(const label of [...this.labels].sort((a,b)=>(this.selectedFeature&&b.feature?.id===this.selectedFeature.id?20:b.priority)-(this.selectedFeature&&a.feature?.id===this.selectedFeature.id?20:a.priority))){const allowed=label.place ? this.showLabels&&this.showPlaces&&(label.place.kind==='lodge'||distance<180) : label.road ? this.showRoads&&this.showLabels : (label.feature?.kind==='lift'?this.showLifts:(this.showLabels||(this.selected==='iwanai'&&label.feature?.kind==='trail'))&&(label.feature?.kind==='trail'?this.showTrails:true))&&(!label.feature||label.feature.kind==='lift'||this.selected==='iwanai'||distance<190||label.feature.id===this.selectedFeature?.id);
    this.temp.copy(label.point).project(this.camera);const x=(this.temp.x*.5+.5)*w;let y=(-this.temp.y*.5+.5)*h;const originalY=y;const width=Math.min(190,label.el.textContent!.length*(this.mobile?4:5.3)+16);const collides=()=>occupied.some(o=>Math.abs(o.x-x)<(o.width+width)/2+5&&Math.abs(o.y-y)<23);if(label.feature?.kind==='lift'||(this.selected==='iwanai'&&label.feature?.kind==='trail')||label.place?.kind==='lodge'){for(let tries=0;tries<3&&collides();tries++)y-=26;}const collision=collides();label.el.style.setProperty('--leader',`${originalY-y}px`);const visible=allowed&&!collision&&this.temp.z<1&&x>35&&x<w-35&&y>30&&y<h-25&&this.world.visible;

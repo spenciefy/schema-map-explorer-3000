@@ -45,3 +45,34 @@ The earlier assertion that no useful access data was online was too broad. The o
 The access illustration is now linked and displayed in an in-app dialog. It is not georeferenced and has not been traced into an asserted 3D boundary. Exact CAT travel paths, pickup points, and condition-dependent operating limits remain unverified. Generic OSM forestry/service tracks must not be relabeled as CAT routes.
 
 Iwanai now opens on the chairlift and named A/B/C courses, with stronger course strokes and course names visible by default. A Mountain button returns to the full coastal extent. Unnamed OSM downhill segments are omitted from the Iwanai scene and rider paths, because they are not among the three officially described lift-served courses. The underlying extract remains unchanged. This is a readability and coverage-disclosure fix, not proof that the map is ready for navigation.
+
+## GSI terrain / aerial pilot — 2026-09-19
+
+Source: [GSI Tiles catalog](https://maps.gsi.go.jp/development/ichiran.html),
+[DEM PNG specification](https://maps.gsi.go.jp/development/demtile.html),
+[terms](https://www.gsi.go.jp/ENGLISH/page_e30286.html).
+Elevation tiles and seamless aerial photography are listed under category 2
+(attribution-only products). The application identifies the output as edited GSI Tiles.
+
+- Full bbox coverage probe at z15: DEM5A 6/99 tile responses, DEM5B 0/99,
+  DEM5C 27/99. A tile response does not establish complete valid-pixel coverage.
+  No 5m source was available at the central mountain probe (140.5124, 42.94).
+- Use DEM10B consistently, z14: 27/30 tile responses. 230,125 output samples
+  use GSI; 33,044 nodata samples retain the original Mapzen heights (including sea).
+  Missing values are never decoded as elevations or blindly replaced with zero.
+- Original 513² grid retained for mobile performance: approximately 13 × 18 m
+  sample spacing. Native DEM10B resolution is 10 m, not the output grid spacing.
+  This is not a 5m lidar terrain claim.
+- All 352 seamlessphoto z16 tiles were available. Mosaic reprojected from Web
+  Mercator to the terrain's linear longitude/latitude UVs. 4096² desktop WebP;
+  2048² mobile version. This is archival aerial photography, not winter/live imagery;
+  capture dates vary and have not been verified for each source photograph.
+- Aerial mode hides illustrative trees, buildings, snowcats, wildlife and riders.
+  Winter art uses the same improved elevation with the existing illustration layer.
+  Mapped trails/lifts/roads remain interactive in either mode.
+- This does not add verified CAT tracks, open/closed status, or access boundaries.
+  Existing official access reference remains available.
+
+Rebuild with `uv run --with pillow --with numpy scripts/build-iwanai-gsi.py`.
+Decoder/projection tests: `uv run --with pillow --with numpy scripts/test-gsi.py`.
+Caches and original fallback DEM stay in ignored `research/geodata-cache/gsi/`.
