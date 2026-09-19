@@ -7,8 +7,8 @@ import { AtlasScene } from './scene';
 import { mapReferences, mapsLink, inExtent, difficultyNames, trailColor, featureLength, featureTitle, type MountainData, type MapPlace, type MapFeature } from './geography';
 import { resorts, demoWeather, type Region, type Pass, type Resort } from './data';
 import { loadForecasts, snowTotal, type Forecast } from './weather';
-const projectName='Schema Map Explorer 3000';
-const savedKey='schema-map-explorer-3000:saved';
+const projectName='Ski Map Explorer 3000';
+const savedKey='ski-map-explorer-3000:saved';
 const icons:Record<string,string>={
  mountain:'<path d="m2 19 7-13 5 8 3-5 5 10H2Z"/><path d="m6 12 3 2 3-2"/>',
  arrow:'<path d="M5 12h14m-5-5 5 5-5 5"/>',
@@ -28,9 +28,9 @@ const icons:Record<string,string>={
 function icon(name:string,cls=''){return `<svg class="icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[name]||icons.mountain}</svg>`;}
 let region:Region='north-america',pass:Pass='all',selected='powder',live=false,hour=17,playing=false,weatherLoading=false,weatherError=false;
 let forecasts=new Map<string,Forecast>(),requestId=0;
-let saved:Set<string>;try{saved=new Set(JSON.parse(localStorage.getItem(savedKey)||localStorage.getItem('chasing-winter:saved')||'[]'));}catch{saved=new Set();}
-const riderSettingsKey='schema-map-explorer-3000:riders';
-let riderSettings:RiderSettings;try{riderSettings=normalizeRiderSettings(JSON.parse(localStorage.getItem(riderSettingsKey)||'null'));}catch{riderSettings={...defaultRiderSettings};}
+let saved:Set<string>;try{saved=new Set(JSON.parse(localStorage.getItem(savedKey)||localStorage.getItem('schema-map-explorer-3000:saved')||localStorage.getItem('chasing-winter:saved')||'[]'));}catch{saved=new Set();}
+const riderSettingsKey='ski-map-explorer-3000:riders';
+let riderSettings:RiderSettings;try{riderSettings=normalizeRiderSettings(JSON.parse(localStorage.getItem(riderSettingsKey)||localStorage.getItem('schema-map-explorer-3000:riders')||'null'));}catch{riderSettings={...defaultRiderSettings};}
 let view:'atlas'|'saved'='atlas';
 let explorer:'places'|'trails'|'lifts'|'stops'='places',mapFeatures:MapFeature[]=[],terrainData:MountainData|undefined,featureQuery='';
 let activeFeature:MapFeature|undefined;

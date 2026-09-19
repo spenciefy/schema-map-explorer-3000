@@ -1,4 +1,4 @@
-# Schema Map Explorer 3000
+# Ski Map Explorer 3000
 
 A geographic, animated ski-trail atlas: familiar ridgelines, real mapped runs, moving lifts, and a little anticipation of winter.
 
