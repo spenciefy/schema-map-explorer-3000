@@ -51,7 +51,7 @@ npm run build # TypeScript check and production build
 | Orbit the mountain | Right-drag, or select Rotate and drag |
 | Zoom | Scroll or pinch |
 | Pan with a keyboard | Focus the canvas, then use arrow keys |
-| Explore on touch | One finger follows Pan / Rotate mode; two fingers pan and pinch-zoom in either mode |
+| Explore on touch | One finger follows Pan / Rotate mode; two fingers pan, pinch to zoom, and twist to rotate in either mode |
 | Return to the collection | Mountains button |
 
 Select a trail, lift, or lodge to explore it. **Controls** reveals the map tools, searchable **Explore** guide, **Weather** timeline, and rider settings. Each mountain has a shareable URL, such as `/palisades`.
