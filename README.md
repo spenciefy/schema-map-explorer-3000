@@ -92,3 +92,15 @@ grid, with original Mapzen elevations retained at GSI nodata. Photography is
 archival, not live conditions. See [coverage and processing notes](research/IWANAI.md).
 The aerial view removes illustrative vegetation and riders so photographed forest
 clearings remain visible. CAT routes and access boundaries are still unverified.
+
+### Link previews and icons
+
+Shared mountain URLs have static Open Graph / large-image social metadata and a
+1200 × 630 JPEG of that resort's actual terrain render. The homepage uses Palisades
+Tahoe. SVG, ICO and PNG favicon variants plus Apple touch / home-screen icons are
+included. Preview URLs use the current production origin, `https://toposki.vercel.app`;
+update `siteOrigin` in `src/social.ts` when moving to a custom domain.
+
+Regenerate artwork after changing terrain previews:
+`node --experimental-strip-types scripts/build-social-assets.mjs`.
+`npm run build` embeds per-route metadata for crawlers, including alias URLs.
