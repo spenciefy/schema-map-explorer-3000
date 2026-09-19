@@ -15,6 +15,7 @@ Inspired by the artistry of painted ski trail maps, Powder Mountain’s 3D map, 
 - **60 destinations**, including 53 across North America, plus selected mountains in the Alps and Japan.
 - **Real terrain and mapped trails**, with named runs, lifts, roads, buildings, and lodge landmarks.
 - **Animated mountain life:** chairs, gondolas, trams, skiers, and snowboarders. Carrier capacities come from mapped tags and linked research; unknown capacities are left unmodeled.
+- **Tune the mountain:** Settings offers separate skier and snowboarder visibility, size, and speed controls, saved locally.
 - **Pan, orbit, zoom**, switch to an overhead view, follow a trail, or ride a lift.
 - **Find your next mountain** with Ikon/Epic filters, saved favorites, and optional live snowfall forecasts.
 - **A quiet collection view:** terrain portraits first, details when you want them.

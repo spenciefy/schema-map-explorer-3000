@@ -27,11 +27,11 @@ test('all retained Palisades rider paths descend on the rendered terrain',()=>{
  assert(paths>100);
 });
 test('skis and boards stay above slopes and a terrain crease',()=>{
- for(const board of [false,true])for(const height of [(x,z)=>-z*.7+x*.4,(x,z)=>Math.abs(x)*.6-z*.4])for(const carve of [-1,0,1]){
-  const object=new THREE.Object3D();placeRider(object,new THREE.Vector3(),new THREE.Vector3(0,-.7,1),height,carve);
+ for(const size of [.1,.5,1,2,2.2])for(const board of [false,true])for(const height of [(x,z)=>-z*.7+x*.4,(x,z)=>Math.abs(x)*.6-z*.4])for(const carve of [-1,0,1]){
+  const object=new THREE.Object3D();placeRider(object,new THREE.Vector3(),new THREE.Vector3(0,-.7,1),height,carve,size);
   const geometry=riderGeometry(board),pos=geometry.attributes.position;
   for(let i=0;i<pos.count;i++){const p=new THREE.Vector3().fromBufferAttribute(pos,i).applyMatrix4(object.matrix);assert(p.y>=height(p.x,p.z)-1e-6,`${board?'board':'ski'} intersects snow`);}
-  assert.equal(object.scale.x,RIDER_SCALE);geometry.dispose();
+  assert.equal(object.scale.x,RIDER_SCALE*size);geometry.dispose();
  }
  assert(RIDER_SCALE<.85/2);
  for(let i=0;i<100;i++)assert(riderSpeed(i,i/100,.15,i%2===0)>=4);

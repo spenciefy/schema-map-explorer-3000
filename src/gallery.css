@@ -95,3 +95,16 @@ button:active:not(:disabled){filter:brightness(.9)}
 @media(prefers-reduced-motion:reduce){.mountain-tile:hover img,.mountain-tile:focus-visible img{transform:none}}
 .map-tools{background:var(--paper);border:1px solid #293e3520;padding:4px}
 @media(max-width:760px){.map-tools,.guide-open .map-tools{right:16px;bottom:245px}.compass-rose,.guide-open .compass-rose{bottom:245px}}
+.bottom-deck{display:flex;align-items:center;gap:24px}
+#settings-toggle{font-size:11px;padding:8px 0}
+#settings-toggle[aria-expanded=true]{color:var(--accent)}
+.rider-settings{position:absolute;z-index:12;right:32px;bottom:90px;width:310px;max-height:calc(100svh - 160px);overflow:auto;overscroll-behavior:contain;background:var(--paper);border:1px solid #293e3538;padding:24px;box-shadow:0 12px 40px #293e3512}
+.rider-settings:not([hidden]){animation:panel-enter 240ms var(--ease-out) both}
+.settings-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}.settings-heading h2{font-size:28px;margin:0}.settings-heading button{padding:4px}
+.rider-settings fieldset{border:0;border-top:1px solid #293e3525;padding:12px 0 0;margin:0 0 24px;min-width:0}.rider-settings legend{font-size:13px;padding:0 8px 0 0;font-weight:800}
+.settings-visibility,.settings-range>span{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;margin:0 0 12px}.settings-visibility input{accent-color:#345345;width:18px;height:18px}
+.settings-range{display:block;margin-top:16px}.settings-range output{font-variant-numeric:tabular-nums;color:var(--muted)}.settings-range input{display:block;width:100%;margin:0;accent-color:#345345;cursor:pointer}.settings-range:has(input:disabled){opacity:.45}
+#rider-settings-note{font-size:11px;line-height:1.6;color:var(--muted);margin:0 0 12px}#reset-rider-settings{font-size:12px;padding:8px 0;text-decoration:underline;text-underline-offset:4px}
+@media(max-width:760px){.rider-settings{position:fixed;left:16px;right:16px;width:auto;bottom:90px;max-height:calc(100svh - 120px)}#settings-toggle{min-height:44px}.rider-settings input[type=range]{height:28px}.settings-heading button{min-height:44px;min-width:44px}.settings-visibility{min-height:36px}.settings-range>span,.settings-visibility,#reset-rider-settings{font-size:14px}}
+.rider-settings input[type=range]{height:28px;background-size:100% 3px;background-position:center;background-repeat:no-repeat}
+.rider-settings input[type=range]:disabled{cursor:default}

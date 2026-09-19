@@ -1,3 +1,4 @@
+import { defaultRiderSettings, type RiderSettings } from './rider-settings';
 import { downhillPaths, placeRider } from './rider-motion';
 import { makeLift, updateLift, treeGeometry, riderGeometry, riderSpeed, modelMaterial, type LiftVisual } from './mountain-models';
 import * as THREE from 'three';
@@ -20,7 +21,8 @@ export class AtlasScene {
  targetCamera:THREE.Vector3|null=null;targetLook:THREE.Vector3|null=null;
  scale=1;minElevation=0;maxElevation=0;exaggeration=1;topDown=false;elapsed=0;animationId=0;requestId=0;
  routes:Route3D[]=[];labels:GeoLabel[]=[];trees?:THREE.InstancedMesh;lifts:LiftVisual[]=[];
- actors:{route:Route3D;phase:number;progress:number;board:boolean;index:number}[]=[];skiers?:THREE.InstancedMesh;boarders?:THREE.InstancedMesh;
+ riderSettings:RiderSettings={...defaultRiderSettings};
+ actors:{route:Route3D;phase:number;progress:number;motionTime:number;board:boolean;index:number}[]=[];skiers?:THREE.InstancedMesh;boarders?:THREE.InstancedMesh;
  snow:THREE.Points;snowPositions:Float32Array;snowMaterial:THREE.PointsMaterial;snowfall=0;wind=5;
  selectedFeature?:MapFeature;highlight?:THREE.Line;journey?:{route:Route3D;start:number};traveler:THREE.Mesh;
  raycaster=new THREE.Raycaster();pointer=new THREE.Vector2();hovered:number|null=null;mobile=innerWidth<760;geometryGroup=new THREE.Group();liftGroup=new THREE.Group();trailGroup=new THREE.Group();
@@ -124,7 +126,7 @@ export class AtlasScene {
   this.trailGroup.visible=this.showTrails;this.liftGroup.visible=this.showLifts;
  }
  makeActors(){const d=this.data!;const candidates=this.routes.filter(r=>r.feature.kind==='trail'&&!r.feature.area&&r.feature.access!=='private'&&!r.feature.proposed&&!r.feature.retired).flatMap(route=>downhillPaths(route.points,(x,z)=>this.height(x,z),d.width*this.scale,d.depth*this.scale,d.gridSize).map(points=>{const curve=new THREE.CurvePath<THREE.Vector3>();for(let i=1;i<points.length;i++)curve.add(new THREE.LineCurve3(points[i-1],points[i]));return {...route,points,curve,length:curve.getLength()};})).filter(r=>r.length>3).sort((a,b)=>b.length-a.length).slice(0,100);let ski=0,board=0;
-  this.actors=candidates.map((route,i)=>{const snowboarding=!['alta','deer-valley'].includes(this.selected)&&i%3===0;return {route,phase:i*.618%1,progress:i*.618%1,board:snowboarding,index:snowboarding?board++:ski++};});
+  this.actors=candidates.map((route,i)=>{const snowboarding=!['alta','deer-valley'].includes(this.selected)&&i%3===0;return {route,phase:i*.618%1,progress:i*.618%1,motionTime:i*.618,board:snowboarding,index:snowboarding?board++:ski++};});
   this.skiers=new THREE.InstancedMesh(riderGeometry(false),modelMaterial(),ski);this.boarders=new THREE.InstancedMesh(riderGeometry(true),modelMaterial(),board);
   for(const actor of this.actors)(actor.board?this.boarders:this.skiers).setColorAt(actor.index,new THREE.Color([0xe07851,0xf3ca57,0x8bb4d4,0x98b79d][actor.index%4]));this.world.add(this.skiers,this.boarders);
  }
@@ -160,11 +162,13 @@ export class AtlasScene {
   this.controls.dampingFactor=1-Math.exp(-delta*5);this.controls.update(delta);
   const compass=document.querySelector<HTMLElement>('.compass-rose');if(compass){const north=this.controls.target.clone().add(new THREE.Vector3(0,0,-10)).project(this.camera),origin=this.controls.target.clone().project(this.camera);const angle=Math.atan2((north.x-origin.x)*this.camera.aspect,north.y-origin.y)*180/Math.PI;compass.style.transform=`rotate(${angle}deg)`;compass.querySelector<HTMLElement>('span')!.style.transform=`rotate(${-angle}deg)`;}
   for(const lift of this.lifts)updateLift(lift,time,this.dummy);
-  if(this.skiers&&this.boarders){this.actors.forEach(actor=>{
+  if(this.skiers&&this.boarders){this.skiers.visible=this.riderSettings.skiers;this.boarders.visible=this.riderSettings.snowboarders;this.actors.forEach(actor=>{
+   const speed=actor.board?this.riderSettings.snowboarderSpeed:this.riderSettings.skierSpeed;const size=(actor.board?this.riderSettings.snowboarderSize:this.riderSettings.skierSize)*(.92+actor.phase*.16);
+   if(moving)actor.motionTime+=delta*speed;
    const tangent=actor.route.curve.getTangent(actor.progress),grade=Math.max(0,-tangent.y)/Math.max(.2,Math.hypot(tangent.x,tangent.z));
-   if(moving)actor.progress=(actor.progress+delta*riderSpeed(time,actor.phase,grade,actor.board)*this.scale/actor.route.length)%1;
-   const t=actor.progress,p=actor.route.curve.getPoint(t),v=actor.route.curve.getTangent(t),carve=Math.sin(time*(actor.board?1.4:1.9)+actor.phase*19);
-   placeRider(this.dummy,p,v,(x,z)=>this.height(x,z),carve);const reveal=THREE.MathUtils.smoothstep(Math.min(t,1-t),0,.025);this.dummy.scale.multiplyScalar(reveal);this.dummy.updateMatrix();(actor.board?this.boarders!:this.skiers!).setMatrixAt(actor.index,this.dummy.matrix);
+   if(moving)actor.progress=(actor.progress+delta*speed*riderSpeed(actor.motionTime,actor.phase,grade,actor.board)*this.scale/actor.route.length)%1;
+   const t=actor.progress,p=actor.route.curve.getPoint(t),v=actor.route.curve.getTangent(t),carve=Math.sin(actor.motionTime*(actor.board?1.4:1.9)+actor.phase*19);
+   const reveal=THREE.MathUtils.smoothstep(Math.min(t,1-t),0,.025);placeRider(this.dummy,p,v,(x,z)=>this.height(x,z),carve,size*reveal);(actor.board?this.boarders!:this.skiers!).setMatrixAt(actor.index,this.dummy.matrix);
   });this.skiers.instanceMatrix.needsUpdate=true;this.boarders.instanceMatrix.needsUpdate=true;}
   this.snow.visible=this.showSnow;if(moving&&this.snowfall>0){for(let i=0;i<this.snowPositions.length;i+=3){this.snowPositions[i]+=delta*this.wind*.07;this.snowPositions[i+1]-=delta*3;if(this.snowPositions[i+1]<0)this.snowPositions[i+1]=140;if(this.snowPositions[i]>135)this.snowPositions[i]=-135;}this.snow.geometry.attributes.position.needsUpdate=true;}
   const w=this.host.clientWidth,h=this.host.clientHeight,occupied:{x:number,y:number,width:number}[]=[];const distance=this.camera.position.distanceTo(this.controls.target);

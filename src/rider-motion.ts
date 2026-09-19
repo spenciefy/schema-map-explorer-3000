@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export const RIDER_SCALE = .28;
+export const RIDER_SCALE = .22;
 
 // Split at every terrain triangle edge so each retained segment is downhill
 // on the actual rendered mesh, including trails containing local uphill stretches.
@@ -23,13 +23,14 @@ export function downhillPaths(points:THREE.Vector3[],height:(x:number,z:number)=
 
 // Use a terrain-aligned basis and lift the equipment footprint above every
 // triangle it touches. This also handles creases between adjacent DEM cells.
-export function placeRider(object:THREE.Object3D,p:THREE.Vector3,direction:THREE.Vector3,height:(x:number,z:number)=>number,carve:number){
+export function placeRider(object:THREE.Object3D,p:THREE.Vector3,direction:THREE.Vector3,height:(x:number,z:number)=>number,carve:number,size=1){
+ const scale=RIDER_SCALE*size;
  const e=.04,up=new THREE.Vector3(-(height(p.x+e,p.z)-height(p.x-e,p.z))/(2*e),1,-(height(p.x,p.z+e)-height(p.x,p.z-e))/(2*e)).normalize();
  const forward=new THREE.Vector3(direction.x,0,direction.z).normalize().applyAxisAngle(new THREE.Vector3(0,1,0),carve*.16);
  forward.addScaledVector(up,-forward.dot(up)).normalize();
  const right=new THREE.Vector3().crossVectors(up,forward).normalize();
- object.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(right,up,forward));object.scale.setScalar(RIDER_SCALE);object.position.copy(p);object.position.y=height(p.x,p.z);
+ object.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(right,up,forward));object.scale.setScalar(scale);object.position.copy(p);object.position.y=height(p.x,p.z);
  let clearance=0;
- for(const x of [-.22,0,.22])for(const z of [-.34,0,.38]){const foot=new THREE.Vector3(x,-.05,z).multiplyScalar(RIDER_SCALE).applyQuaternion(object.quaternion);clearance=Math.max(clearance,height(p.x+foot.x,p.z+foot.z)-object.position.y-foot.y);}
+ for(const x of [-.22,0,.22])for(const z of [-.34,0,.38]){const foot=new THREE.Vector3(x,-.05,z).multiplyScalar(scale).applyQuaternion(object.quaternion);clearance=Math.max(clearance,height(p.x+foot.x,p.z+foot.z)-object.position.y-foot.y);}
  object.position.y+=clearance+.006;object.updateMatrix();
 }

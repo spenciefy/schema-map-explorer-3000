@@ -114,3 +114,7 @@ The western enrichment retains mapped lift supports and applies complete ski-are
 ### Interaction checks
 
 Run `node scripts/check-interactions.mjs` with the dev server on port 5173 and Chrome installed. Checks cover panning, URL consistency when filtering, panel focus restoration, pause/resume, live reduced-motion changes, rapid navigation, malformed hashes, and mobile overflow. Camera easing uses elapsed time, skiers ease into route endpoints, and panels use brief motion with reduced-motion alternatives. Saved mountains migrate from the original local storage key.
+
+### Rider settings
+
+Settings beside Weather controls skiers and snowboarders independently. Default rider scale is 0.22 scene units, with small individual variation; size ranges from 0.5× to 2× and speed from still to 3×. These remain cartographic figures rather than survey-scale people. Equipment clearance is recomputed at the selected size. Zero speed freezes turning as well as position. Global pause and reduced motion continue to take precedence. Alta and Deer Valley retain their skiers-only policy. Preferences persist locally; Reset defaults restores both groups. Run `node scripts/check-rider-settings.mjs` with the dev server to verify the panel and rendered state.
