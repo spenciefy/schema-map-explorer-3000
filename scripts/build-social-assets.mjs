@@ -18,8 +18,8 @@ const text=(x,y,size,body,weight=400,color='#263e35')=>`<text x="${x}" y="${y}" 
 const brand=`<g transform="translate(55 45) scale(.65)"><rect width="68" height="68" rx="15" fill="#263e35"/>${mark}</g>${text(112,78,32,'topo.ski',700)}`;
 const credit=text(56,604,12,'Terrain: Mapzen · Map data © OpenStreetMap contributors',400,'#78877d');
 const gridIds=['palisades','jackson','whistler','niseko','breckenridge','zermatt'];
-const grid=await Promise.all(gridIds.map((id,i)=>image(id,20+(i%3)*400,82+Math.floor(i/3)*254,360,260)));
-const home=shell(`${grid.join('')}${text(48,76,54,'topo.ski',700)}${credit}`);
+const grid=await Promise.all(gridIds.map((id,i)=>image(id,20+(i%3)*400,30+Math.floor(i/3)*285,380,275)));
+const home=shell(grid.join(''));
 await sharp(Buffer.from(home)).jpeg({quality:92,mozjpeg:true}).toFile(new URL('home.jpg',out).pathname);
 for(const r of resorts){
  const words=r.name.split(' ');const lines=[];let line='';for(const word of words){if((line+' '+word).trim().length>18&&line){lines.push(line);line=word;}else line=(line+' '+word).trim();}lines.push(line);
