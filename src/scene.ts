@@ -1,6 +1,8 @@
+import { ecologyFor, treeAtElevation, type Ecology, type TreeForm } from './ecology';
+import { localeTreeGeometry, shrubGeometry, wildlifeGeometry } from './ecology-models';
 import { defaultRiderSettings, type RiderSettings } from './rider-settings';
 import { downhillPaths, placeRider } from './rider-motion';
-import { makeLift, updateLift, treeGeometry, riderGeometry, riderSpeed, modelMaterial, type LiftVisual } from './mountain-models';
+import { makeLift, updateLift, riderGeometry, riderSpeed, modelMaterial, type LiftVisual } from './mountain-models';
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -21,6 +23,7 @@ export class AtlasScene {
  targetCamera:THREE.Vector3|null=null;targetLook:THREE.Vector3|null=null;
  scale=1;minElevation=0;maxElevation=0;exaggeration=1;topDown=false;elapsed=0;animationId=0;requestId=0;
  routes:Route3D[]=[];labels:GeoLabel[]=[];trees?:THREE.InstancedMesh;lifts:LiftVisual[]=[];
+ ecology?:Ecology;wildlife?:THREE.InstancedMesh;wildlifePoses:{x:number;y:number;z:number;angle:number}[]=[];showWildlife=true;
  riderSettings:RiderSettings={...defaultRiderSettings};
  actors:{route:Route3D;phase:number;progress:number;motionTime:number;board:boolean;index:number}[]=[];skiers?:THREE.InstancedMesh;boarders?:THREE.InstancedMesh;
  snow:THREE.Points;snowPositions:Float32Array;snowMaterial:THREE.PointsMaterial;snowfall=0;wind=5;
@@ -60,14 +63,14 @@ export class AtlasScene {
    let coverImage:HTMLImageElement|undefined;
    if(data.landcover){try{const cover=new Image();await new Promise<void>((resolve,reject)=>{cover.onload=()=>resolve();cover.onerror=reject;cover.src=data!.landcover!;});coverImage=cover;}catch{console.warn('Land cover unavailable; using mapped forest polygons.');}}
    if(request!==this.requestId)return;
-   this.clear();this.data=data;this.coverImage=coverImage;this.scale=240/Math.max(data.width,data.depth);this.minElevation=Math.min(...data.heights);this.maxElevation=Math.max(...data.heights);
+   this.clear();this.ecology=ecologyFor(resort);this.data=data;this.coverImage=coverImage;this.scale=240/Math.max(data.width,data.depth);this.minElevation=Math.min(...data.heights);this.maxElevation=Math.max(...data.heights);
    this.features=data.features.flatMap(f=>clipFeature(data!,f));
    this.makeTerrain();this.makeContext();this.makePaths();this.makeActors();this.makeLabels();this.world.visible=true;this.home(true);
    window.dispatchEvent(new CustomEvent('terrain-ready',{detail:{id:resort.id,data,features:this.features}}));
   }catch(error){if(request!==this.requestId)return;window.dispatchEvent(new CustomEvent('terrain-error',{detail:resort.id}));console.error('Terrain loading failed',error);}
   finally{if(request===this.requestId){this.host.classList.remove('terrain-loading');this.labelHost.classList.remove('terrain-loading');}}
  }
- clear(){this.world.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Line){o.geometry.dispose();for(const m of Array.isArray(o.material)?o.material:[o.material]){if(m instanceof THREE.MeshStandardMaterial)m.map?.dispose();m.dispose();}}});this.world.clear();this.labels.forEach(l=>l.el.remove());this.labels=[];this.routes=[];this.lifts=[];this.actors=[];this.selectedFeature=undefined;this.highlight=undefined;this.geometryGroup=new THREE.Group();this.liftGroup=new THREE.Group();this.trailGroup=new THREE.Group();this.contextGroup=new THREE.Group();this.buildingGroup=new THREE.Group();this.world.add(this.geometryGroup,this.liftGroup,this.trailGroup,this.contextGroup,this.buildingGroup);}
+ clear(){this.wildlife=undefined;this.wildlifePoses=[];this.world.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Line){o.geometry.dispose();for(const m of Array.isArray(o.material)?o.material:[o.material]){if(m instanceof THREE.MeshStandardMaterial)m.map?.dispose();m.dispose();}}});this.world.clear();this.labels.forEach(l=>l.el.remove());this.labels=[];this.routes=[];this.lifts=[];this.actors=[];this.selectedFeature=undefined;this.highlight=undefined;this.geometryGroup=new THREE.Group();this.liftGroup=new THREE.Group();this.trailGroup=new THREE.Group();this.contextGroup=new THREE.Group();this.buildingGroup=new THREE.Group();this.world.add(this.geometryGroup,this.liftGroup,this.trailGroup,this.contextGroup,this.buildingGroup);}
  height(x:number,z:number){return this.data?(surfaceElevationAt(this.data,x/this.scale,z/this.scale)-this.minElevation)*this.scale*this.exaggeration:0;}
  project(p:Point,offset=0){return new THREE.Vector3(p[0]*this.scale,this.height(p[0]*this.scale,p[1]*this.scale)+offset,p[1]*this.scale);}
  makeTerrain(){const d=this.data!,n=d.gridSize,vertices:number[]=[],uv:number[]=[],indices:number[]=[],colors:number[]=[];
@@ -81,7 +84,7 @@ export class AtlasScene {
   for(const b of d.buildings||[]){ctx.beginPath();b.points.forEach((p,i)=>{const[x,y]=px(p);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);});ctx.closePath();ctx.fill();}
   const maskData=ctx.getImageData(0,0,1024,1024).data;
   const forestAt=(x:number,z:number)=>{const i=Math.floor((x/d.width+.5)*1023),j=Math.floor((z/d.depth+.5)*1023);if(i<0||i>1023||j<0||j>1023)return 0;return maskData[(j*1024+i)*4+3]/255;};
-  const snow=new THREE.Color(0xf1eee0),green=new THREE.Color(0x5c7b6a),rock=new THREE.Color(0x909f9e);
+  const snow=new THREE.Color(0xf1eee0),green=new THREE.Color(this.ecology!.colors[0]),rock=new THREE.Color(0x909f9e);
   for(let j=0;j<n;j++)for(let i=0;i<n;i++){const x=(i/(n-1)-.5)*d.width,z=(j/(n-1)-.5)*d.depth,h=d.heights[j*n+i];vertices.push(x*this.scale,(h-this.minElevation)*this.scale*this.exaggeration,z*this.scale);uv.push(i/(n-1),1-j/(n-1));const dx=(d.heights[j*n+Math.min(n-1,i+1)]-d.heights[j*n+Math.max(0,i-1)])/(2*d.width/(n-1)),dz=(d.heights[Math.min(n-1,j+1)*n+i]-d.heights[Math.max(0,j-1)*n+i])/(2*d.depth/(n-1));const slope=Math.hypot(dx,dz);const forest=forestAt(x,z);const c=snow.clone().lerp(green,forest*.80);if(slope>.8)c.lerp(rock,clamp((slope-.8)*.75,0,.75));const aspect=clamp((dx*.4+dz*.25),-.2,.2);c.lerp(new THREE.Color(0x8aa4b6),Math.max(0,-aspect));colors.push(c.r,c.g,c.b);}
   for(let j=0;j<n-1;j++)for(let i=0;i<n-1;i++){const a=j*n+i,b=a+1,c=a+n,e=c+1;indices.push(a,c,b,b,c,e);}
   const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));geometry.setAttribute('normal',new THREE.Float32BufferAttribute(new Float32Array(vertices.length),3));geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.setIndex(indices);geometry.computeVertexNormals();
@@ -89,11 +92,31 @@ export class AtlasScene {
   // Vertical edges expose the real relief without modifying the sampled heightfield.
   const edge:number[]=[];for(let i=0;i<n;i++)edge.push(i);for(let j=1;j<n;j++)edge.push(j*n+n-1);for(let i=n-2;i>=0;i--)edge.push((n-1)*n+i);for(let j=n-2;j>0;j--)edge.push(j*n);
   const side:number[]=[],si:number[]=[];edge.forEach(k=>{side.push(vertices[k*3],vertices[k*3+1],vertices[k*3+2],vertices[k*3],-3,vertices[k*3+2]);});edge.forEach((_,i)=>{const a=i*2,b=((i+1)%edge.length)*2;si.push(a,b,a+1,a+1,b,b+1);});const sideGeo=new THREE.BufferGeometry();sideGeo.setAttribute('position',new THREE.Float32BufferAttribute(side,3));sideGeo.setIndex(si);sideGeo.computeVertexNormals();this.geometryGroup.add(new THREE.Mesh(sideGeo,new THREE.MeshStandardMaterial({color:0xc5c7b7,roughness:1,side:THREE.DoubleSide})));
-  // Trees are illustrative symbols, constrained to mapped forest polygons and cleared pistes.
-  const rnd=random(209),trees:{x:number,z:number,y:number,size:number}[]=[];
-  for(let i=0;i<35000;i++){const x=(rnd()-.5)*d.width,z=(rnd()-.5)*d.depth;if(forestAt(x,z)<.5)continue;const elevation=elevationAt(d,x,z);const size=(.55+rnd()*.4)*(this.mobile?1.2:1);trees.push({x:x*this.scale,z:z*this.scale,y:(elevation-this.minElevation)*this.scale*this.exaggeration,size});}
-  const trunkGeo=treeGeometry(),capGeo=treeGeometry(true);const trunk=new THREE.InstancedMesh(trunkGeo,modelMaterial(),trees.length);const cap=new THREE.InstancedMesh(capGeo,new THREE.MeshStandardMaterial({color:0xedeedf,roughness:1}),trees.length);
-  const color=new THREE.Color();trees.forEach((t,i)=>{this.dummy.position.set(t.x,t.y,t.z);this.dummy.scale.set(t.size,t.size,t.size);this.dummy.rotation.set(0,i*2.4,0);this.dummy.updateMatrix();trunk.setMatrixAt(i,this.dummy.matrix);color.setHex(i%3===0?0x3d685f:i%3===1?0x567c69:0x688c7c);trunk.setColorAt(i,color);this.dummy.updateMatrix();cap.setMatrixAt(i,this.dummy.matrix);});trunk.castShadow=false;trunk.receiveShadow=true;this.geometryGroup.add(trunk,cap);this.trees=trunk;
+  // Regional silhouettes remain constrained to actual mapped forest and piste clearings.
+  const profile=this.ecology!,rnd=random(209),trees:{x:number;z:number;y:number;size:number;form:TreeForm}[]=[];
+  for(let i=0;i<35000;i++){
+   const x=(rnd()-.5)*d.width,z=(rnd()-.5)*d.depth;if(forestAt(x,z)<.5)continue;
+   const elevation=elevationAt(d,x,z),spec=treeAtElevation(profile,elevation,rnd());if(rnd()>spec.density)continue;
+   const size=(.55+rnd()*.4)*spec.scale;
+   trees.push({x:x*this.scale,z:z*this.scale,y:this.height(x*this.scale,z*this.scale),size,form:spec.form});
+  }
+  for(const form of new Set(profile.trees)){
+   const group=trees.filter(t=>t.form===form);if(!group.length)continue;
+   const trunk=new THREE.InstancedMesh(localeTreeGeometry(form),modelMaterial(),group.length),cap=new THREE.InstancedMesh(localeTreeGeometry(form,true),modelMaterial(),group.length);
+   const color=new THREE.Color();group.forEach((t,i)=>{this.dummy.position.set(t.x,t.y,t.z);this.dummy.scale.set(t.size,t.size,t.size);this.dummy.rotation.set(0,i*2.4,0);this.dummy.updateMatrix();trunk.setMatrixAt(i,this.dummy.matrix);cap.setMatrixAt(i,this.dummy.matrix);color.setHex(['birch','aspen','larch'].includes(form)?0xffffff:profile.colors[i%profile.colors.length]);trunk.setColorAt(i,color);});
+   trunk.receiveShadow=true;trunk.userData.treeForm=form;this.geometryGroup.add(trunk,cap);this.trees=trunk;
+  }
+  const shrubs=trees.filter((_,i)=>i%53===0).slice(0,350),shrub=new THREE.InstancedMesh(shrubGeometry(['sierra','alps','honshu'].includes(profile.id)),modelMaterial(),shrubs.length);
+  shrubs.forEach((t,i)=>{this.dummy.position.set(t.x,t.y,t.z);this.dummy.rotation.set(0,i*2.4,0);this.dummy.scale.setScalar(.5);this.dummy.updateMatrix();shrub.setMatrixAt(i,this.dummy.matrix);});this.geometryGroup.add(shrub);
+  // Sparse, stationary animals in forest habitat: illustrative encounters, never live sightings.
+  for(let i=17;i<trees.length&&this.wildlifePoses.length<12;i+=113){const t=trees[i],x=t.x+.8,z=t.z+.8;
+   if(forestAt(x/this.scale,z/this.scale)<.5)continue;
+   const heights=[this.height(x-.14,z-.14),this.height(x+.14,z-.14),this.height(x-.14,z+.14),this.height(x+.14,z+.14)];
+   if(Math.max(...heights)-Math.min(...heights)>.16||this.wildlifePoses.some(p=>Math.hypot(p.x-x,p.z-z)<6))continue;
+   this.wildlifePoses.push({x,z,y:Math.max(...heights),angle:rnd()*Math.PI*2});
+  }
+  this.wildlife=new THREE.InstancedMesh(wildlifeGeometry(profile.wildlife),modelMaterial(),this.wildlifePoses.length);this.wildlife.userData.species=profile.animalName;this.world.add(this.wildlife);
+
  }
  sampleFeature(f:MapFeature,offset:number){const d=this.data!,points:THREE.Vector3[]=[];
   for(let i=1;i<f.points.length;i++){const a=f.points[i-1],b=f.points[i],steps=Math.max(1,Math.ceil(Math.hypot(b[0]-a[0],b[1]-a[1])/25));for(let k=i===1?0:1;k<=steps;k++){const t=k/steps,p:Point=[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];points.push(this.project(p,offset));}}
@@ -161,6 +184,7 @@ export class AtlasScene {
   if(this.journey){const {route,start}=this.journey;const t=Math.min((time-start)/24,1),p=route.curve.getPoint(t),ahead=route.curve.getPoint(Math.min(1,t+.04));this.traveler.position.copy(p).add(new THREE.Vector3(0,.5,0));if(moving){const direction=p.clone().sub(ahead);direction.y=0;direction.normalize();const pos=p.clone().add(direction.multiplyScalar(16)).add(new THREE.Vector3(0,12,0));this.camera.position.lerp(pos,1-Math.exp(-delta*1.83));this.controls.target.lerp(ahead,1-Math.exp(-delta*3.71));}if(t>=1){this.journey=undefined;this.traveler.visible=false;}}
   this.controls.dampingFactor=1-Math.exp(-delta*5);this.controls.update(delta);
   const compass=document.querySelector<HTMLElement>('.compass-rose');if(compass){const north=this.controls.target.clone().add(new THREE.Vector3(0,0,-10)).project(this.camera),origin=this.controls.target.clone().project(this.camera);const angle=Math.atan2((north.x-origin.x)*this.camera.aspect,north.y-origin.y)*180/Math.PI;compass.style.transform=`rotate(${angle}deg)`;compass.querySelector<HTMLElement>('span')!.style.transform=`rotate(${-angle}deg)`;}
+  if(this.wildlife){this.wildlife.visible=this.showWildlife;this.wildlifePoses.forEach((p,i)=>{this.dummy.position.set(p.x,p.y,p.z);this.dummy.rotation.set(0,p.angle,0);const size=this.ecology?.wildlife==='elk'?.38:.30;this.dummy.scale.set(size,size*(1+Math.sin(time*.8+i)*.012),size);this.dummy.updateMatrix();this.wildlife!.setMatrixAt(i,this.dummy.matrix);});this.wildlife.instanceMatrix.needsUpdate=true;}
   for(const lift of this.lifts)updateLift(lift,time,this.dummy);
   if(this.skiers&&this.boarders){this.skiers.visible=this.riderSettings.skiers;this.boarders.visible=this.riderSettings.snowboarders;this.actors.forEach(actor=>{
    const speed=actor.board?this.riderSettings.snowboarderSpeed:this.riderSettings.skierSpeed;const size=(actor.board?this.riderSettings.snowboarderSize:this.riderSettings.skierSize)*(.92+actor.phase*.16);

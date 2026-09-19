@@ -3,7 +3,7 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import type { MapFeature } from './geography';
 
 // Small objects are enlarged as map symbols. Route coordinates remain geographic.
-class Parts {
+export class Parts {
  pieces:THREE.BufferGeometry[]=[];
  add(g:THREE.BufferGeometry,color:number,x=0,y=0,z=0,rx=0,ry=0,rz=0){
   if(g.index){const original=g;g=g.toNonIndexed();original.dispose();}

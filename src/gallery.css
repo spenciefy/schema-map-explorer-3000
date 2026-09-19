@@ -108,3 +108,5 @@ button:active:not(:disabled){filter:brightness(.9)}
 @media(max-width:760px){.rider-settings{position:fixed;left:16px;right:16px;width:auto;bottom:90px;max-height:calc(100svh - 120px)}#settings-toggle{min-height:44px}.rider-settings input[type=range]{height:28px}.settings-heading button{min-height:44px;min-width:44px}.settings-visibility{min-height:36px}.settings-range>span,.settings-visibility,#reset-rider-settings{font-size:14px}}
 .rider-settings input[type=range]{height:28px;background-size:100% 3px;background-position:center;background-repeat:no-repeat}
 .rider-settings input[type=range]:disabled{cursor:default}
+#ecology-description,.ecology-note{font-size:11px;line-height:1.6;color:var(--muted);margin:0 0 12px}.ecology-note{margin-bottom:0}
+.rider-settings{scrollbar-width:thin;scrollbar-color:#9da99c transparent}
