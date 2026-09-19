@@ -29,6 +29,7 @@ export class AtlasScene {
  snow:THREE.Points;snowPositions:Float32Array;snowMaterial:THREE.PointsMaterial;snowfall=0;wind=5;
  selectedFeature?:MapFeature;highlight?:THREE.Line;journey?:{route:Route3D;start:number};traveler:THREE.Mesh;
  raycaster=new THREE.Raycaster();pointer=new THREE.Vector2();hovered:number|null=null;mobile=innerWidth<760;geometryGroup=new THREE.Group();liftGroup=new THREE.Group();trailGroup=new THREE.Group();
+ private touchPointers=new Set<number>();private suppressPick=false;
  private coverImage?:HTMLImageElement;private temp=new THREE.Vector3();private dummy=new THREE.Object3D();private down={x:0,y:0};private tooltip:HTMLDivElement;
  constructor(public host:HTMLElement,public labelHost:HTMLElement,public onSelect:(id:string)=>void){
   this.renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});this.renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.03;this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
@@ -44,15 +45,17 @@ export class AtlasScene {
   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(this.snowPositions,3));this.snowMaterial=new THREE.PointsMaterial({color:0xffffff,size:.35,transparent:true,opacity:.7,depthWrite:false});this.snow=new THREE.Points(g,this.snowMaterial);this.scene.add(this.snow);
   this.traveler=new THREE.Mesh(new THREE.SphereGeometry(.7,12,8),new THREE.MeshBasicMaterial({color:0xf07536}));this.traveler.visible=false;this.scene.add(this.traveler);
   this.tooltip=document.createElement('div');this.tooltip.className='terrain-tooltip';this.tooltip.hidden=true;host.append(this.tooltip);
-  this.raycaster.params.Line={threshold:.7};this.renderer.domElement.addEventListener('pointerdown',e=>{this.down={x:e.clientX,y:e.clientY};});
-  this.renderer.domElement.addEventListener('click',e=>{if(Math.hypot(e.clientX-this.down.x,e.clientY-this.down.y)>5)return;const f=this.pick(e);if(f)this.focusFeature(f.id);});
+  this.raycaster.params.Line={threshold:.7};this.renderer.domElement.addEventListener('pointerdown',e=>{if(!this.touchPointers.size)this.suppressPick=false;this.touchPointers.add(e.pointerId);if(this.touchPointers.size>1)this.suppressPick=true;this.down={x:e.clientX,y:e.clientY};});
+  for(const type of ['pointerup','pointercancel'])this.renderer.domElement.addEventListener(type,e=>{this.touchPointers.delete((e as PointerEvent).pointerId);});
+  this.renderer.domElement.addEventListener('pointermove',e=>{if(e.buttons&&Math.hypot(e.clientX-this.down.x,e.clientY-this.down.y)>5)this.suppressPick=true;});
+  this.renderer.domElement.addEventListener('click',e=>{if(this.suppressPick||Math.hypot(e.clientX-this.down.x,e.clientY-this.down.y)>5)return;const f=this.pick(e);if(f)this.focusFeature(f.id);});
   this.renderer.domElement.addEventListener('pointermove',e=>{if(e.buttons)return;const f=this.pick(e);this.tooltip.hidden=!f;if(f){this.tooltip.textContent=`${f.kind==='lift'?'↟':'↘'} ${featureTitle(f)}`;this.tooltip.style.left=`${e.clientX-host.getBoundingClientRect().left+15}px`;this.tooltip.style.top=`${e.clientY-host.getBoundingClientRect().top-28}px`;}this.host.style.cursor=f?'pointer':'grab';});
   this.renderer.domElement.addEventListener('pointerleave',()=>this.tooltip.hidden=true);
   new ResizeObserver(()=>this.resize()).observe(host);this.resize();this.animate();
  }
  setInteractionMode(mode:'pan'|'rotate'){
   const pan=mode==='pan';this.controls.mouseButtons.LEFT=pan?THREE.MOUSE.PAN:THREE.MOUSE.ROTATE;this.controls.mouseButtons.RIGHT=pan?THREE.MOUSE.ROTATE:THREE.MOUSE.PAN;
-  this.controls.touches.ONE=pan?THREE.TOUCH.PAN:THREE.TOUCH.ROTATE;this.controls.touches.TWO=pan?THREE.TOUCH.DOLLY_ROTATE:THREE.TOUCH.DOLLY_PAN;
+  this.controls.touches.ONE=pan?THREE.TOUCH.PAN:THREE.TOUCH.ROTATE;this.controls.touches.TWO=THREE.TOUCH.DOLLY_PAN;
  }
  resize(){const w=this.host.clientWidth,h=this.host.clientHeight;if(!w||!h)return;this.renderer.setSize(w,h);this.camera.aspect=w/h;this.camera.updateProjectionMatrix();const m=innerWidth<760;if(m!==this.mobile){this.mobile=m;this.home(true);}}
  setRegion(resorts:Resort[]){this.active=resorts;}

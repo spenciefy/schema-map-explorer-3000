@@ -114,3 +114,33 @@ button:active:not(:disabled){filter:brightness(.9)}
 .maker-credit{font-size:10px;letter-spacing:0;line-height:1.5;color:var(--muted)}
 .gallery-footer .maker-credit{flex-basis:100%}
 @media(max-width:760px){footer{height:44px;bottom:6px;flex-wrap:wrap;row-gap:2px}footer .maker-credit{order:3;flex-basis:100%;font-size:9px}}
+.touch-hint{display:none}
+@media(max-width:760px),(max-width:1024px) and (pointer:coarse){
+ body:not(.gallery-view){overflow:hidden;overscroll-behavior:none}
+ body:not(.gallery-view) #app{height:100dvh;min-height:0}
+ .topbar{left:max(16px,env(safe-area-inset-left));right:max(16px,env(safe-area-inset-right));top:max(8px,env(safe-area-inset-top));height:44px}
+ .brand,.weather-switch,.nav-item{min-height:44px;font-size:12px}
+ .main-nav{top:52px;right:0;height:44px;gap:16px;margin:0}
+ .intro{top:72px;left:16px;max-width:54%}.intro h1{font-size:26px!important;max-width:100%}
+ #scene,#map-labels{inset:128px 0 calc(220px + env(safe-area-inset-bottom));min-height:0;height:auto}
+ .terrain-controls{left:16px;right:16px;bottom:calc(128px + env(safe-area-inset-bottom));transform:none;height:56px;flex-wrap:nowrap;justify-content:flex-start;gap:20px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;padding:0 2px 4px}
+ .terrain-controls>*{flex-shrink:0}.terrain-controls button,.terrain-controls>a{font-size:12px;min-height:44px;display:inline-flex;align-items:center}.layer-toggles{gap:16px}.view-presets{gap:16px}.interaction-modes{margin:0}
+ .touch-hint{display:block;position:absolute;bottom:calc(188px + env(safe-area-inset-bottom));left:16px;right:16px;font-size:11px;line-height:1.5;color:var(--muted);text-align:center;pointer-events:none;margin:0}
+ .map-tools,.guide-open .map-tools{right:12px;bottom:calc(228px + env(safe-area-inset-bottom));gap:2px}.map-tools button{width:44px;height:44px}.compass-rose,.guide-open .compass-rose{right:70px;bottom:calc(228px + env(safe-area-inset-bottom))}
+ .bottom-deck{left:16px;right:16px;bottom:calc(70px + env(safe-area-inset-bottom));height:44px;justify-content:flex-end;gap:28px}#settings-toggle,#weather-drawer{font-size:13px;min-height:44px}
+ footer{left:16px;right:16px;bottom:calc(8px + env(safe-area-inset-bottom));height:54px;flex-wrap:wrap;row-gap:0}footer .maker-credit{order:3;flex-basis:100%;font-size:9px}footer a,footer button{font-size:9px}footer button{min-height:32px}
+ .mountain-panel,.rider-settings{position:fixed;top:max(12px,env(safe-area-inset-top));left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:calc(12px + env(safe-area-inset-bottom));width:auto;max-height:none;margin:0;padding:24px;z-index:30;overflow-y:auto;overscroll-behavior:contain}
+ .resort-list{max-height:none}.trail-search input{font-size:16px}.explorer-tabs{gap:12px;overflow:auto}.explorer-tabs button,.pass-filters button,#close-guide,#close-settings{min-height:44px;min-width:44px}.feature-row,.resort-row{min-height:52px}
+ .timeline{position:fixed;left:12px;right:12px;bottom:calc(124px + env(safe-area-inset-bottom));width:auto;max-height:calc(100dvh - 150px);overflow:auto;z-index:30}
+ .route-card{max-height:45dvh;bottom:calc(12px + env(safe-area-inset-bottom))}
+ .gallery-heading h1{font-size:18px}.gallery-footer .maker-credit{font-size:11px}
+}
+@media(max-height:520px) and (pointer:coarse){
+ .topbar{height:44px}.main-nav{top:0;right:160px}.intro{top:56px;max-width:65%}.intro h1{font-size:22px!important}
+ #scene,#map-labels{inset:88px 0 162px}
+ .terrain-controls{bottom:94px;height:48px;right:16px}.touch-hint{bottom:145px;font-size:10px}
+ .bottom-deck{bottom:48px;height:44px}footer{bottom:2px;height:44px}
+ .map-tools,.guide-open .map-tools{bottom:166px;flex-direction:row;gap:0}.zoom-tools{display:flex}.compass-rose{display:none}
+ .timeline{bottom:96px;max-height:calc(100dvh - 112px)}
+}
+@media(max-height:520px) and (pointer:coarse){.map-tools .zoom-tools{flex-direction:row}.map-tools{flex-wrap:nowrap}}

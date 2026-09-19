@@ -49,7 +49,7 @@ npm run build # TypeScript check and production build
 | Orbit the mountain | Right-drag, or select Rotate and drag |
 | Zoom | Scroll or pinch |
 | Pan with a keyboard | Focus the canvas, then use arrow keys |
-| Explore on touch | One finger follows Pan / Rotate mode |
+| Explore on touch | One finger follows Pan / Rotate mode; two fingers pan and pinch-zoom in either mode |
 | Return to the collection | Mountains button |
 
 Select a trail, lift, or lodge to explore it. **Explore** opens the searchable map guide; **Weather** opens the forecast and timeline. Each mountain has a shareable hash route, such as `/#palisades`.
@@ -75,3 +75,5 @@ Lift research and official map references are linked in the geographic extracts 
 This is an exploratory art project, not an official navigation map. Community mapping can be incomplete or outdated; terrain resolution, trees, support heights, and animation are approximate. Weather is modeled forecast data, not resort-reported snowfall. **Demo weather** is imagined and labeled. Pass affiliations do not guarantee access for a particular pass tier or season.
 
 Source datasets retain their respective licenses; see [data attribution](docs/DEVELOPMENT.md#sources-and-licensing).
+
+On phones and tablets, swipe the map toolbar sideways for layers and map links. Settings and Explore open as scrollable panels. Layouts account for safe areas, dynamic browser height, and landscape orientation.

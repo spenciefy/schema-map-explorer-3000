@@ -118,3 +118,7 @@ Run `node scripts/check-interactions.mjs` with the dev server on port 5173 and C
 ### Rider settings
 
 Settings beside Weather controls skiers and snowboarders independently. Default rider scale is 0.22 scene units, with small individual variation; size ranges from 0.5× to 2× and speed from still to 3×. These remain cartographic figures rather than survey-scale people. Equipment clearance is recomputed at the selected size. Zero speed freezes turning as well as position. Global pause and reduced motion continue to take precedence. Alta and Deer Valley retain their skiers-only policy. Preferences persist locally; Reset defaults restores both groups. Run `node scripts/check-rider-settings.mjs` with the dev server to verify the panel and rendered state.
+
+### Mobile touch pass
+
+One-finger drag follows Pan / Rotate; two-finger drag and pinch always use combined pan/zoom. Drag and multi-pointer sequences suppress accidental route selection. `node scripts/check-mobile.mjs` checks real dispatched touch events at 320×568, 390×844, 844×390 and 820×1180 in emulated Chrome, including panels and viewport bounds. These checks do not substitute for physical iOS/Android device verification.
