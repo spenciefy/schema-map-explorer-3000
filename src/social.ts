@@ -9,8 +9,8 @@ export function socialMetadata(pathname:string){
   title:resort?`${resort.name} · topo.ski`:about?'About · topo.ski':'topo.ski · Ski maps in 3D',
   description:resort?`Explore ${resort.name}, ${resort.area}, in 3D. Discover the mountain’s terrain, trails and lifts.`:'A little closer to the mountains. Explore ski terrain, trails and lifts in an interactive 3D atlas.',
   url:`${siteOrigin}/${resort?.id??(about?'about':'')}`,
-  image:`${siteOrigin}/social/${resort?.id??'home'}.jpg`,
-  imageAlt:resort?`A 3D terrain map of ${resort.name} with ski trails and lifts.`:'A sculptural 3D ski map of Palisades Tahoe, with trails and lifts, on a warm paper background.',
+  image:`${siteOrigin}/social/${resort?.id??'home'}.jpg?v=2`,
+  imageAlt:resort?`A 3D terrain map of ${resort.name} with ski trails and lifts.`:'A grid of six 3D ski mountain maps beneath the topo.ski wordmark.',
  };
 }
 export function updateSocialMetadata(pathname:string){

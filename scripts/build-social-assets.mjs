@@ -17,11 +17,13 @@ const shell=body=>`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="
 const text=(x,y,size,body,weight=400,color='#263e35')=>`<text x="${x}" y="${y}" font-family="Arial,Helvetica,sans-serif" font-size="${size}" font-weight="${weight}" fill="${color}" letter-spacing="${size>45?-2:0}">${escape(body)}</text>`;
 const brand=`<g transform="translate(55 45) scale(.65)"><rect width="68" height="68" rx="15" fill="#263e35"/>${mark}</g>${text(112,78,32,'topo.ski',700)}`;
 const credit=text(56,604,12,'Terrain: Mapzen · Map data © OpenStreetMap contributors',400,'#78877d');
-const home=shell(`${await image('palisades',390,70,830,599)}${brand}${text(56,237,58,'Your mountains.',700)}${text(56,305,58,'In 3D.',700)}${text(59,363,24,'A little closer to winter.',400,'#62766a')}${credit}`);
+const gridIds=['palisades','jackson','whistler','niseko','breckenridge','zermatt'];
+const grid=await Promise.all(gridIds.map((id,i)=>image(id,20+(i%3)*400,82+Math.floor(i/3)*254,360,260)));
+const home=shell(`${grid.join('')}${text(48,76,54,'topo.ski',700)}${credit}`);
 await sharp(Buffer.from(home)).jpeg({quality:92,mozjpeg:true}).toFile(new URL('home.jpg',out).pathname);
 for(const r of resorts){
  const words=r.name.split(' ');const lines=[];let line='';for(const word of words){if((line+' '+word).trim().length>18&&line){lines.push(line);line=word;}else line=(line+' '+word).trim();}lines.push(line);
- const svg=shell(`${await image(r.id,390,70,830,599)}${brand}${text(57,191,20,r.area.toUpperCase(),400,'#62766a')}${lines.map((l,i)=>text(54,268+i*67,62,l,700)).join('')}${text(58,310+lines.length*67,23,'Explore in 3D',400,'#62766a')}${credit}`);
+ const svg=shell(`${await image(r.id,390,70,830,599)}${brand}${text(57,191,20,r.area.toUpperCase(),400,'#62766a')}${lines.map((l,i)=>text(54,268+i*67,62,l,700)).join('')}${credit}`);
  await sharp(Buffer.from(svg)).jpeg({quality:90,mozjpeg:true}).toFile(new URL(`${r.id}.jpg`,out).pathname);
 }
 console.log(`Generated favicon family and ${resorts.length+1} share cards.`);

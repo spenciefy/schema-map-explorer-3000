@@ -96,8 +96,7 @@ clearings remain visible. CAT routes and access boundaries are still unverified.
 ### Link previews and icons
 
 Shared mountain URLs have static Open Graph / large-image social metadata and a
-1200 × 630 JPEG of that resort's actual terrain render. The homepage uses Palisades
-Tahoe. SVG, ICO and PNG favicon variants plus Apple touch / home-screen icons are
+1200 × 630 JPEG of that resort's actual terrain render. The homepage shows a six-mountain grid beneath the topo.ski wordmark. SVG, ICO and PNG favicon variants plus Apple touch / home-screen icons are
 included. Preview URLs use the current production origin, `https://toposki.vercel.app`;
 update `siteOrigin` in `src/social.ts` when moving to a custom domain.
 
