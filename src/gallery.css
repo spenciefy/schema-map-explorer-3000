@@ -110,3 +110,7 @@ button:active:not(:disabled){filter:brightness(.9)}
 .rider-settings input[type=range]:disabled{cursor:default}
 #ecology-description,.ecology-note{font-size:11px;line-height:1.6;color:var(--muted);margin:0 0 12px}.ecology-note{margin-bottom:0}
 .rider-settings{scrollbar-width:thin;scrollbar-color:#9da99c transparent}
+
+.maker-credit{font-size:10px;letter-spacing:0;line-height:1.5;color:var(--muted)}
+.gallery-footer .maker-credit{flex-basis:100%}
+@media(max-width:760px){footer{height:44px;bottom:6px;flex-wrap:wrap;row-gap:2px}footer .maker-credit{order:3;flex-basis:100%;font-size:9px}}
