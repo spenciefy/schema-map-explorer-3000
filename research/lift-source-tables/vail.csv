@@ -1,0 +1,60 @@
+Status,Lift Name,Type,Manufacturer,Years of Operation,Capacity,Vertical Rise,Length,Horsepower,Line Speed,Chairs,Towers,Drive,Tension,Ride Time,Notes
+Operating,1 One,Gondola 10,Leitner-Poma,2012-,3600,1996,9308,1400,1200,120,23,Top,,7.8,
+Operating,2 Avanti Express,High Speed Six,Doppelmayr,2015-,3600,1466,6640,859,1000,139,26,Top,Bottom,6.6,
+Operating,3 Wildwood Express,High Speed Quad,Garaventa CTEC,1995-,2800,852,3350,500,984,76,18,Top,Bottom,3.4,
+Operating,4 Mountaintop Express,High Speed Six,Doppelmayr,2013-,3600,1108,4284,780,1000,92,15,Top,Bottom,4.3,
+Operating,5 High Noon Express,High Speed Quad,Leitner-Poma,2010-,2400,1852,5570,750,1000,117,20,Top,Dual,5.6,
+Operating,6 Riva Bahn Express,High Speed Quad,Garaventa CTEC,1996-,2800,1705,9051,1000,984,196,37,Top,Bottom,9.1,Angled midstation
+Operating,7 Game Creek Express,High Speed Six,Leitner-Poma,2022-,3200,1184,4484,900,1000,79,15,Top,Dual,4.5,
+Operating,8 Born Free Express,High Speed Quad,Doppelmayr,1988-,2800,1593,6076,700,1000,155,24,Top,Bottom,6.1,
+Operating,9 Sun Up Express,High Speed Quad,Leitner-Poma,2016-,2400,1109,3874,500,1000,82,14,Top,Dual,3.9,
+Operating,10 Highline Express,High Speed Quad,Leitner-Poma,2007-,2400,1755,6729,700,1000,140,21,Top,Dual,6.7,
+Operating,11 Northwoods Express,High Speed Six,Leitner-Poma,2017-,3000,1545,5905,900,1000,103,20,Top,Dual,5.9,
+Operating,12 Gopher Hill,Triple,Doppelmayr,2013-,1600,146,937,,400,40,7,Top,Bottom,2.3,"Relocated from Beaver Creek, CO"
+Operating,14 Sourdough Express,High Speed Quad,Leitner-Poma,2007-,2400,512,2437,300,1000,52,8,Top,Dual,2.4,
+Operating,15 Little Eagle,Triple,Doppelmayr,2007-,1358,111,1012,,400,39,6,Bottom,Bottom,2.5,Relocated from Sourdough with a Yan drive station
+Operating,16 Golden Peak,T-Bar,Doppelmayr,2019-,1200,683,2137,215,591,74,11,Bottom,Bottom,3.6,
+Operating,17 Sun Down Express,High Speed Quad,Leitner-Poma,2022-,2400,1586,6106,800,1000,128,23,Top,Dual,6.1,
+Operating,19 Eagle Bahn Gondola,Gondola 12,Garaventa CTEC,1996-,3000,2215,9148,1600,1181,50,22,Top,Bottom,7.7,
+Operating,20 Cascade Village,Quad,CTEC,1987-,1800,1278,3497,400,450,118,18,Top,Bottom,7.8,
+Operating,21 Orient Express,High Speed Quad,Doppelmayr,1988-,2400,1565,7658,800,1000,165,28,Top,Bottom,7.7,
+Operating,22 Mongolia,Platter,Doppelmayr,1988-,503,312,1611,,412,,6,Bottom,Top,3.9,
+Operating,24 Wapiti,Platter,Poma,1992-,701,17,710,,413,,,Bottom,Top,1.7,
+Operating,26 Pride Express,High Speed Quad,Garaventa CTEC,1993-,2800,1225,5415,600,984,113,19,Top,Bottom,5.5,
+Operating,27 Black Forest,Platter,Doppelmayr,1995-,650,401,1919,,650,52,9,Bottom,Top,3,
+Operating,36 Teacup Express,High Speed Quad,Poma,1999-,1200,1266,6704,900,1100,126,19,Top,Dual,6.1,
+Operating,37 Skyline Express,High Speed Quad,Poma,1999-,1800,1936,8391,900,1100,157,26,Top,Dual,7.6,
+Operating,38 Earl's Express,High Speed Quad,Poma,1999-,1200,1357,4834,500,1100,47,13,Top,Dual,4.4,
+Operating,39 Pete's Express,High Speed Quad,Poma,2000-,1800,1582,6677,600,1100,94,17,Top,Dual,6.1,
+Removed,Vail Village Gondola,Gondola 4,Bell,1962-1976,,,,,,,,,,,
+Removed,1 Giant Steps,Double,Riblet,1962-2006,,,,,,,,Top,Bottom,,
+Removed,2 Avanti,Double,Riblet,1962-1976,,,,,,,,,,,
+Removed,3 Hunky Dory,Double,Riblet,1964-1988,1200,800,3340,,,,,,,,
+Removed,4 Mountaintop,Double,Riblet,1964-1976,970,1165,4685,,,,,,,,
+Removed,5 High Noon,Double,Riblet,1964-1979,1050,1300,6150,,,,,,,,
+Removed,6 Golden Peak,Double,Riblet,1967-1996,1130,1528,6114,,,,,,,,
+Removed,7 Game Creek,Double,Riblet,1969-1985,1200,1181,4576,,,,,,,,
+Removed,8 Born Free,Double,Riblet,1972-1988,1200,1408,5869,250,500,,,,,11.7,
+Removed,10 Highline,Double,Riblet,1973-2007,1150,1762,6987,,500,263,,Top,Bottom,14,
+Removed,11 Northwoods,Double,Riblet,1974-1985,1200,1525,5484,,500,,,,,11,
+Removed,14 Sourdough,Triple,Yan,1975-2007,1800,510,2390,,450,,,Bottom,Bottom,5.3,
+Removed,15 Little Eagle,Double,Yan,1975-2007,1200,111,822,,350,,,,,2.3,
+Removed,17 Upper Mid Vail,Double,Yan,1976-1989,1200,1338,6300,,500,,,,,12.6,
+Removed,17 Sun Up,Triple,Doppelmayr,1992-2016,,,,,,133,14,Bottom,Bottom,,"Relocated from Beaver Creek, CO"
+Removed,2 Avanti,Double,Yan,1976-1989,1200,1406,6110,,500,,,,,12.2,
+Removed,4 Mountaintop,Triple,Yan,1976-1985,1800,1100,4360,,475,,,,,9.2,
+Removed,16 Vail Village,Double,Yan,1976-1985,1200,1156,4430,,500,,,,,8.9,
+Removed,23 West Wall,Platter,Heron-Poma,1992-2000,,10,,,,,,,,,"Relocated from Indian Mountain, CO"
+Removed,3 Hunky Dory,Quad,Yan,1988-1995,,,,,,,,,,,Relocated
+Removed,Poma,Platter,Heron-Poma,1972-,900,100,600,15,480,,,,,1.3,
+Removed,Lionshead,Gondola 4,Bell,1969-1996,500,1932,9538,,,,,,,,Retrofitted by VonRoll in 1976
+Removed,Poma,Platter,Poma,1967-,600,94,643,,400,,,,,1.6,
+Removed,9 Minnie's,Double,Riblet,1972-2008,1200,1167,4786,200,500,163,26,Top,Bottom,9.6,Shortened in 1993
+Removed,16 Vista Bahn Express,High Speed Quad,Doppelmayr,1985-2012,2650,1988,9045,,1000,216,33,Top,Bottom,9,Bubbles removed in 2004
+Removed,5 High Noon,Triple,Doppelmayr,1979-2010,1400,1856,5540,,500,175,20,Top,Bottom,11.1,
+Removed,4 Mountaintop Express,High Speed Quad,Doppelmayr,1985-2013,2800,1107,4310,,1000,113,16,Top,Bottom,4.3,
+Removed,12 Gopher Hill,Double,Riblet,1974-2013,1200,146,945,,350,,,Top,Bottom,2.7,Yan drive station
+Removed,2 Avanti Express,High Speed Quad,Doppelmayr,1989-2015,2800,1466,6588,700,1000,167,25,Top,Bottom,6.6,
+Removed,23 West Wall,Handle Tow,Doppelmayr,2000-2007,,21,,,,,,Top,Bottom,3,
+Removed,11 Northwoods Express,High Speed Quad,Doppelmayr,1985-2017,2800,1528,5564,,1000,129,23,Top,Bottom,5.6,
+Removed,7 Game Creek Express,High Speed Quad,Doppelmayr,1985-2022,2800,1107,4357,,1000,112,15,Top,Bottom,4.4,

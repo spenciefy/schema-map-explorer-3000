@@ -1,0 +1,18 @@
+node_modules/
+dist/
+test-results/
+playwright-report/
+.DS_Store
+
+# Local credentials and transient files
+.env
+.env.*
+!.env.example
+*.log
+__pycache__/
+
+# Download caches, historical extracts, and third-party reference artwork
+research/geodata-cache/
+research/initial-western-extracts/
+research/palisades-before-alpine/
+research/trail-maps/

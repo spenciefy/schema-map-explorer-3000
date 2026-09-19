@@ -1,0 +1,367 @@
+{
+  "17037801": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "gondola",
+    "occupancy": 10
+  },
+  "17038066": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "gondola",
+    "occupancy": 12
+  },
+  "17038308": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "17038607": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 6,
+    "detachable": true
+  },
+  "17039235": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "17039297": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "17041793": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "17041795": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 6,
+    "detachable": true
+  },
+  "89630012": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "94197335": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "94197338": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "94197339": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "94197344": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "94197349": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "95407543": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 6,
+    "detachable": true
+  },
+  "95407548": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 6,
+    "detachable": true
+  },
+  "96250661": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "97565354": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "102020349": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "190560472": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": false
+  },
+  "191557307": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 3,
+    "detachable": false
+  },
+  "986481549": {
+    "capacitySource": "https://liftblog.com/vail-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "37378012": {
+    "capacitySource": "https://liftblog.com/beaver-creek-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "37378013": {
+    "capacitySource": "https://liftblog.com/beaver-creek-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "37378014": {
+    "capacitySource": "https://liftblog.com/beaver-creek-co/",
+    "type": "mixed_lift",
+    "chairSeats": 6,
+    "cabinOccupancy": 10
+  },
+  "37378016": {
+    "capacitySource": "https://liftblog.com/beaver-creek-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "37378017": {
+    "capacitySource": "https://liftblog.com/beaver-creek-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "101010732": {
+    "capacitySource": "https://liftblog.com/beaver-creek-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "101010733": {
+    "capacitySource": "https://liftblog.com/beaver-creek-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "101010734": {
+    "capacitySource": "https://liftblog.com/beaver-creek-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "148521788": {
+    "capacitySource": "https://liftblog.com/beaver-creek-co/",
+    "type": "gondola",
+    "occupancy": 8
+  },
+  "148521789": {
+    "capacitySource": "https://liftblog.com/beaver-creek-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "148521791": {
+    "capacitySource": "https://liftblog.com/beaver-creek-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "198994137": {
+    "capacitySource": "https://liftblog.com/beaver-creek-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "198994139": {
+    "capacitySource": "https://liftblog.com/beaver-creek-co/",
+    "type": "chair_lift",
+    "occupancy": 2,
+    "detachable": false
+  },
+  "238615475": {
+    "capacitySource": "https://liftblog.com/beaver-creek-co/",
+    "type": "chair_lift",
+    "occupancy": 3,
+    "detachable": false
+  },
+  "238752119": {
+    "capacitySource": "https://liftblog.com/beaver-creek-co/",
+    "type": "gondola",
+    "occupancy": 8
+  },
+  "258698688": {
+    "capacitySource": "https://liftblog.com/beaver-creek-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "842879767": {
+    "capacitySource": "https://liftblog.com/beaver-creek-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": false
+  },
+  "842879768": {
+    "capacitySource": "https://liftblog.com/beaver-creek-co/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "313466491": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "cable_car",
+    "occupancy": 50
+  },
+  "313466519": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "313466562": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "chair_lift",
+    "occupancy": 3,
+    "detachable": false
+  },
+  "313466568": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "gondola",
+    "occupancy": 8
+  },
+  "313466573": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "chair_lift",
+    "occupancy": 3,
+    "detachable": false
+  },
+  "313466574": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "313466666": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "chair_lift",
+    "occupancy": 3,
+    "detachable": false
+  },
+  "313466679": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "chair_lift",
+    "occupancy": 6,
+    "detachable": true
+  },
+  "313466703": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "313466746": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "chair_lift",
+    "occupancy": 2,
+    "detachable": false
+  },
+  "313466503": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": false
+  },
+  "313466525": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "313466538": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "313466565": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "chair_lift",
+    "occupancy": 3,
+    "detachable": false
+  },
+  "313466634": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "chair_lift",
+    "occupancy": 2,
+    "detachable": false
+  },
+  "313466717": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "chair_lift",
+    "occupancy": 6,
+    "detachable": true
+  },
+  "258139827": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "gondola",
+    "occupancy": 8
+  },
+  "313466515": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "chair_lift",
+    "occupancy": 3,
+    "detachable": false
+  },
+  "313466643": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "313466651": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "313466710": {
+    "capacitySource": "https://liftblog.com/heavenly-canv/",
+    "type": "chair_lift",
+    "occupancy": 4,
+    "detachable": true
+  },
+  "230902139": {
+    "chairSeats": 4,
+    "cabinOccupancy": 4,
+    "capacitySource": "https://townofmountainvillage.com/explore/getting-around/gondola-chondola/",
+    "capacityNote": "Four-passenger cabins; quad chairs corroborated by the Telluride lift inventory."
+  }
+}

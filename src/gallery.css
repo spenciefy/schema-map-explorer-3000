@@ -1,0 +1,73 @@
+/* Mountain collection: terrain first, names second. */
+:root{--paper:#f5f3eb;--ink:#293e35;--muted:#69776d}
+body{background:var(--paper)}
+#app:after,.paper-grain,.atmosphere{display:none}
+#app,.evening #app{background:var(--paper)}
+#mountain-gallery{position:relative;padding:44px 5vw 28px;max-width:1800px;margin:auto;background:var(--paper)}
+.gallery-view{overflow:auto}
+.gallery-view #app{height:auto;min-height:100svh;display:block;padding:0}
+.gallery-view #app>main,.gallery-view #app>.topbar,.gallery-view #app>footer,.gallery-view #scene,.gallery-view #map-labels{display:none!important}
+.gallery-heading{display:flex;align-items:baseline;gap:12px;margin-bottom:32px}
+.gallery-heading h1{font:500 18px 'Manrope',sans-serif;letter-spacing:-.5px;margin:0}
+.gallery-heading>span{font-size:11px;color:var(--muted)}
+.mountain-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:40px;row-gap:48px}
+.mountain-tile{display:block;min-width:0;color:var(--ink);text-decoration:none;outline-offset:8px}
+.mountain-preview{aspect-ratio:720/520;overflow:hidden;background:var(--paper)}
+.mountain-preview img{display:block;width:100%;height:100%;object-fit:contain;transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+.mountain-tile:hover img,.mountain-tile:focus-visible img{transform:translateY(-5px) scale(1.04)}
+.tile-caption{display:flex;justify-content:space-between;align-items:center;padding:16px 0 0;border-top:1px solid #293e3525}
+.tile-caption h2{font:500 25px/1.15 'Barlow Condensed',sans-serif;letter-spacing:0;margin:0 0 7px}
+.tile-caption div>span{font-size:11px;color:var(--muted)}
+.tile-arrow{font-size:18px;opacity:0;transform:translate(-4px,4px);transition:opacity .2s,transform .2s}
+.mountain-tile:hover .tile-arrow,.mountain-tile:focus-visible .tile-arrow{opacity:1;transform:none}
+.gallery-footer{display:flex;flex-wrap:wrap;gap:18px;padding-top:72px;font-size:10px;color:var(--muted)}
+.gallery-footer a{text-decoration:none;color:inherit}
+.topbar{top:12px;left:32px;right:32px;height:56px}
+.brand{font-size:12px;letter-spacing:0;font-weight:500;gap:10px}
+.brand>span{font-size:19px}
+.main-nav{top:16px;right:180px;gap:24px}
+.nav-item,.weather-switch{font-size:11px}
+.intro{left:32px;top:86px;max-width:60%;pointer-events:none}
+.intro h1{font-size:36px!important;line-height:1.1;letter-spacing:-.5px;margin:0!important;max-width:none}
+#scene,#map-labels{inset:120px 16px 120px;min-height:0}
+.map-tools,.guide-open .map-tools{right:32px;bottom:205px}
+.compass-rose,.guide-open .compass-rose{right:78px;bottom:205px}
+.terrain-controls{bottom:88px;gap:20px}
+.terrain-controls button,.terrain-controls>a{font-size:10px}
+.bottom-deck{left:auto;right:32px;bottom:33px;height:32px}
+#weather-drawer{font-size:11px}
+footer{left:32px;right:190px;bottom:33px;height:32px;align-items:center}
+footer a,footer button{font-size:9px}
+.terrain-status{left:32px;bottom:135px;font-size:10px}
+.terrain-status:not(.error){display:none}
+.mountain-panel{top:82px;right:28px;bottom:135px;width:345px;padding:24px}
+.panel-topline,.place-label,.resort-description,.row-index,.snow-caption strong{display:none}
+.resort-title{margin-top:12px}.resort-title h2{font-size:32px}
+.snow-report{padding:12px 0}.snow-amount{font-size:42px}.snow-caption{font-size:10px}
+.explorer-tabs button{font-size:11px}.nearby-heading{padding-top:12px}.resort-list{max-height:35vh}
+.route-card{left:32px;bottom:145px;width:270px}
+.route-card .eyebrow{display:none}.route-card h3{margin-top:0}
+.source-note{font-size:10px}
+@media(min-width:1700px){#scene,#map-labels{inset:120px 16px 120px}.intro{left:32px;top:86px}}
+@media(max-width:1050px){.mountain-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 28px}}
+@media(max-width:760px){
+ body{min-width:320px}#app{min-height:680px;height:100svh}
+ #mountain-gallery{padding:28px 24px 24px}.gallery-heading{margin-bottom:12px}
+ .mountain-grid{grid-template-columns:1fr;row-gap:32px}.tile-caption h2{font-size:27px}.tile-caption div>span{font-size:12px}.tile-arrow{opacity:1;transform:none}
+ .gallery-footer{padding-top:48px;font-size:9px;gap:12px}
+ .topbar{position:absolute;left:24px;right:24px;top:12px;height:48px;margin:0}
+ .brand{font-size:11px}.main-nav{top:58px;right:0;gap:20px}.nav-item{font-size:10px}.weather-switch{font-size:9px}
+ .intro{position:absolute;top:74px;left:24px;max-width:58%;margin:0}.intro h1{font-size:29px!important;max-width:220px}
+ #scene,#map-labels{inset:130px 0 160px;height:auto;min-height:0}
+ .map-tools,.guide-open .map-tools{top:auto;right:20px;bottom:225px}.compass-rose,.guide-open .compass-rose{top:auto;bottom:225px;right:62px}
+ .terrain-controls{left:24px;right:24px;bottom:106px;gap:12px;row-gap:8px}.terrain-controls button,.terrain-controls>a{font-size:9px}
+ .bottom-deck{position:absolute;left:auto;right:24px;bottom:56px;height:28px;margin:0}#weather-drawer{font-size:11px;max-width:none;gap:16px}
+ footer{position:absolute;left:24px;right:24px;bottom:18px;min-height:0;height:22px;margin:0;gap:8px}footer a,footer button{font-size:8px}
+ .mountain-panel{position:fixed;top:100px;left:14px;right:14px;bottom:18px;width:auto;padding:24px}.resort-list{max-height:40svh}.resort-title h2{font-size:34px}
+ .route-card{left:14px;right:14px;bottom:14px;width:auto;max-height:45svh;overflow:auto}
+ .timeline{position:fixed;left:24px;right:24px;bottom:100px;width:auto}
+}
+
+.nearby-heading{display:none}
+
+.interaction-modes{display:flex;gap:4px;margin-bottom:8px}.interaction-modes button{font:inherit;font-size:11px;padding:7px 12px;border:1px solid #c4c8ba;background:#f5f3eb;color:#3a5044;cursor:pointer}.interaction-modes button.active{background:#345345;color:#fff;border-color:#345345}.interaction-modes button:focus-visible{outline:2px solid #b65a36;outline-offset:2px}

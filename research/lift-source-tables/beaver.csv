@@ -1,0 +1,29 @@
+Status,Lift Name,Type,Manufacturer,Years of Operation,Capacity,Vertical Rise,Length,Horsepower,Line Speed,Chairs,Towers,Drive,Tension,Ride Time,Notes
+Operating,Arrow Bahn Express,High Speed Quad,Doppelmayr,1988-,1200,1713,7809,700,1000,153,26,Top,Bottom,7.8,
+Operating,Bachelor Express,High Speed Quad,Garaventa CTEC,1997-,2400,1255,5957,600,1000,134,21,Top,Bottom,6,
+Operating,Birds of Prey Express,High Speed Quad,Doppelmayr CTEC,2003-,2600,2158,6453,900,1000,137,22,Top,Dual,6.5,
+Operating,Centennial Express,Chondola 6/10,Doppelmayr,2014-,3400,2102,7876,1833,1000,150,25,Top,Bottom,7.9,
+Operating,Cinch Express,High Speed Quad,Garaventa CTEC,1996-,2800,1458,6170,700,984,127,24,Top,Bottom,6.3,Formerly called Birds of Prey Express
+Operating,Elkhorn,Triple,Doppelmayr,1995-,,,,,,165,23,Top,Bottom,,Relocated from Strawberry by Garaventa CTEC
+Operating,Grouse Mountain Express,High Speed Quad,CTEC,1991-,2800,1811,5420,800,984,113,19,Top,Bottom,5.5,
+Operating,Haymeadow Express,Gondola 8,Doppelmayr CTEC,2007-,2200,336,1671,250,600,26,10,Top,Bottom,2.8,Formerly called Buckaroo Express
+Operating,Highlands,Double,Yan,1992-,,196,,,,,,Top,Bottom,4,"Relocated from Vail, CO"
+Operating,Larkspur Express,High Speed Quad,Doppelmayr CTEC,2005-,2600,1524,5633,700,1000,117,17,Top,Bottom,5.6,
+Operating,Lower Beaver Creek Mountain Express,High Speed Quad,Doppelmayr CTEC,2004-,2400,905,6416,600,1000,135,27,Top,Bottom,6.4,
+Operating,McCoy Park Express,High Speed Quad,Doppelmayr,2021-,2400,921,6150,600,1000,118,21,Top,,6.2,
+Operating,Red Buffalo Express,High Speed Quad,Doppelmayr,2017-,2000,816,4607,400,1000,79,13,Top,Bottom,4.6,
+Operating,Reunion,Quad,Doppelmayr,2021-,1800,480,2766,250,450,94,11,Top,Bottom,6.1,
+Operating,Riverfront Express,Gondola 8,Doppelmayr CTEC,2006-,1600,63,2210,250,800,18,9,Top,Bottom,2.8,
+Operating,Rose Bowl Express,High Speed Quad,Doppelmayr,2011-,2400,1326,4714,600,1000,,17,Top,Bottom,4.7,
+Operating,Strawberry Park Express,High Speed Quad,Garaventa CTEC,1994-,2800,1752,6840,800,984,139,29,Top,Bottom,7,
+Operating,Upper Beaver Creek Mountain Express,High Speed Quad,Doppelmayr CTEC,2004-,2600,1482,8591,800,1000,178,25,Top,Bottom,8.6,
+Removed,Centennial,Triple,Doppelmayr,1980-1986,1830,1253,4668,,475,,,Top,Bottom,9.8,
+Removed,Centennial Express,High Speed Quad,Doppelmayr,1986-2014,2800,2091,7654,,984,195,30,Top,Bottom,7.8,
+Removed,Haymeadow,Double,Doppelmayr,1980-2007,1465,339,1746,,360,,,Top,Bottom,4.9,
+Removed,Larkspur,Triple,Doppelmayr,1983-2005,1800,1529,5566,,475,,,Top,Bottom,11.7,
+Removed,Rose Bowl,Triple,Doppelmayr,1986-2011,,1329,,,,199,20,Top,Bottom,10.5,Relocated from Centennial
+Removed,Strawberry Park,Triple,Doppelmayr,1981-1994,1690,1742,6797,,500,,,Top,Bottom,13.6,
+Removed,Stump Park,Triple,Doppelmayr,1980-1996,1800,1245,5943,,475,,,Top,Bottom,12.5,
+Removed,Upper Horseshoe,Triple,Doppelmayr,1980-1992,1800,866,3127,,475,,,Top,Bottom,6.6,
+Removed,Westfall,Double,Doppelmayr,1980-2003,1200,2162,6453,,550,,,Top,Bottom,11.7,
+Removed,Drink of Water,Double,Doppelmayr,1980-2017,1405,795,4355,,500,,,Top,Bottom,8.7,

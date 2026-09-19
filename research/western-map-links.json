@@ -1,0 +1,74 @@
+{
+  "mammoth": [
+    "https://www.mammothmountain.com/things-to-do/activities/bike-park/bike-park-trail-map"
+  ],
+  "copper": [],
+  "winter-park": [],
+  "steamboat": [],
+  "snowmass": [],
+  "aspen-mountain": [],
+  "aspen-highlands": [],
+  "buttermilk": [],
+  "big-sky": [],
+  "brighton": [],
+  "solitude": [],
+  "deer-valley": [],
+  "snowbasin": [
+    "https://www.snowbasin.com/the-mountain/trail-maps"
+  ],
+  "sun-valley": [
+    "https://www.sunvalley.com/the-mountain/maps-guides"
+  ],
+  "taos": [],
+  "mt-bachelor": [],
+  "crystal": [],
+  "schweitzer": [],
+  "snoqualmie": [],
+  "alyeska": [
+    "HTTP Error 307: Temporary Redirect"
+  ],
+  "panorama": [],
+  "red-mountain": [
+    "HTTP Error 403: Forbidden"
+  ],
+  "silverstar": [],
+  "sunshine": [
+    "https://www.skibanff.com/explore/trail-maps/"
+  ],
+  "lake-louise": [],
+  "sun-peaks": [
+    "https://www.sunpeaksresort.com/ski-ride/the-mountain/trail-maps-stats",
+    "https://www.sunpeaksresort.com/ski-ride/nordic-skiing/trail-maps-status",
+    "https://www.sunpeaksresort.com/bike-hike/bike/trail-map-status",
+    "https://www.sunpeaksresort.com/bike-hike/hike/trail-map-status",
+    "https://www.sunpeaksresort.com/ski-ride/the-mountain/trail-maps-terrain",
+    "https://www.sunpeaksresort.com/bike-hike/hike/hiking-trail-map-status"
+  ],
+  "sierra": [],
+  "vail": [
+    "HTTP Error 403: Forbidden"
+  ],
+  "beaver-creek": [],
+  "keystone": [],
+  "crested-butte": [],
+  "heavenly": [],
+  "kirkwood": [],
+  "stevens-pass": [],
+  "telluride": [],
+  "fernie": [],
+  "kicking-horse": [],
+  "whitefish": [
+    "https://skiwhitefish.com/trail-maps/",
+    "https://skiwhitefish.com/mountain-biking-trail-maps/"
+  ],
+  "grand-targhee": [
+    "https://www.grandtarghee.com/the-mountain/mountain-information/trail-maps"
+  ],
+  "mt-baker": [
+    "HTTP Error 403: Forbidden"
+  ],
+  "hood-meadows": [],
+  "big-white": [
+    "https://www.bigwhite.com/summer/bike-park-trail-map"
+  ]
+}

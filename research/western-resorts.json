@@ -1,0 +1,1010 @@
+[
+  {
+    "id": "mammoth",
+    "name": "Mammoth Mountain",
+    "area": "California",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      37.615,
+      -119.085,
+      37.665,
+      -118.977
+    ],
+    "lat": 37.64,
+    "lon": -119.031,
+    "url": "https://www.mammothmountain.com/",
+    "mapUrl": "https://www.mammothmountain.com/on-the-mountain/winter-trail-map",
+    "view": [
+      1,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "copper",
+    "name": "Copper Mountain",
+    "area": "Colorado",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      39.445,
+      -106.205,
+      39.52,
+      -106.115
+    ],
+    "lat": 39.4825,
+    "lon": -106.16,
+    "url": "https://www.coppercolorado.com/",
+    "mapUrl": "https://www.coppercolorado.com/",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Resort website",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "winter-park",
+    "name": "Winter Park",
+    "area": "Colorado",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      39.835,
+      -105.82,
+      39.91,
+      -105.73
+    ],
+    "lat": 39.8725,
+    "lon": -105.775,
+    "url": "https://www.winterparkresort.com/",
+    "mapUrl": "https://www.winterparkresort.com/the-mountain/mountain-information",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "steamboat",
+    "name": "Steamboat",
+    "area": "Colorado",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      40.415,
+      -106.815,
+      40.49,
+      -106.725
+    ],
+    "lat": 40.4525,
+    "lon": -106.77,
+    "url": "https://www.steamboat.com/",
+    "mapUrl": "https://www.steamboat.com/the-mountain/trail-map",
+    "view": [
+      -1,
+      0.4
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "snowmass",
+    "name": "Snowmass",
+    "area": "Colorado",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      39.15,
+      -106.99,
+      39.23,
+      -106.91
+    ],
+    "lat": 39.19,
+    "lon": -106.94999999999999,
+    "url": "https://www.aspensnowmass.com/",
+    "mapUrl": "https://www.aspensnowmass.com/four-mountains/snowmass/trail-maps",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "aspen-mountain",
+    "name": "Aspen Mountain",
+    "area": "Colorado",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      39.14,
+      -106.835,
+      39.193,
+      -106.805
+    ],
+    "lat": 39.1665,
+    "lon": -106.82,
+    "url": "https://www.aspensnowmass.com/",
+    "mapUrl": "https://www.aspensnowmass.com/four-mountains/aspen-mountain/trail-maps",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "aspen-highlands",
+    "name": "Aspen Highlands",
+    "area": "Colorado",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      39.12,
+      -106.885,
+      39.19,
+      -106.825
+    ],
+    "lat": 39.155,
+    "lon": -106.855,
+    "url": "https://www.aspensnowmass.com/",
+    "mapUrl": "https://www.aspensnowmass.com/four-mountains/aspen-highlands/trail-maps",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "buttermilk",
+    "name": "Buttermilk",
+    "area": "Colorado",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      39.17,
+      -106.92,
+      39.22,
+      -106.85
+    ],
+    "lat": 39.195,
+    "lon": -106.88499999999999,
+    "url": "https://www.aspensnowmass.com/",
+    "mapUrl": "https://www.aspensnowmass.com/four-mountains/buttermilk/trail-maps",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "big-sky",
+    "name": "Big Sky",
+    "area": "Montana",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      45.24,
+      -111.495,
+      45.335,
+      -111.33
+    ],
+    "lat": 45.2875,
+    "lon": -111.4125,
+    "url": "https://www.bigskyresort.com/",
+    "mapUrl": "https://www.bigskyresort.com/trail-maps",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "brighton",
+    "name": "Brighton",
+    "area": "Utah",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      40.57,
+      -111.61,
+      40.61,
+      -111.555
+    ],
+    "lat": 40.59,
+    "lon": -111.58250000000001,
+    "url": "https://www.brightonresort.com/",
+    "mapUrl": "https://www.brightonresort.com/",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Resort website",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "solitude",
+    "name": "Solitude",
+    "area": "Utah",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      40.585,
+      -111.635,
+      40.638,
+      -111.575
+    ],
+    "lat": 40.6115,
+    "lon": -111.605,
+    "url": "https://www.solitudemountain.com/",
+    "mapUrl": "https://www.solitudemountain.com/mountain-and-village/mountain-information/maps",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "deer-valley",
+    "name": "Deer Valley",
+    "area": "Utah",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      40.575,
+      -111.534,
+      40.655,
+      -111.405
+    ],
+    "lat": 40.615,
+    "lon": -111.46950000000001,
+    "url": "https://www.deervalley.com/",
+    "mapUrl": "https://www.deervalley.com/Explore-the-Mountain/Interactive-Grooming-Map",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "snowbasin",
+    "name": "Snowbasin",
+    "area": "Utah",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      41.17,
+      -111.89,
+      41.235,
+      -111.82
+    ],
+    "lat": 41.2025,
+    "lon": -111.85499999999999,
+    "url": "https://www.snowbasin.com/",
+    "mapUrl": "https://www.snowbasin.com/the-mountain/trail-maps",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "sun-valley",
+    "name": "Sun Valley",
+    "area": "Idaho",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      43.625,
+      -114.435,
+      43.7,
+      -114.325
+    ],
+    "lat": 43.6625,
+    "lon": -114.38,
+    "url": "https://www.sunvalley.com/",
+    "mapUrl": "https://www.sunvalley.com/the-mountain/maps-guides",
+    "view": [
+      1,
+      0
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "taos",
+    "name": "Taos Ski Valley",
+    "area": "New Mexico",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      36.55,
+      -105.475,
+      36.61,
+      -105.425
+    ],
+    "lat": 36.58,
+    "lon": -105.44999999999999,
+    "url": "https://www.skitaos.com/",
+    "mapUrl": "https://www.skitaos.com/mountain",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "mt-bachelor",
+    "name": "Mt. Bachelor",
+    "area": "Oregon",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      43.94,
+      -121.725,
+      44.025,
+      -121.625
+    ],
+    "lat": 43.9825,
+    "lon": -121.675,
+    "url": "https://www.mtbachelor.com/",
+    "mapUrl": "https://www.mtbachelor.com/",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Resort website",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "crystal",
+    "name": "Crystal Mountain",
+    "area": "Washington",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      46.9,
+      -121.535,
+      46.97,
+      -121.45
+    ],
+    "lat": 46.935,
+    "lon": -121.4925,
+    "url": "https://www.crystalmountainresort.com/",
+    "mapUrl": "https://www.crystalmountainresort.com/the-mountain/trail-maps",
+    "view": [
+      1,
+      0
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "schweitzer",
+    "name": "Schweitzer",
+    "area": "Idaho",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      48.33,
+      -116.675,
+      48.405,
+      -116.59
+    ],
+    "lat": 48.3675,
+    "lon": -116.6325,
+    "url": "https://www.schweitzer.com/",
+    "mapUrl": "https://www.schweitzer.com/mountain-info/maps",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "snoqualmie",
+    "name": "Summit at Snoqualmie",
+    "area": "Washington",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      47.285,
+      -121.48,
+      47.465,
+      -121.375
+    ],
+    "lat": 47.375,
+    "lon": -121.42750000000001,
+    "url": "https://www.summitatsnoqualmie.com/",
+    "mapUrl": "https://www.summitatsnoqualmie.com/trail-maps",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "alyeska",
+    "name": "Alyeska",
+    "area": "Alaska",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      60.94,
+      -149.135,
+      60.985,
+      -149.025
+    ],
+    "lat": 60.9625,
+    "lon": -149.07999999999998,
+    "url": "https://www.alyeskaresort.com/",
+    "mapUrl": "https://www.alyeskaresort.com/",
+    "view": [
+      -1,
+      0.4
+    ],
+    "mapLabel": "Resort website",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "panorama",
+    "name": "Panorama",
+    "area": "British Columbia",
+    "country": "Canada",
+    "passType": "ikon",
+    "bbox": [
+      50.415,
+      -116.27,
+      50.47,
+      -116.175
+    ],
+    "lat": 50.442499999999995,
+    "lon": -116.2225,
+    "url": "https://www.panoramaresort.com/",
+    "mapUrl": "https://www.panoramaresort.com/public/while-you-are-here/map",
+    "view": [
+      -1,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "red-mountain",
+    "name": "RED Mountain",
+    "area": "British Columbia",
+    "country": "Canada",
+    "passType": "ikon",
+    "bbox": [
+      49.075,
+      -117.9,
+      49.145,
+      -117.8
+    ],
+    "lat": 49.11,
+    "lon": -117.85,
+    "url": "https://www.redresort.com/",
+    "mapUrl": "https://www.redresort.com/maps-stats/",
+    "view": [
+      1,
+      1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "silverstar",
+    "name": "SilverStar",
+    "area": "British Columbia",
+    "country": "Canada",
+    "passType": "ikon",
+    "bbox": [
+      50.335,
+      -119.105,
+      50.4,
+      -118.985
+    ],
+    "lat": 50.3675,
+    "lon": -119.045,
+    "url": "https://www.skisilverstar.com/",
+    "mapUrl": "https://www.skisilverstar.com/",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Resort website",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "sunshine",
+    "name": "Banff Sunshine",
+    "area": "Alberta",
+    "country": "Canada",
+    "passType": "ikon",
+    "bbox": [
+      51.025,
+      -115.82,
+      51.12,
+      -115.725
+    ],
+    "lat": 51.0725,
+    "lon": -115.7725,
+    "url": "https://www.skibanff.com/",
+    "mapUrl": "https://www.skibanff.com/explore/trail-maps/",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "lake-louise",
+    "name": "Lake Louise",
+    "area": "Alberta",
+    "country": "Canada",
+    "passType": "ikon",
+    "bbox": [
+      51.425,
+      -116.185,
+      51.49,
+      -116.09
+    ],
+    "lat": 51.457499999999996,
+    "lon": -116.1375,
+    "url": "https://www.skilouise.com/",
+    "mapUrl": "https://www.skilouise.com/explore-winter/winter-ski-ride/lift-runs-parks-status/",
+    "view": [
+      -1,
+      1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "sun-peaks",
+    "name": "Sun Peaks",
+    "area": "British Columbia",
+    "country": "Canada",
+    "passType": "ikon",
+    "bbox": [
+      50.855,
+      -119.96,
+      50.925,
+      -119.85
+    ],
+    "lat": 50.89,
+    "lon": -119.905,
+    "url": "https://www.sunpeaksresort.com/",
+    "mapUrl": "https://www.sunpeaksresort.com/ski-ride/the-mountain/trail-maps-stats",
+    "view": [
+      0,
+      1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "sierra",
+    "name": "Sierra-at-Tahoe",
+    "area": "California",
+    "country": "United States",
+    "passType": "ikon",
+    "bbox": [
+      38.775,
+      -120.11,
+      38.82,
+      -120.05
+    ],
+    "lat": 38.7975,
+    "lon": -120.08,
+    "url": "https://www.sierraattahoe.com/",
+    "mapUrl": "https://www.sierraattahoe.com/trail-map/",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.ikonpass.com/en/compare-passes",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "vail",
+    "name": "Vail",
+    "area": "Colorado",
+    "country": "United States",
+    "passType": "epic",
+    "bbox": [
+      39.565,
+      -106.44,
+      39.65,
+      -106.275
+    ],
+    "lat": 39.6075,
+    "lon": -106.3575,
+    "url": "https://www.vail.com/",
+    "mapUrl": "https://www.vail.com/the-mountain/about-the-mountain/trail-map.aspx",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.epicpass.com/regions.aspx",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "beaver-creek",
+    "name": "Beaver Creek",
+    "area": "Colorado",
+    "country": "United States",
+    "passType": "epic",
+    "bbox": [
+      39.575,
+      -106.595,
+      39.655,
+      -106.495
+    ],
+    "lat": 39.615,
+    "lon": -106.545,
+    "url": "https://www.beavercreek.com/",
+    "mapUrl": "https://www.beavercreek.com/the-mountain/about-the-mountain/trail-map.aspx",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.epicpass.com/regions.aspx",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "keystone",
+    "name": "Keystone",
+    "area": "Colorado",
+    "country": "United States",
+    "passType": "epic",
+    "bbox": [
+      39.55,
+      -105.995,
+      39.625,
+      -105.89
+    ],
+    "lat": 39.5875,
+    "lon": -105.9425,
+    "url": "https://www.keystoneresort.com/",
+    "mapUrl": "https://www.keystoneresort.com/the-mountain/about-the-mountain/trail-map.aspx",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.epicpass.com/regions.aspx",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "crested-butte",
+    "name": "Crested Butte",
+    "area": "Colorado",
+    "country": "United States",
+    "passType": "epic",
+    "bbox": [
+      38.865,
+      -106.99,
+      38.92,
+      -106.935
+    ],
+    "lat": 38.8925,
+    "lon": -106.9625,
+    "url": "https://www.skicb.com/",
+    "mapUrl": "https://www.skicb.com/the-mountain/about-the-mountain/trail-map.aspx",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.epicpass.com/regions.aspx",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "heavenly",
+    "name": "Heavenly",
+    "area": "California / Nevada",
+    "country": "United States",
+    "passType": "epic",
+    "bbox": [
+      38.9,
+      -119.955,
+      38.975,
+      -119.865
+    ],
+    "lat": 38.9375,
+    "lon": -119.91,
+    "url": "https://www.skiheavenly.com/",
+    "mapUrl": "https://www.skiheavenly.com/the-mountain/about-the-mountain/trail-map.aspx",
+    "view": [
+      -1,
+      1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.epicpass.com/regions.aspx",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "kirkwood",
+    "name": "Kirkwood",
+    "area": "California",
+    "country": "United States",
+    "passType": "epic",
+    "bbox": [
+      38.645,
+      -120.1,
+      38.715,
+      -120.015
+    ],
+    "lat": 38.68000000000001,
+    "lon": -120.0575,
+    "url": "https://www.kirkwood.com/",
+    "mapUrl": "https://www.kirkwood.com/the-mountain/about-the-mountain/trail-map.aspx",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.epicpass.com/regions.aspx",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "stevens-pass",
+    "name": "Stevens Pass",
+    "area": "Washington",
+    "country": "United States",
+    "passType": "epic",
+    "bbox": [
+      47.705,
+      -121.125,
+      47.765,
+      -121.055
+    ],
+    "lat": 47.735,
+    "lon": -121.09,
+    "url": "https://www.stevenspass.com/",
+    "mapUrl": "https://www.stevenspass.com/the-mountain/about-the-mountain/trail-map.aspx",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.epicpass.com/regions.aspx",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "telluride",
+    "name": "Telluride",
+    "area": "Colorado",
+    "country": "United States",
+    "passType": "epic",
+    "bbox": [
+      37.875,
+      -107.885,
+      37.945,
+      -107.8
+    ],
+    "lat": 37.91,
+    "lon": -107.8425,
+    "url": "https://tellurideskiresort.com/",
+    "mapUrl": "https://tellurideskiresort.com/mountain/",
+    "view": [
+      -1,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.epicpass.com/regions.aspx",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "fernie",
+    "name": "Fernie",
+    "area": "British Columbia",
+    "country": "Canada",
+    "passType": "epic",
+    "bbox": [
+      49.435,
+      -115.135,
+      49.49,
+      -115.06
+    ],
+    "lat": 49.462500000000006,
+    "lon": -115.0975,
+    "url": "https://skifernie.com/",
+    "mapUrl": "https://skifernie.com/",
+    "view": [
+      1,
+      0
+    ],
+    "mapLabel": "Resort website",
+    "passSource": "https://www.epicpass.com/regions.aspx",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "kicking-horse",
+    "name": "Kicking Horse",
+    "area": "British Columbia",
+    "country": "Canada",
+    "passType": "epic",
+    "bbox": [
+      51.26,
+      -117.11,
+      51.32,
+      -116.985
+    ],
+    "lat": 51.29,
+    "lon": -117.0475,
+    "url": "https://kickinghorseresort.com/",
+    "mapUrl": "https://kickinghorseresort.com/",
+    "view": [
+      1,
+      0
+    ],
+    "mapLabel": "Resort website",
+    "passSource": "https://www.epicpass.com/regions.aspx",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "whitefish",
+    "name": "Whitefish Mountain",
+    "area": "Montana",
+    "country": "United States",
+    "passType": "independent",
+    "bbox": [
+      48.455,
+      -114.405,
+      48.515,
+      -114.32
+    ],
+    "lat": 48.485,
+    "lon": -114.3625,
+    "url": "https://skiwhitefish.com/",
+    "mapUrl": "https://skiwhitefish.com/trail-maps/",
+    "view": [
+      0,
+      1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://skiwhitefish.com/",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "grand-targhee",
+    "name": "Grand Targhee",
+    "area": "Wyoming",
+    "country": "United States",
+    "passType": "independent",
+    "bbox": [
+      43.755,
+      -110.97,
+      43.81,
+      -110.905
+    ],
+    "lat": 43.7825,
+    "lon": -110.9375,
+    "url": "https://www.grandtarghee.com/",
+    "mapUrl": "https://www.grandtarghee.com/the-mountain/mountain-information/trail-maps",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.grandtarghee.com/",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "mt-baker",
+    "name": "Mt. Baker",
+    "area": "Washington",
+    "country": "United States",
+    "passType": "independent",
+    "bbox": [
+      48.845,
+      -121.71,
+      48.875,
+      -121.645
+    ],
+    "lat": 48.86,
+    "lon": -121.6775,
+    "url": "https://www.mtbaker.us/",
+    "mapUrl": "https://www.mtbaker.us/the-mountain/trail-map/",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.mtbaker.us/",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "hood-meadows",
+    "name": "Mt. Hood Meadows",
+    "area": "Oregon",
+    "country": "United States",
+    "passType": "independent",
+    "bbox": [
+      45.315,
+      -121.69,
+      45.365,
+      -121.635
+    ],
+    "lat": 45.34,
+    "lon": -121.6625,
+    "url": "https://www.skihood.com/",
+    "mapUrl": "https://www.skihood.com/explore/trail-maps",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.skihood.com/",
+    "sourceChecked": "2026-09-18"
+  },
+  {
+    "id": "big-white",
+    "name": "Big White",
+    "area": "British Columbia",
+    "country": "Canada",
+    "passType": "independent",
+    "bbox": [
+      49.705,
+      -118.98,
+      49.755,
+      -118.895
+    ],
+    "lat": 49.730000000000004,
+    "lon": -118.9375,
+    "url": "https://www.bigwhite.com/",
+    "mapUrl": "https://www.bigwhite.com/explore-big-white/mountain-info/maps-brochures",
+    "view": [
+      0,
+      -1
+    ],
+    "mapLabel": "Official trail map",
+    "passSource": "https://www.bigwhite.com/",
+    "sourceChecked": "2026-09-18"
+  }
+]
