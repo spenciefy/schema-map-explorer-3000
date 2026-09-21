@@ -7,16 +7,15 @@ import { clipFeature, elevationAt, mapReferences } from './geography';
 import { resorts, type Resort } from './data';
 
 export class TerrainPreview {
- private renderer?:THREE.WebGLRenderer;private scene=new THREE.Scene();private camera=new THREE.PerspectiveCamera(36,1,.1,2000);
- private mountain?:THREE.Group;private host?:HTMLElement;private request=0;private yaw=.4;private pitch=.8;private distance=360;
+ private renderer?:THREE.WebGLRenderer;private scene=new THREE.Scene();private camera=new THREE.PerspectiveCamera(35,1,.1,2000);
+ private mountain?:THREE.Group;private host?:HTMLElement;private request=0;private yaw=.4;private pitch=.8;private distance=430;
  private start?:{x:number;y:number;yaw:number;pitch:number};private dragged=false;
  constructor(private grid:HTMLElement){
   grid.querySelectorAll<HTMLElement>('.mountain-preview').forEach(host=>{
    const id=host.closest('a')!.getAttribute('href')!.slice(1);host.setAttribute('aria-label','Drag to rotate '+resorts.find(r=>r.id===id)!.name);
-   host.title='Drag to rotate';host.closest('a')!.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();void this.activate(host,id);if(e.key==='ArrowLeft')this.yaw-=.15;if(e.key==='ArrowRight')this.yaw+=.15;if(e.key==='ArrowUp')this.pitch=Math.min(1.4,this.pitch+.1);if(e.key==='ArrowDown')this.pitch=Math.max(.2,this.pitch-.1);this.render();});
-   host.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')void this.activate(host,id);});
-   host.addEventListener('pointerdown',e=>{if(e.button!==0)return;void this.activate(host,id);this.start={x:e.clientX,y:e.clientY,yaw:this.yaw,pitch:this.pitch};this.dragged=false;host.setPointerCapture(e.pointerId);});
-   host.addEventListener('pointermove',e=>{if(!this.start)return;const dx=e.clientX-this.start.x,dy=e.clientY-this.start.y;if(Math.hypot(dx,dy)>6)this.dragged=true;if(this.dragged){this.yaw=this.start.yaw-dx*.008;this.pitch=THREE.MathUtils.clamp(this.start.pitch+dy*.006,.2,1.4);this.render();}});
+   host.closest('a')!.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();void this.activate(host,id);if(e.key==='ArrowLeft')this.yaw-=.15;if(e.key==='ArrowRight')this.yaw+=.15;if(e.key==='ArrowUp')this.pitch=Math.min(1.4,this.pitch+.1);if(e.key==='ArrowDown')this.pitch=Math.max(.2,this.pitch-.1);this.render();});
+   host.addEventListener('pointerdown',e=>{if(e.button!==0)return;if(this.host!==host){this.yaw=Math.atan2(mapReferences[id].view[0],mapReferences[id].view[1]);this.pitch=.75;}this.start={x:e.clientX,y:e.clientY,yaw:this.yaw,pitch:this.pitch};this.dragged=false;host.setPointerCapture(e.pointerId);});
+   host.addEventListener('pointermove',e=>{if(!this.start)return;const dx=e.clientX-this.start.x,dy=e.clientY-this.start.y;if(!this.dragged&&Math.hypot(dx,dy)>6){this.dragged=true;void this.activate(host,id);}if(this.dragged){this.yaw=this.start.yaw-dx*.008;this.pitch=THREE.MathUtils.clamp(this.start.pitch+dy*.006,.2,1.4);this.render();}});
    host.addEventListener('pointerup',()=>{this.start=undefined;});host.addEventListener('pointercancel',()=>{this.start=undefined;this.dragged=true;});
    host.addEventListener('click',e=>{if(this.dragged){e.preventDefault();e.stopPropagation();this.dragged=false;}},true);
   });
