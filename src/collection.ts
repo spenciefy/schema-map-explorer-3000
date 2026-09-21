@@ -17,6 +17,7 @@ export function setupCollection(navigate:(path:string)=>void){
   document.querySelector('#collection-status')!.textContent=matches.length+(matches.length===1?' mountain':' mountains');
   document.querySelectorAll<HTMLButtonElement>('[data-collection-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.collectionView===mode)));
   if(mode==='globe'&&!isAbout&&isGallery){if(!globe){try{globe=new MountainGlobe(document.querySelector('#globe-canvas')!,showResort,showGroup);}catch{document.querySelector('#globe-canvas')!.textContent='3D globe unavailable. Choose a mountain below.';}}globe?.filter(ids);}
+  previews.setVisible(mode==='grid'&&!isAbout&&isGallery);
   globe?.setVisible(mode==='globe'&&!isAbout&&isGallery);results.replaceChildren();
   for(const r of matches){const button=document.createElement('button');button.textContent=r.name;button.onclick=()=>{globe?.focus(r);showResort(r);};results.append(button);}
   card.hidden=true;if(mode==='globe'&&!isAbout&&isGallery&&matches.length===1)globe?.focus(matches[0]);

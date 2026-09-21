@@ -6,6 +6,25 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { resorts, type Resort } from './data';
 
 export class TerrainPreview {
+ private tiles=new Map<HTMLElement,RotatingTerrainPreview>();
+ private visible=new Set<HTMLElement>();private enabled=true;
+ private observer:IntersectionObserver;
+ constructor(grid:HTMLElement){
+  this.observer=new IntersectionObserver(entries=>{
+   for(const entry of entries){const host=entry.target as HTMLElement;if(entry.isIntersecting)this.visible.add(host);else this.visible.delete(host);}
+   this.sync();
+  },{threshold:.05});
+  for(const host of grid.querySelectorAll<HTMLElement>('.mountain-preview')){
+   this.tiles.set(host,new RotatingTerrainPreview(host.parentElement!));this.observer.observe(host);
+  }
+  document.addEventListener('visibilitychange',()=>this.sync());
+ }
+ setVisible(enabled:boolean){this.enabled=enabled;this.sync();}
+ private sync(){for(const[host,preview]of this.tiles){if(this.enabled&&!document.hidden&&this.visible.has(host)&&host.getClientRects().length){void preview.activate(host,host.closest('a')!.getAttribute('href')!.slice(1));}else preview.hide();}}
+ hide(){for(const preview of this.tiles.values())preview.hide();}
+}
+
+class RotatingTerrainPreview {
  private atlas?:AtlasScene;private stage=document.createElement('div');private labels=document.createElement('div');
  private host?:HTMLElement;private request=0;private timer?:ReturnType<typeof setTimeout>;private ready=false;
  private start?:{x:number;y:number};private dragged=false;private loading?:Promise<void>;
@@ -16,8 +35,6 @@ export class TerrainPreview {
   grid.querySelectorAll<HTMLElement>('.mountain-preview').forEach(host=>{
    const id=host.closest('a')!.getAttribute('href')!.slice(1);
    host.setAttribute('aria-label','Drag to rotate '+resorts.find(r=>r.id===id)!.name);
-   host.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse'||this.reduced.matches)return;clearTimeout(this.timer);this.timer=setTimeout(()=>void this.activate(host,id),180);});
-   host.addEventListener('pointerleave',()=>{clearTimeout(this.timer);if(!this.start&&this.host===host)this.hide();});
    host.closest('a')!.addEventListener('keydown',async e=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();await this.activate(host,id);if(this.host===host)this.rotate(e.key==='ArrowLeft'?.15:e.key==='ArrowRight'?-.15:0,e.key==='ArrowUp'?-.1:e.key==='ArrowDown'?.1:0);});
    host.addEventListener('pointerdown',e=>{if(e.button!==0)return;clearTimeout(this.timer);this.start={x:e.clientX,y:e.clientY};this.dragged=false;if(this.atlas)this.atlas.controls.autoRotate=false;host.setPointerCapture(e.pointerId);});
    host.addEventListener('pointermove',e=>{if(!this.start)return;const dx=e.clientX-this.start.x,dy=e.clientY-this.start.y;if(!this.dragged&&Math.hypot(dx,dy)<=6)return;this.dragged=true;this.start={x:e.clientX,y:e.clientY};void this.activate(host,id).then(()=>{if(this.host===host)this.rotate(-dx*.008,dy*.006);});});
@@ -33,7 +50,7 @@ export class TerrainPreview {
  }
  private async load(host:HTMLElement,id:string,request:number){
   try{
-   if(!this.atlas){this.atlas=new AtlasScene(this.stage,this.labels,()=>{},true);this.atlas.paused=true;this.atlas.showLabels=false;this.atlas.showPlaces=false;this.atlas.showSnow=false;this.atlas.controls.enableDamping=false;this.atlas.renderer.setPixelRatio(Math.min(devicePixelRatio,1.25));this.atlas.renderer.domElement.tabIndex=-1;}
+   if(!this.atlas){this.atlas=new AtlasScene(this.stage,this.labels,()=>{},true);this.atlas.paused=true;this.atlas.showLabels=false;this.atlas.showPlaces=false;this.atlas.showSnow=false;this.atlas.controls.enableDamping=false;this.atlas.renderer.setPixelRatio(1);this.atlas.renderer.domElement.tabIndex=-1;}
    const a=this.atlas;a.suspended=true;a.controls.autoRotate=false;a.selected=id;
    await a.load(resorts.find(r=>r.id===id)!);
    if(request!==this.request||!a.data)return;
@@ -43,11 +60,12 @@ export class TerrainPreview {
    a.camera.position.copy(a.controls.target).addScaledVector(direction,430);
    a.targetCamera=null;a.targetLook=null;a.resize();a.controls.update();
    a.renderer.render(a.scene,a.camera);this.ready=true;host.classList.add('preview-active');
-   a.controls.autoRotateSpeed=.65;a.controls.autoRotate=!this.reduced.matches&&!this.start;a.suspended=false;
+   a.controls.autoRotateSpeed=.35;a.controls.autoRotate=!this.reduced.matches&&!this.start;a.suspended=false;
   }catch{if(request===this.request)this.hide();}
  }
  private rotate(yaw:number,pitch:number){if(!this.atlas||!this.ready)return;const a=this.atlas,s=new THREE.Spherical().setFromVector3(a.camera.position.clone().sub(a.controls.target));s.theta+=yaw;s.phi=THREE.MathUtils.clamp(s.phi+pitch,.2,1.4);a.camera.position.copy(a.controls.target).add(new THREE.Vector3().setFromSpherical(s));a.controls.update();}
- hide(){clearTimeout(this.timer);this.start=undefined;this.request++;this.ready=false;this.host?.classList.remove('preview-active');this.host=undefined;this.stage.remove();if(this.atlas){this.atlas.suspended=true;this.atlas.controls.autoRotate=false;this.atlas.requestId++;}this.loading=undefined;}
+ hide(){clearTimeout(this.timer);this.start=undefined;this.request++;this.ready=false;this.host?.classList.remove('preview-active');this.host=undefined;this.stage.remove();if(this.atlas){this.atlas.disposePreview();this.atlas=undefined;}this.stage.replaceChildren();this.loading=undefined;}
+
 }
 
 export function globePosition(lat:number,lon:number,r=1){const a=THREE.MathUtils.degToRad(lat),b=THREE.MathUtils.degToRad(lon);return new THREE.Vector3(Math.cos(a)*Math.cos(b)*r,Math.sin(a)*r,-Math.cos(a)*Math.sin(b)*r);}

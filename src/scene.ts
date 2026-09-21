@@ -38,7 +38,7 @@ export class AtlasScene {
  selectedFeature?:MapFeature;highlight?:THREE.Line;journey?:{route:Route3D;start:number};traveler:THREE.Mesh;
  raycaster=new THREE.Raycaster();pointer=new THREE.Vector2();hovered:number|null=null;mobile=innerWidth<760;geometryGroup=new THREE.Group();liftGroup=new THREE.Group();trailGroup=new THREE.Group();
  aerial=false;private preferAerial=true;private aerialTexture?:THREE.Texture;private terrainMaterial?:THREE.MeshStandardMaterial;
- private lastFrame=0;private interacting=false;private interactionUntil=0;private labelState="";
+ private resizeObserver?:ResizeObserver;private lastFrame=0;private interacting=false;private interactionUntil=0;private labelState="";
  private touchPointers=new Set<number>();private suppressPick=false;
  private coverImage?:HTMLImageElement;private temp=new THREE.Vector3();private dummy=new THREE.Object3D();private down={x:0,y:0};private tooltip:HTMLDivElement;
  constructor(public host:HTMLElement,public labelHost:HTMLElement,public onSelect:(id:string)=>void,public preview=false){
@@ -47,7 +47,7 @@ export class AtlasScene {
   this.camera=new THREE.PerspectiveCamera(35,1,.1,1800);this.controls=new OrbitControls(this.camera,this.renderer.domElement);this.controls.enablePan=true;this.controls.screenSpacePanning=false;this.controls.panSpeed=1.2;this.setInteractionMode('pan');this.controls.enableDamping=true;this.controls.dampingFactor=.08;this.controls.minDistance=15;this.controls.maxDistance=600;this.controls.maxPolarAngle=Math.PI*.47;this.controls.minPolarAngle=.015;this.controls.rotateSpeed=.6;this.controls.zoomSpeed=.7;this.controls.maxTargetRadius=200;this.controls.target.set(0,20,0);this.camera.position.set(-130,160,-210);
   addTouchRotation(this.renderer.domElement,angle=>{const offset=this.camera.position.clone().sub(this.controls.target);offset.applyAxisAngle(new THREE.Vector3(0,1,0),angle);this.camera.position.copy(this.controls.target).add(offset);this.controls.update();});
   this.controls.listenToKeyEvents(this.renderer.domElement);this.controls.keyPanSpeed=22;
-  matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',event=>{this.reducedMotion=event.matches;this.motionOverride=false;this.controls.enableDamping=!event.matches;window.dispatchEvent(new Event('motion-preference-changed'));});this.controls.enableDamping=!this.reducedMotion;
+  if(!this.preview)matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',event=>{this.reducedMotion=event.matches;this.motionOverride=false;this.controls.enableDamping=!event.matches;window.dispatchEvent(new Event('motion-preference-changed'));});this.controls.enableDamping=!this.reducedMotion;
   this.controls.addEventListener('start',()=>{this.interacting=true;this.tooltip.hidden=true;this.targetCamera=null;this.targetLook=null;this.journey=undefined;this.traveler.visible=false;this.host.style.cursor='grabbing';});this.controls.addEventListener('end',()=>{this.interacting=false;this.interactionUntil=performance.now()+500;this.host.style.cursor='grab';});
   this.scene.add(this.world);this.ambient=new THREE.HemisphereLight(0xd8eaff,0x9fa69c,2.25);this.scene.add(this.ambient);
   this.sun=new THREE.DirectionalLight(0xfff6e5,2.8);this.sun.position.set(-100,85,100);this.sun.castShadow=true;this.sun.shadow.mapSize.set(this.mobile?1024:2048,this.mobile?1024:2048);Object.assign(this.sun.shadow.camera,{left:-180,right:180,top:180,bottom:-180,far:600});this.sun.shadow.bias=-.0002;this.sun.shadow.normalBias=.06;this.scene.add(this.sun);
@@ -62,7 +62,13 @@ export class AtlasScene {
   this.renderer.domElement.addEventListener('click',e=>{if(this.suppressPick||Math.hypot(e.clientX-this.down.x,e.clientY-this.down.y)>5)return;const f=this.pick(e);if(f)this.focusFeature(f.id);});
   this.renderer.domElement.addEventListener('pointermove',e=>{if(e.buttons)return;const f=this.pick(e);this.tooltip.hidden=!f;if(f){this.tooltip.textContent=`${f.kind==='lift'?'↟':'↘'} ${featureTitle(f)}`;this.tooltip.style.left=`${e.clientX-host.getBoundingClientRect().left+15}px`;this.tooltip.style.top=`${e.clientY-host.getBoundingClientRect().top-28}px`;}this.host.style.cursor=f?'pointer':'grab';});
   this.renderer.domElement.addEventListener('pointerleave',()=>this.tooltip.hidden=true);
-  new ResizeObserver(()=>this.resize()).observe(host);this.resize();this.animate();
+  this.resizeObserver=new ResizeObserver(()=>this.resize());this.resizeObserver.observe(host);this.resize();this.animate();
+ }
+ disposePreview(){
+  if(!this.preview)return;
+  this.suspended=true;this.requestId++;cancelAnimationFrame(this.animationId);this.resizeObserver?.disconnect();this.controls.dispose();this.clear();
+  this.scene.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Points){o.geometry.dispose();for(const m of Array.isArray(o.material)?o.material:[o.material])m.dispose();}});
+  this.sun.shadow.map?.dispose();this.renderer.dispose();this.renderer.forceContextLoss();this.scene.clear();
  }
  setInteractionMode(mode:'pan'|'rotate'){
   const pan=mode==='pan';this.controls.mouseButtons.LEFT=pan?THREE.MOUSE.PAN:THREE.MOUSE.ROTATE;this.controls.mouseButtons.RIGHT=pan?THREE.MOUSE.ROTATE:THREE.MOUSE.PAN;
@@ -237,7 +243,7 @@ export class AtlasScene {
  filter(_ids:Set<string>){/* Resort filters affect the destination list, never alter geographic geometry. */}
  toggleLayer(layer:'trails'|'lifts'|'labels'|'roads'|'places',show:boolean){this.renderer.shadowMap.needsUpdate=true;if(layer==='trails'){this.showTrails=show;this.trailGroup.visible=show;}if(layer==='lifts'){this.showLifts=show;this.liftGroup.visible=show;}if(layer==='labels')this.showLabels=show;if(layer==='roads'){this.showRoads=show;this.contextGroup.visible=show;}if(layer==='places'){this.showPlaces=show;this.buildingGroup.visible=show&&!this.aerial;}}
  setWeather(hour:number,snowfall:number,wind:number,cloud:number){const light=Math.max(.25,Math.sin(((hour%24)-6)/12*Math.PI));this.sun.intensity=1.5+light*2.5;this.sun.color.set(light<.35?0xffcf9c:0xfff6e5);this.ambient.intensity=.95+light*.5;this.ambient.color.set(light<.3?0x96b1d4:0xd8eaff);this.snowfall=snowfall;this.wind=wind;this.snow.geometry.setDrawRange(0,Math.round(clamp(snowfall*1200,0,3000)));this.host.style.filter=`saturate(${1-cloud*.001})`;}
- animate=(now=performance.now())=>{this.animationId=requestAnimationFrame(this.animate);if(document.hidden||this.suspended){this.clock.getDelta();return;}if(this.mobile&&!this.interacting&&now>this.interactionUntil&&!this.targetCamera&&!this.journey&&now-this.lastFrame<32)return;this.lastFrame=now;const delta=Math.min(this.clock.getDelta(),.1),moving=!this.paused&&(!this.reducedMotion||this.motionOverride);if(moving)this.elapsed+=delta;const time=this.elapsed;
+ animate=(now=performance.now())=>{this.animationId=requestAnimationFrame(this.animate);if(document.hidden||this.suspended){this.clock.getDelta();return;}if(this.preview&&now-this.lastFrame<50)return;if(this.mobile&&!this.interacting&&now>this.interactionUntil&&!this.targetCamera&&!this.journey&&now-this.lastFrame<32)return;this.lastFrame=now;const delta=Math.min(this.clock.getDelta(),.1),moving=!this.paused&&(!this.reducedMotion||this.motionOverride);if(moving)this.elapsed+=delta;const time=this.elapsed;
   if(this.targetCamera&&this.targetLook){const a=this.reducedMotion?1:1-Math.exp(-delta*4);this.camera.position.lerp(this.targetCamera,a);this.controls.target.lerp(this.targetLook,a);if(this.camera.position.distanceTo(this.targetCamera)<.1){this.targetCamera=null;this.targetLook=null;}}
   if(this.journey){const {route,start}=this.journey;const t=Math.min((time-start)/24,1),p=route.curve.getPoint(t),ahead=route.curve.getPoint(Math.min(1,t+.04));this.traveler.position.copy(p).add(new THREE.Vector3(0,.5,0));if(moving){const direction=p.clone().sub(ahead);direction.y=0;direction.normalize();const pos=p.clone().add(direction.multiplyScalar(16)).add(new THREE.Vector3(0,12,0));this.camera.position.lerp(pos,1-Math.exp(-delta*1.83));this.controls.target.lerp(ahead,1-Math.exp(-delta*3.71));}if(t>=1){this.journey=undefined;this.traveler.visible=false;}}
   this.controls.dampingFactor=1-Math.exp(-delta*5);this.controls.update(delta);
