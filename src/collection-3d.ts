@@ -1,44 +1,53 @@
 import { clusterPoints } from './globe-clusters';
-import { loadMountain } from './mountain-cache';
+import { AtlasScene } from './scene';
 import { addTouchRotation } from './touch-rotation';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { clipFeature, elevationAt, mapReferences } from './geography';
 import { resorts, type Resort } from './data';
 
 export class TerrainPreview {
- private renderer?:THREE.WebGLRenderer;private scene=new THREE.Scene();private camera=new THREE.PerspectiveCamera(35,1,.1,2000);
- private mountain?:THREE.Group;private host?:HTMLElement;private request=0;private yaw=.4;private pitch=.8;private distance=430;
- private start?:{x:number;y:number;yaw:number;pitch:number};private dragged=false;
- constructor(private grid:HTMLElement){
+ private atlas?:AtlasScene;private stage=document.createElement('div');private labels=document.createElement('div');
+ private host?:HTMLElement;private request=0;private timer?:ReturnType<typeof setTimeout>;private ready=false;
+ private start?:{x:number;y:number};private dragged=false;private loading?:Promise<void>;
+ private reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ constructor(grid:HTMLElement){
+  this.stage.className='preview-stage';this.stage.setAttribute('aria-hidden','true');
+  this.reduced.addEventListener('change',()=>{if(this.atlas)this.atlas.controls.autoRotate=!this.reduced.matches&&!this.start;});
   grid.querySelectorAll<HTMLElement>('.mountain-preview').forEach(host=>{
-   const id=host.closest('a')!.getAttribute('href')!.slice(1);host.setAttribute('aria-label','Drag to rotate '+resorts.find(r=>r.id===id)!.name);
-   host.closest('a')!.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();void this.activate(host,id);if(e.key==='ArrowLeft')this.yaw-=.15;if(e.key==='ArrowRight')this.yaw+=.15;if(e.key==='ArrowUp')this.pitch=Math.min(1.4,this.pitch+.1);if(e.key==='ArrowDown')this.pitch=Math.max(.2,this.pitch-.1);this.render();});
-   host.addEventListener('pointerdown',e=>{if(e.button!==0)return;if(this.host!==host){this.yaw=Math.atan2(mapReferences[id].view[0],mapReferences[id].view[1]);this.pitch=.75;}this.start={x:e.clientX,y:e.clientY,yaw:this.yaw,pitch:this.pitch};this.dragged=false;host.setPointerCapture(e.pointerId);});
-   host.addEventListener('pointermove',e=>{if(!this.start)return;const dx=e.clientX-this.start.x,dy=e.clientY-this.start.y;if(!this.dragged&&Math.hypot(dx,dy)>6){this.dragged=true;void this.activate(host,id);}if(this.dragged){this.yaw=this.start.yaw-dx*.008;this.pitch=THREE.MathUtils.clamp(this.start.pitch+dy*.006,.2,1.4);this.render();}});
-   host.addEventListener('pointerup',()=>{this.start=undefined;});host.addEventListener('pointercancel',()=>{this.start=undefined;this.dragged=true;});
+   const id=host.closest('a')!.getAttribute('href')!.slice(1);
+   host.setAttribute('aria-label','Drag to rotate '+resorts.find(r=>r.id===id)!.name);
+   host.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse'||this.reduced.matches)return;clearTimeout(this.timer);this.timer=setTimeout(()=>void this.activate(host,id),180);});
+   host.addEventListener('pointerleave',()=>{clearTimeout(this.timer);if(!this.start&&this.host===host)this.hide();});
+   host.closest('a')!.addEventListener('keydown',async e=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();await this.activate(host,id);if(this.host===host)this.rotate(e.key==='ArrowLeft'?.15:e.key==='ArrowRight'?-.15:0,e.key==='ArrowUp'?-.1:e.key==='ArrowDown'?.1:0);});
+   host.addEventListener('pointerdown',e=>{if(e.button!==0)return;clearTimeout(this.timer);this.start={x:e.clientX,y:e.clientY};this.dragged=false;if(this.atlas)this.atlas.controls.autoRotate=false;host.setPointerCapture(e.pointerId);});
+   host.addEventListener('pointermove',e=>{if(!this.start)return;const dx=e.clientX-this.start.x,dy=e.clientY-this.start.y;if(!this.dragged&&Math.hypot(dx,dy)<=6)return;this.dragged=true;this.start={x:e.clientX,y:e.clientY};void this.activate(host,id).then(()=>{if(this.host===host)this.rotate(-dx*.008,dy*.006);});});
+   const end=()=>{this.start=undefined;if(this.atlas)this.atlas.controls.autoRotate=!this.reduced.matches;};
+   host.addEventListener('pointerup',end);host.addEventListener('pointercancel',()=>{end();this.dragged=true;this.hide();});
    host.addEventListener('click',e=>{if(this.dragged){e.preventDefault();e.stopPropagation();this.dragged=false;}},true);
   });
-  new ResizeObserver(()=>this.render()).observe(grid);
  }
- async activate(host:HTMLElement,id:string){
-  if(this.host===host)return;this.host?.classList.remove('preview-active');this.host=host;this.yaw=Math.atan2(mapReferences[id].view[0],mapReferences[id].view[1]);this.pitch=.75;const request=++this.request;
+ activate(host:HTMLElement,id:string):Promise<void>{
+  if(this.host===host)return this.loading??Promise.resolve();
+  const gesture=this.start;this.hide();this.start=gesture;this.host=host;const request=++this.request;host.append(this.stage);
+  this.loading=this.load(host,id,request);return this.loading;
+ }
+ private async load(host:HTMLElement,id:string,request:number){
   try{
-   if(!this.renderer){this.renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});this.renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.domElement.setAttribute('aria-hidden','true');this.scene.add(new THREE.HemisphereLight(0xfffaf0,0x839388,1.5));const sun=new THREE.DirectionalLight(0xffffff,2);sun.position.set(-80,150,-100);this.scene.add(sun);}
-   this.renderer.domElement.remove();const d=await loadMountain(id);if(request!==this.request)return;
-   if(this.mountain){this.scene.remove(this.mountain);this.mountain.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Line){o.geometry.dispose();(o.material as THREE.Material).dispose();}});}
-   let cover:ImageData|undefined;if(d.landcover){try{const img=new Image();img.src=d.landcover;await img.decode();const c=document.createElement('canvas');c.width=c.height=97;const ctx=c.getContext('2d')!;ctx.imageSmoothingEnabled=false;ctx.drawImage(img,0,0,97,97);cover=ctx.getImageData(0,0,97,97);}catch{}}if(request!==this.request)return;
-   const group=new THREE.Group(),scale=240/Math.max(d.width,d.depth),min=d.heights.reduce((a,b)=>Math.min(a,b),Infinity),max=d.heights.reduce((a,b)=>Math.max(a,b),-Infinity);
-   const n=97,vertices:number[]=[],indices:number[]=[],colors:number[]=[];
-   for(let z=0;z<n;z++)for(let x=0;x<n;x++){const px=(x/(n-1)-.5)*d.width,pz=(z/(n-1)-.5)*d.depth;const type=cover?.data[(z*n+x)*4],water=id==='iwanai'&&type===80;vertices.push(px*scale,((water?0:elevationAt(d,px,pz))-min)*scale,pz*scale);const color=new THREE.Color(water?0x729da8:type===10?(resorts.find(r=>r.id===id)!.region==='japan'?0xcdd3c8:0xaabbb0):0xe8e9df);colors.push(color.r,color.g,color.b);}
-   for(let z=0;z<n-1;z++)for(let x=0;x<n-1;x++){const a=z*n+x;indices.push(a,a+n,a+1,a+1,a+n,a+n+1);}
-   const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));geo.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geo.setIndex(indices);geo.computeVertexNormals();group.add(new THREE.Mesh(geo,new THREE.MeshStandardMaterial({vertexColors:true,roughness:1,side:THREE.DoubleSide})));
-   for(const f of d.features.filter(f=>!f.area).flatMap(f=>clipFeature(d,f))){const pts=f.points.map(p=>new THREE.Vector3(p[0]*scale,(elevationAt(d,...p)-min)*scale+.15,p[1]*scale));if(pts.length>1)group.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:f.kind==='lift'?0xb96b50:0x83998c,transparent:true,opacity:.55})));}
-   group.position.y=-(max-min)*scale*.35;this.mountain=group;this.scene.add(group);host.append(this.renderer.domElement);host.classList.add('preview-active');this.render();
-  }catch{if(request===this.request){host.classList.remove('preview-active');this.host=undefined;}}
+   if(!this.atlas){this.atlas=new AtlasScene(this.stage,this.labels,()=>{},true);this.atlas.paused=true;this.atlas.showLabels=false;this.atlas.showPlaces=false;this.atlas.showSnow=false;this.atlas.controls.enableDamping=false;this.atlas.renderer.setPixelRatio(Math.min(devicePixelRatio,1.25));this.atlas.renderer.domElement.tabIndex=-1;}
+   const a=this.atlas;a.suspended=true;a.controls.autoRotate=false;a.selected=id;
+   await a.load(resorts.find(r=>r.id===id)!);
+   if(request!==this.request||!a.data)return;
+   // Match the camera and detailed geometry used to render the gallery thumbnails.
+   const direction=a.camera.position.clone().sub(a.controls.target).normalize();
+   a.controls.target.set(0,(a.maxElevation-a.minElevation)*a.scale*.3,0);
+   a.camera.position.copy(a.controls.target).addScaledVector(direction,430);
+   a.targetCamera=null;a.targetLook=null;a.resize();a.controls.update();
+   a.renderer.render(a.scene,a.camera);this.ready=true;host.classList.add('preview-active');
+   a.controls.autoRotateSpeed=.65;a.controls.autoRotate=!this.reduced.matches&&!this.start;a.suspended=false;
+  }catch{if(request===this.request)this.hide();}
  }
- hide(){this.request++;this.host?.classList.remove('preview-active');this.host=undefined;this.renderer?.domElement.remove();this.start=undefined;}
- private render(){if(!this.renderer||!this.host||!this.mountain)return;const w=this.host.clientWidth,h=this.host.clientHeight;if(!w||!h)return;this.renderer.setSize(w,h);this.camera.aspect=w/h;this.camera.updateProjectionMatrix();this.camera.position.set(Math.sin(this.yaw)*Math.cos(this.pitch)*this.distance,Math.sin(this.pitch)*this.distance,Math.cos(this.yaw)*Math.cos(this.pitch)*this.distance);this.camera.lookAt(0,0,0);this.renderer.render(this.scene,this.camera);}
+ private rotate(yaw:number,pitch:number){if(!this.atlas||!this.ready)return;const a=this.atlas,s=new THREE.Spherical().setFromVector3(a.camera.position.clone().sub(a.controls.target));s.theta+=yaw;s.phi=THREE.MathUtils.clamp(s.phi+pitch,.2,1.4);a.camera.position.copy(a.controls.target).add(new THREE.Vector3().setFromSpherical(s));a.controls.update();}
+ hide(){clearTimeout(this.timer);this.start=undefined;this.request++;this.ready=false;this.host?.classList.remove('preview-active');this.host=undefined;this.stage.remove();if(this.atlas){this.atlas.suspended=true;this.atlas.controls.autoRotate=false;this.atlas.requestId++;}this.loading=undefined;}
 }
 
 export function globePosition(lat:number,lon:number,r=1){const a=THREE.MathUtils.degToRad(lat),b=THREE.MathUtils.degToRad(lon);return new THREE.Vector3(Math.cos(a)*Math.cos(b)*r,Math.sin(a)*r,-Math.cos(a)*Math.sin(b)*r);}
