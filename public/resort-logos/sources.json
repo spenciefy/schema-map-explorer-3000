@@ -16,5 +16,411 @@
     "assetUrl": "https://www.palisadestahoe.com/-/media/palisades-tahoe/footer/logos/pt-mobile.svg?h=40&iar=0&w=83&rev=ce36141308734e06b15a2d4be1abfbe3&hash=62E6F8EAEDDFD7438027ADB3EF512FBF",
     "source": "https://www.palisadestahoe.com/",
     "retrieved": "2026-09-19"
+  },
+  "whistler": {
+    "file": "/resort-logos/whistler.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.whistlerblackcomb.com&sz=128",
+    "source": "https://www.whistlerblackcomb.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "revelstoke": {
+    "file": "/resort-logos/revelstoke.png",
+    "assetUrl": "https://www.revelstokemountainresort.com/favicons/apple-touch-icon.png",
+    "source": "https://www.revelstokemountainresort.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon"
+  },
+  "powder": {
+    "file": "/resort-logos/powder.svg",
+    "assetUrl": "https://powdermountain.cdn.prismic.io/powdermountain/ZdXbPy9dUKvm9Qbr_logo.svg",
+    "source": "https://powdermountain.com/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
+  },
+  "park-city": {
+    "file": "/resort-logos/park-city.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.parkcitymountain.com&sz=128",
+    "source": "https://www.parkcitymountain.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "northstar": {
+    "file": "/resort-logos/northstar.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.northstarcalifornia.com&sz=128",
+    "source": "https://www.northstarcalifornia.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "alta": {
+    "file": "/resort-logos/alta.png",
+    "assetUrl": "https://www.alta.com/icons/apple-touch-icon.png",
+    "source": "https://www.alta.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon"
+  },
+  "snowbird": {
+    "file": "/resort-logos/snowbird.png",
+    "assetUrl": "https://www.snowbird.com/icons/icon-96x96.png?v=8ae537c1c5dc6c110502c6c267a910e2",
+    "source": "https://www.snowbird.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon"
+  },
+  "breckenridge": {
+    "file": "/resort-logos/breckenridge.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.breckenridge.com&sz=128",
+    "source": "https://www.breckenridge.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "arapahoe-basin": {
+    "file": "/resort-logos/arapahoe-basin.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.arapahoebasin.com&sz=128",
+    "source": "https://www.arapahoebasin.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "mammoth": {
+    "file": "/resort-logos/mammoth.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.mammothmountain.com&sz=128",
+    "source": "https://www.mammothmountain.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "copper": {
+    "file": "/resort-logos/copper.png",
+    "assetUrl": "https://www.coppercolorado.com/icons/icon-96x96.png?v=af20e7df4ec9d6aad6f2bd3f23355ce2",
+    "source": "https://www.coppercolorado.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon"
+  },
+  "winter-park": {
+    "file": "/resort-logos/winter-park.svg",
+    "assetUrl": "https://www.winterparkresort.com/-/media/winter-park/logos/wp-tablet.svg?h=56&iar=0&w=142&rev=4e4804c3de2f4abc9078f9505749fe3e&hash=48C1590451EB303DBDED4D977EF135F0",
+    "source": "https://www.winterparkresort.com/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
+  },
+  "steamboat": {
+    "file": "/resort-logos/steamboat.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.steamboat.com&sz=128",
+    "source": "https://www.steamboat.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "snowmass": {
+    "file": "/resort-logos/snowmass.png",
+    "assetUrl": "https://www.aspensnowmass.com/-/media/aspen-snowmass/images/mobile-apps/app-icon.png?h=126&w=126&hash=34B9CA3EDB5D9AE3261A4F276507E081",
+    "source": "https://www.aspensnowmass.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon"
+  },
+  "aspen-mountain": {
+    "file": "/resort-logos/aspen-mountain.png",
+    "assetUrl": "https://www.aspensnowmass.com/-/media/aspen-snowmass/images/mobile-apps/app-icon.png?h=126&w=126&hash=34B9CA3EDB5D9AE3261A4F276507E081",
+    "source": "https://www.aspensnowmass.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon"
+  },
+  "aspen-highlands": {
+    "file": "/resort-logos/aspen-highlands.png",
+    "assetUrl": "https://www.aspensnowmass.com/-/media/aspen-snowmass/images/mobile-apps/app-icon.png?h=126&w=126&hash=34B9CA3EDB5D9AE3261A4F276507E081",
+    "source": "https://www.aspensnowmass.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon"
+  },
+  "buttermilk": {
+    "file": "/resort-logos/buttermilk.png",
+    "assetUrl": "https://www.aspensnowmass.com/-/media/aspen-snowmass/images/mobile-apps/app-icon.png?h=126&w=126&hash=34B9CA3EDB5D9AE3261A4F276507E081",
+    "source": "https://www.aspensnowmass.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon"
+  },
+  "big-sky": {
+    "file": "/resort-logos/big-sky.svg",
+    "assetUrl": "https://cdn.sanity.io/images/8ts88bij/big-sky/af3b4941f0261c97fb19ab7fb40b65ba4293ab7f-80x100.svg?w=80&h=100&q=70&fit=min&auto=format",
+    "source": "https://www.bigskyresort.com/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
+  },
+  "brighton": {
+    "file": "/resort-logos/brighton.png",
+    "assetUrl": "https://cdn.sanity.io/images/8ts88bij/brighton/8a9263abc800c164c1ca03398a491cec184d3195-240x60.png?w=240&h=60&q=70&fit=min&auto=format",
+    "source": "https://www.brightonresort.com/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
+  },
+  "solitude": {
+    "file": "/resort-logos/solitude.svg",
+    "assetUrl": "https://www.solitudemountain.com/-/media/solitude/logos/solitude-tablet.svg?h=56&iar=0&w=135&rev=143528aeb36f424190f034c991588a8b&hash=CB5F5183844120523F44273E3CD895A7",
+    "source": "https://www.solitudemountain.com/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
+  },
+  "deer-valley": {
+    "file": "/resort-logos/deer-valley.svg",
+    "assetUrl": "https://www.deervalley.com/-/media/deer-valley/logos/dv-tablet.svg?h=56&iar=0&w=148&rev=b9a72933bffb4cc9a6b6e01e6e38439e&hash=7A77C69B9B009A8B9AF2A32B6A94208F",
+    "source": "https://www.deervalley.com/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
+  },
+  "snowbasin": {
+    "file": "/resort-logos/snowbasin.svg",
+    "assetUrl": "https://www.snowbasin.com/",
+    "source": "https://www.snowbasin.com/",
+    "retrieved": "2026-09-21",
+    "kind": "inline-logo"
+  },
+  "sun-valley": {
+    "file": "/resort-logos/sun-valley.png",
+    "assetUrl": "https://www.sunvalley.com/images/favicons/apple-touch-icon.png",
+    "source": "https://www.sunvalley.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon"
+  },
+  "taos": {
+    "file": "/resort-logos/taos.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.skitaos.com&sz=128",
+    "source": "https://www.skitaos.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "mt-bachelor": {
+    "file": "/resort-logos/mt-bachelor.png",
+    "assetUrl": "https://www.mtbachelor.com/icons/icon-96x96.png?v=c9b438db36d2ed08dd0aca23e6f36de1",
+    "source": "https://www.mtbachelor.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon"
+  },
+  "crystal": {
+    "file": "/resort-logos/crystal.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.crystalmountainresort.com&sz=128",
+    "source": "https://www.crystalmountainresort.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "schweitzer": {
+    "file": "/resort-logos/schweitzer.webp",
+    "assetUrl": "https://www.schweitzer.com/-/media/schweitzer/logos/schweitzer_logo_horz_greenglow.png?h=826&iar=0&w=2098&rev=7b3414b2e251463cac6c160040511843&hash=4DE59F582285E934EFC57358FA06EB96",
+    "source": "https://www.schweitzer.com/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
+  },
+  "snoqualmie": {
+    "file": "/resort-logos/snoqualmie.svg",
+    "assetUrl": "https://cdn.sanity.io/images/8ts88bij/summit/4b8d9380734ba35657c986d9a17f55f725c3ebe2-229x60.svg?w=229&h=60&q=70&fit=min&auto=format",
+    "source": "https://www.summitatsnoqualmie.com/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
+  },
+  "alyeska": {
+    "file": "/resort-logos/alyeska.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.alyeskaresort.com&sz=128",
+    "source": "https://www.alyeskaresort.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "panorama": {
+    "file": "/resort-logos/panorama.svg",
+    "assetUrl": "https://www.panoramaresort.com/resources/themes/panoramaresort/images/logo-panorama-mobile.svg?m=1786720031",
+    "source": "https://www.panoramaresort.com/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
+  },
+  "red-mountain": {
+    "file": "/resort-logos/red-mountain.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.redresort.com&sz=128",
+    "source": "https://www.redresort.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "silverstar": {
+    "file": "/resort-logos/silverstar.png",
+    "assetUrl": "https://www.skisilverstar.com/icons/icon-96x96.png?v=6bd5e9afe43c9662128a12c95b5a2885",
+    "source": "https://www.skisilverstar.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon"
+  },
+  "sunshine": {
+    "file": "/resort-logos/sunshine.svg",
+    "assetUrl": "https://www.skibanff.com/wp-content/themes/sunshine-theme/assets/images/SSV_BanffSunshine_NEW_blue_whitebacking_outline.svg",
+    "source": "https://www.skibanff.com/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
+  },
+  "lake-louise": {
+    "file": "/resort-logos/lake-louise.png",
+    "assetUrl": "https://www.skilouise.com/wp-content/uploads/2019/07/cropped-favicon-180x180.png",
+    "source": "https://www.skilouise.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon"
+  },
+  "sun-peaks": {
+    "file": "/resort-logos/sun-peaks.svg",
+    "assetUrl": "https://www.sunpeaksresort.com/themes/custom/sunpeaksresort/images/logo.svg?v=2",
+    "source": "https://www.sunpeaksresort.com/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
+  },
+  "sierra": {
+    "file": "/resort-logos/sierra.svg",
+    "assetUrl": "https://sierraattahoe.com/wp-content/uploads/2025/10/sierra-logo.svg",
+    "source": "https://www.sierraattahoe.com/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
+  },
+  "vail": {
+    "file": "/resort-logos/vail.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.vail.com&sz=128",
+    "source": "https://www.vail.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "beaver-creek": {
+    "file": "/resort-logos/beaver-creek.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.beavercreek.com&sz=128",
+    "source": "https://www.beavercreek.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "keystone": {
+    "file": "/resort-logos/keystone.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.keystoneresort.com&sz=128",
+    "source": "https://www.keystoneresort.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "crested-butte": {
+    "file": "/resort-logos/crested-butte.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.skicb.com&sz=128",
+    "source": "https://www.skicb.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "heavenly": {
+    "file": "/resort-logos/heavenly.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.skiheavenly.com&sz=128",
+    "source": "https://www.skiheavenly.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "kirkwood": {
+    "file": "/resort-logos/kirkwood.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.kirkwood.com&sz=128",
+    "source": "https://www.kirkwood.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "stevens-pass": {
+    "file": "/resort-logos/stevens-pass.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.stevenspass.com&sz=128",
+    "source": "https://www.stevenspass.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "fernie": {
+    "file": "/resort-logos/fernie.png",
+    "assetUrl": "https://skifernie.com/wp-content/uploads/2016/07/far_winter_logo_web2.png",
+    "source": "https://skifernie.com/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
+  },
+  "kicking-horse": {
+    "file": "/resort-logos/kicking-horse.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=kickinghorseresort.com&sz=128",
+    "source": "https://kickinghorseresort.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "whitefish": {
+    "file": "/resort-logos/whitefish.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=skiwhitefish.com&sz=128",
+    "source": "https://skiwhitefish.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "grand-targhee": {
+    "file": "/resort-logos/grand-targhee.png",
+    "assetUrl": "https://www.grandtarghee.com/themes/custom/origin/images/favicon/apple-touch-icon.png",
+    "source": "https://www.grandtarghee.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon"
+  },
+  "mt-baker": {
+    "file": "/resort-logos/mt-baker.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.mtbaker.us&sz=128",
+    "source": "https://www.mtbaker.us/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "hood-meadows": {
+    "file": "/resort-logos/hood-meadows.svg",
+    "assetUrl": "https://www.skihood.com/_next/static/media/MHM_Horizontal_Logo_4Color.13fceb11.svg",
+    "source": "https://www.skihood.com/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
+  },
+  "big-white": {
+    "file": "/resort-logos/big-white.svg",
+    "assetUrl": "https://www.bigwhite.com/themes/custom/ht_bigwhite/images/content/logo-international.svg",
+    "source": "https://www.bigwhite.com/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
+  },
+  "chamonix": {
+    "file": "/resort-logos/chamonix.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.montblancnaturalresort.com&sz=128",
+    "source": "https://www.montblancnaturalresort.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "verbier": {
+    "file": "/resort-logos/verbier.svg",
+    "assetUrl": "https://verbier4vallees.ch/_dev/styllab-test/logo/verbier-4-vallees.svg",
+    "source": "https://verbier4vallees.ch/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
+  },
+  "zermatt": {
+    "file": "/resort-logos/zermatt.svg",
+    "assetUrl": "https://www.matterhornparadise.ch/dist/build/logo-color-D3A7r9cd.svg",
+    "source": "https://www.matterhornparadise.ch/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
+  },
+  "dolomites": {
+    "file": "/resort-logos/dolomites.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=www.dolomitisuperski.com&sz=128",
+    "source": "https://www.dolomitisuperski.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon-cache"
+  },
+  "niseko": {
+    "file": "/resort-logos/niseko.png",
+    "assetUrl": "https://www.niseko.ne.jp/en/wp-content/themes/niseko2019_p2/images/logo.png",
+    "source": "https://www.niseko.ne.jp/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
+  },
+  "rusutsu": {
+    "file": "/resort-logos/rusutsu.jpg",
+    "assetUrl": "https://rusutsu.com/assets/img/common/apple-touch-icon_wh.jpg",
+    "source": "https://rusutsu.com/",
+    "retrieved": "2026-09-21",
+    "kind": "site-icon"
+  },
+  "hakuba": {
+    "file": "/resort-logos/hakuba.svg",
+    "assetUrl": "https://www.hakubavalley.com/cms/wp-content/themes/hv_themes/common/img/logo-blk.svg",
+    "source": "https://www.hakubavalley.com/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
+  },
+  "telluride": {
+    "file": "/resort-logos/telluride.png",
+    "assetUrl": "https://tellurideskiresort.com/wp-content/uploads/2020/08/TSR_bold-100.png",
+    "source": "https://tellurideskiresort.com/",
+    "retrieved": "2026-09-21",
+    "kind": "logo"
   }
 }
