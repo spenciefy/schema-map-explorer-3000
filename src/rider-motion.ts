@@ -31,6 +31,6 @@ export function placeRider(object:THREE.Object3D,p:THREE.Vector3,direction:THREE
  const right=new THREE.Vector3().crossVectors(up,forward).normalize();
  object.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(right,up,forward));object.scale.setScalar(scale);object.position.copy(p);object.position.y=height(p.x,p.z);
  let clearance=0;
- for(const x of [-.22,0,.22])for(const z of [-.34,0,.38]){const foot=new THREE.Vector3(x,-.05,z).multiplyScalar(scale).applyQuaternion(object.quaternion);clearance=Math.max(clearance,height(p.x+foot.x,p.z+foot.z)-object.position.y-foot.y);}
+ for(const x of [-.22,0,.22])for(const z of [-.36,0,.45]){const foot=new THREE.Vector3(x,-.05,z).multiplyScalar(scale).applyQuaternion(object.quaternion);clearance=Math.max(clearance,height(p.x+foot.x,p.z+foot.z)-object.position.y-foot.y);}
  object.position.y+=clearance+.006;object.updateMatrix();
 }

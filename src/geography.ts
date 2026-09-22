@@ -44,7 +44,7 @@ export function inExtent(data:MountainData,p:Point){return Math.abs(p[0])<=data.
 export function featureLength(f:MapFeature){let d=0;for(let i=1;i<f.points.length;i++)d+=Math.hypot(f.points[i][0]-f.points[i-1][0],f.points[i][1]-f.points[i-1][1]);return d;}
 
 export function trailColor(resortId:string,difficulty:string){
- const alps=['chamonix','verbier','zermatt','dolomites'].includes(resortId);const japan=['niseko','rusutsu','hakuba','iwanai'].includes(resortId);
+ const alps=['chamonix','verbier','zermatt','dolomites','baqueira-beret'].includes(resortId);const japan=['niseko','rusutsu','hakuba','iwanai'].includes(resortId);
  if(alps&&difficulty==='easy')return 0x317aad;
  if((alps||japan)&&difficulty==='intermediate')return 0xc34843;
  return difficultyColors[difficulty]||difficultyColors.unknown;
@@ -69,3 +69,13 @@ export function clipFeature(data:Pick<MountainData,'width'|'depth'>,feature:MapF
 }
 
 export function mapsLink(data:MountainData,point:Point=[0,0]){const lat=data.center[1]-point[1]/111320,lon=data.center[0]+point[0]/(111320*Math.cos(data.center[1]*Math.PI/180));return `https://www.google.com/maps/search/?api=1&query=${lat.toFixed(6)},${lon.toFixed(6)}`;}
+
+/** Horizontal mapped segment length, not a measured full-run distance. */
+export function featureHoverText(f:MapFeature):string {
+ if(f.kind==='lift')return featureTitle(f);
+ const rating=difficultyNames[f.difficulty]||'Unrated';
+ if(f.area)return `${featureTitle(f)} · ${rating} · Trail area`;
+ const meters=featureLength(f);
+ const distance=meters>=1000?`${(meters/1000).toFixed(1)} km`:`${Math.max(1,Math.round(meters/10)*10)} m`;
+ return `${featureTitle(f)} · ${rating} · ≈ ${distance} mapped segment`;
+}

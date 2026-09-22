@@ -14,7 +14,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import type { Resort } from './data';
-import { surfaceElevationAt, elevationAt, inExtent, clipFeature, trailColor, featureLength, featureTitle, mapReferences, type MountainData, type MapFeature, type MapPlace, type Point } from './geography';
+import { surfaceElevationAt, elevationAt, inExtent, clipFeature, trailColor, featureLength, featureTitle, featureHoverText, mapReferences, type MountainData, type MapFeature, type MapPlace, type Point } from './geography';
 
 function random(seed:number){let n=seed;return()=>{n=(n*1664525+1013904223)>>>0;return n/4294967296;};}
 const clamp=THREE.MathUtils.clamp;
@@ -60,7 +60,7 @@ export class AtlasScene {
   for(const type of ['pointerup','pointercancel'])this.renderer.domElement.addEventListener(type,e=>{this.touchPointers.delete((e as PointerEvent).pointerId);});
   this.renderer.domElement.addEventListener('pointermove',e=>{if(e.buttons&&Math.hypot(e.clientX-this.down.x,e.clientY-this.down.y)>5)this.suppressPick=true;});
   this.renderer.domElement.addEventListener('click',e=>{if(this.suppressPick||Math.hypot(e.clientX-this.down.x,e.clientY-this.down.y)>5)return;const f=this.pick(e);if(f)this.focusFeature(f.id);});
-  this.renderer.domElement.addEventListener('pointermove',e=>{if(e.buttons)return;const f=this.pick(e);this.tooltip.hidden=!f;if(f){this.tooltip.textContent=`${f.kind==='lift'?'↟':'↘'} ${featureTitle(f)}`;this.tooltip.style.left=`${e.clientX-host.getBoundingClientRect().left+15}px`;this.tooltip.style.top=`${e.clientY-host.getBoundingClientRect().top-28}px`;}this.host.style.cursor=f?'pointer':'grab';});
+  this.renderer.domElement.addEventListener('pointermove',e=>{if(e.buttons)return;const f=this.pick(e);this.tooltip.hidden=!f;if(f){this.tooltip.textContent=`${f.kind==='lift'?'↟':'↘'} ${featureHoverText(f)}`;const rect=host.getBoundingClientRect();this.tooltip.style.left=`${Math.max(8,Math.min(e.clientX-rect.left+15,rect.width-this.tooltip.offsetWidth-8))}px`;this.tooltip.style.top=`${Math.max(8,Math.min(e.clientY-rect.top-this.tooltip.offsetHeight-12,rect.height-this.tooltip.offsetHeight-8))}px`;}this.host.style.cursor=f?'pointer':'grab';});
   this.renderer.domElement.addEventListener('pointerleave',()=>this.tooltip.hidden=true);
   this.resizeObserver=new ResizeObserver(()=>this.resize());this.resizeObserver.observe(host);this.resize();this.animate();
  }
@@ -217,7 +217,7 @@ export class AtlasScene {
   for(const p of d.peaks.filter(p=>inExtent(d,p.point)).slice(0,20)){const el=document.createElement('button');el.className='geo-label peak-label';el.textContent=`△ ${p.name}`;el.title=`${p.name} · ${Math.round(elevationAt(d,...p.point)).toLocaleString()} m (DEM)`;el.onclick=()=>{const point=this.project(p.point);this.flyTo(point,55);};this.labelHost.append(el);this.labels.push({el,point:this.project(p.point,1.5),peak:true,priority:4});}
   const longest=[...this.routes].filter(r=>r.feature.name&&!r.feature.area).sort((a,b)=>b.length-a.length);const seen=new Set<string>();
   for(const route of longest){const f=route.feature;const lift=f.kind==='lift',key=lift?'lift:'+f.id:'trail:'+f.name;if(seen.has(key))continue;seen.add(key);if(!lift&&this.labels.filter(l=>l.feature?.kind==='trail').length>=26)continue;
-   const el=document.createElement('button');el.className=`geo-label ${lift?'lift-label':'trail-label'}`;el.dataset.feature=String(f.id);el.textContent=`${lift?'↟ ':this.selected==='iwanai'?'Course ':''}${f.name}${f.retired?' · retired':f.access==='private'?' · private':f.proposed?' · proposed':''}`;el.setAttribute('aria-label',`Explore ${f.kind} ${f.name}`);el.onclick=()=>this.focusFeature(f.id);el.style.setProperty('--route-color',`#${(lift?0xb54c37:trailColor(this.selected,f.difficulty)).toString(16).padStart(6,'0')}`);this.labelHost.append(el);this.labels.push({el,point:route.curve.getPoint(.58).add(new THREE.Vector3(0,.7,0)),feature:f,priority:lift?12:1});
+   const el=document.createElement('button');el.className=`geo-label ${lift?'lift-label':'trail-label'}`;el.dataset.feature=String(f.id);el.textContent=`${lift?'↟ ':this.selected==='iwanai'?'Course ':''}${f.name}${f.retired?' · retired':f.access==='private'?' · private':f.proposed?' · proposed':''}`;el.title=featureHoverText(f);el.setAttribute('aria-label',`Explore ${f.kind} ${featureHoverText(f)}`);el.onclick=()=>this.focusFeature(f.id);el.style.setProperty('--route-color',`#${(lift?0xb54c37:trailColor(this.selected,f.difficulty)).toString(16).padStart(6,'0')}`);this.labelHost.append(el);this.labels.push({el,point:route.curve.getPoint(.58).add(new THREE.Vector3(0,.7,0)),feature:f,priority:lift?12:1});
   }
  }
  pick(e:PointerEvent|MouseEvent){const r=this.renderer.domElement.getBoundingClientRect();this.pointer.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);this.raycaster.setFromCamera(this.pointer,this.camera);const candidates=this.routes.filter(r=>(r.feature.kind==='lift'?this.showLifts:this.showTrails));const hit=this.raycaster.intersectObjects(candidates.map(r=>r.line),false)[0];return hit?.object.userData.feature as MapFeature|undefined;}
@@ -253,7 +253,7 @@ export class AtlasScene {
   if(this.wildlife&&this.showWildlife){this.wildlifePoses.forEach((p,i)=>{this.dummy.position.set(p.x,p.y,p.z);this.dummy.rotation.set(0,p.angle,0);const size=this.ecology?.wildlife==='elk'?.38:.30;this.dummy.scale.set(size,size*(1+Math.sin(time*.8+i)*.012),size);this.dummy.updateMatrix();this.wildlife!.setMatrixAt(i,this.dummy.matrix);});this.wildlife.instanceMatrix.needsUpdate=true;}
   if(this.showLifts)for(const lift of this.lifts)updateLift(lift,time,this.dummy);
   if(this.skiers&&this.boarders){this.skiers.visible=this.riderSettings.skiers&&!this.aerial;this.boarders.visible=this.riderSettings.snowboarders&&!this.aerial;this.actors.forEach(actor=>{if(this.aerial||!(actor.board?this.riderSettings.snowboarders:this.riderSettings.skiers))return;
-   const speed=actor.board?this.riderSettings.snowboarderSpeed:this.riderSettings.skierSpeed;const size=(actor.board?this.riderSettings.snowboarderSize:this.riderSettings.skierSize)*1.15*(.92+actor.phase*.16);
+   const speed=actor.board?this.riderSettings.snowboarderSpeed:this.riderSettings.skierSpeed;const size=(actor.board?this.riderSettings.snowboarderSize:this.riderSettings.skierSize)*1.5*(.92+actor.phase*.16);
    if(moving)actor.motionTime+=delta*speed;
    const tangent=actor.route.curve.getTangent(actor.progress),grade=Math.max(0,-tangent.y)/Math.max(.2,Math.hypot(tangent.x,tangent.z));
    if(moving)actor.progress=(actor.progress+delta*speed*riderSpeed(actor.motionTime,actor.phase,grade,actor.board)*this.scale/actor.route.length)%1;

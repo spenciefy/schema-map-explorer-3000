@@ -137,13 +137,26 @@ export function treeGeometry(snow=false){
 }
 export function riderGeometry(board:boolean){
  const p=new Parts();
- p.box(.16,.23,.11,0xffffff,0,.33,0);p.add(new THREE.SphereGeometry(.071,7,5),0x253f4d,0,.51,.025);
- for(const s of [-1,1]){
-  p.rod(new THREE.Vector3(s*.057,.23,0),new THREE.Vector3(s*.072,.07,.035),.034,0x263d48);
-  p.rod(new THREE.Vector3(s*.095,.4,0),new THREE.Vector3(s*.15,.25,.07),.025,0xffffff);
-  if(!board){p.box(.045,.018,.62,0xe9b653,s*.075,.025,.055);p.rod(new THREE.Vector3(s*.15,.28,.07),new THREE.Vector3(s*.21,.015,-.12),.008,0x64757a);}
+ // Forward stance, articulated knees, helmet and goggles make the silhouette legible.
+ p.add(new THREE.BoxGeometry(.17,.21,.13),0xffffff,0,.34,.035,.18);
+ p.add(new THREE.SphereGeometry(.074,8,6),0x263c47,0,.50,.07);
+ p.box(.125,.038,.035,0x9ed8ee,0,.503,.132);
+ for(const side of [-1,1]){
+  const hip=new THREE.Vector3(side*.055,.25,.015),knee=new THREE.Vector3(side*.08,.15,.105),boot=new THREE.Vector3(side*.09,.055,.025);
+  p.rod(hip,knee,.036,0x263d48);p.rod(knee,boot,.03,0x263d48);
+  p.box(.058,.05,.11,0x172d37,side*.09,.05,.045);
+  const shoulder=new THREE.Vector3(side*.095,.405,.04),elbow=new THREE.Vector3(side*.145,.31,.015),hand=new THREE.Vector3(side*.18,.28,.11);
+  p.rod(shoulder,elbow,.028,0xffffff);p.rod(elbow,hand,.025,0xffffff);
+  p.add(new THREE.SphereGeometry(.028,6,4),0x172d37,hand.x,hand.y,hand.z);
+  if(!board){
+   p.box(.055,.018,.66,0xe9b653,side*.09,.022,.025);
+   p.add(new THREE.BoxGeometry(.055,.018,.09),0xe9b653,side*.09,.036,.39,-.3);
+   p.box(.055,.016,.075,0x253f4d,side*.09,.027,-.255);
+   p.rod(hand,new THREE.Vector3(side*.22,.015,-.23),.009,0x344d58);
+   p.add(new THREE.SphereGeometry(.024,6,4),0x344d58,side*.22,.025,-.22);
+  }
  }
- if(board){for(const g of p.pieces)g.rotateY(Math.PI/2);p.add(new THREE.CapsuleGeometry(.07,.49,2,6),0xc47845,0,.025,0,Math.PI/2);}
+ if(board){for(const g of p.pieces)g.rotateY(Math.PI/2);p.add(new THREE.CapsuleGeometry(.075,.52,2,8),0xe7a35c,0,.025,0,Math.PI/2);}
  return p.finish();
 }
 export function riderSpeed(time:number,phase:number,grade:number,board:boolean){

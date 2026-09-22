@@ -80,3 +80,12 @@ test('Iwanai includes the summit, one sourced double chair, and mapped supports'
  assert.equal(d.gridSize,513);assert(d.bbox[2]>=42.99);assert(d.source.landcover);assert(d.depth>9000);assert(d.features.filter(f=>f.kind==='trail').length>=3);
  assert.equal(trailColor('iwanai','intermediate'),trailColor('niseko','intermediate'));
 });
+
+test('trail hover distinguishes mapped segments, unrated trails and area polygons',async()=>{
+ const {featureHoverText}=await import('../src/geography.ts');
+ assert.match(featureHoverText(feature([[0,0],[300,400]])),/Easy · ≈ 500 m mapped segment/);
+ assert.match(featureHoverText({...feature([[0,0],[1200,0]]),difficulty:'expert'}),/Expert · ≈ 1.2 km/);
+ assert.match(featureHoverText({...feature([[0,0],[100,0]]),difficulty:''}),/Unrated/);
+ assert.match(featureHoverText({...feature([[0,0],[100,0],[0,0]]),area:true}),/Trail area$/);
+ assert.doesNotMatch(featureHoverText({...feature([[0,0],[100,0]]),kind:'lift'}),/mapped segment/);
+});
