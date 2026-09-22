@@ -265,9 +265,11 @@ body:not(.gallery-view) #settings-toggle{min-height:44px;padding:0 18px;backgrou
  body:not(.gallery-view) #app>.bottom-deck{bottom:calc(28px + env(safe-area-inset-bottom))}
 }
 
-/* Equal side columns keep the maker credit at the viewport center. */
-.detail-bottom footer{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:20px;width:100%}
+/* Maker credit and desktop gesture hint sit at opposite edges. */
+.detail-bottom footer{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;width:100%}
 .detail-bottom footer>span:first-child{flex-wrap:wrap;white-space:normal;gap:4px 8px;min-width:0}
-.detail-bottom footer .maker-credit{text-align:center;justify-self:center}
+.detail-bottom footer .maker-credit{display:block;text-align:left;justify-self:start}
 .detail-bottom footer .rotation-hint{display:block;justify-self:end;text-align:right;white-space:normal}
 .rider-settings footer .rotation-hint{display:none}
+
+.map-source-credits{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:24px;padding-top:16px;border-top:1px solid #293e3525;font-size:10px;color:var(--muted)}.map-source-credits a{color:inherit;text-decoration:none}
