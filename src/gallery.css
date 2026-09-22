@@ -237,3 +237,28 @@ button:active:not(:disabled){filter:brightness(.9)}
 #brand-home>.icon{width:22px;height:22px;stroke-width:1.8}
 
 body:not(.gallery-view) #scene .terrain-tooltip:not([hidden]){display:block;max-width:min(320px,calc(100% - 16px));white-space:normal;line-height:1.5;font-size:11px}
+
+/* Detail chrome uses shared rows rather than independent absolute offsets. */
+body:not(.gallery-view){--detail-header:80px;--detail-gutter:24px}
+body:not(.gallery-view) .topbar{position:absolute;inset:0 0 auto;height:var(--detail-header);padding:0 var(--detail-gutter);margin:0;display:flex;justify-content:flex-start;align-items:center;gap:16px;background:var(--paper);border:0;z-index:10}
+body:not(.gallery-view) .topbar .intro{position:static;inset:auto;flex:1;min-width:0;max-width:none;height:auto;min-height:0;margin:0;display:flex;align-items:center;gap:12px;opacity:1;visibility:visible}
+body:not(.gallery-view) .topbar .intro h1{font-size:32px!important;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:none;margin:0!important}
+body:not(.gallery-view) .topbar .resort-identity img{height:32px;max-height:32px;max-width:120px;width:auto}
+body:not(.gallery-view) #scene,body:not(.gallery-view) #map-labels{inset:var(--detail-header) 0 48px;height:auto;min-height:0}
+.detail-bottom{position:absolute;inset:auto var(--detail-gutter) 0;height:48px;display:flex;align-items:center;gap:24px;z-index:10}
+.gallery-view .detail-bottom{display:none}
+.detail-bottom footer{position:static;inset:auto;display:flex;align-items:center;justify-content:space-between;flex:1;min-width:0;width:auto;height:auto;min-height:0;margin:0;padding:0;gap:24px;flex-wrap:nowrap}
+.detail-bottom footer>span{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.detail-bottom footer .maker-credit{display:block;flex-basis:auto;order:0}
+body:not(.gallery-view) .detail-bottom footer,body:not(.gallery-view) .detail-bottom footer a,body:not(.gallery-view) .detail-bottom footer button{font-size:9px;line-height:1.4}
+body:not(.gallery-view) .detail-bottom .bottom-deck{position:static;inset:auto;display:flex;align-items:center;width:auto;height:44px;min-height:0;margin:0;padding:0;flex:0 0 auto;border:0}
+.detail-bottom #settings-toggle{height:44px;padding:0;font-size:11px}
+@media(max-width:760px),(max-width:1024px) and (pointer:coarse),(max-height:520px) and (pointer:coarse){
+ body:not(.gallery-view){--detail-header:calc(60px + env(safe-area-inset-top));--detail-gutter:16px}
+ body:not(.gallery-view) .topbar{padding-top:env(safe-area-inset-top);gap:8px}
+ body:not(.gallery-view) .topbar .intro{gap:10px}
+ body:not(.gallery-view) .topbar .intro h1{font-size:25px!important}
+ body:not(.gallery-view) .topbar .resort-identity img{height:25px;max-height:25px;max-width:90px}
+ body:not(.gallery-view) #scene,body:not(.gallery-view) #map-labels{bottom:0}
+ .detail-bottom{display:none}
+}
