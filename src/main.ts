@@ -94,7 +94,7 @@ $('#app').append(mapAttribution);
 const compactMap=matchMedia('(max-width:760px), (max-width:1024px) and (pointer:coarse), (max-height:520px) and (pointer:coarse)');
 function placeMapCredits(){if(compactMap.matches)$('#rider-settings').append(mapFooter);else $('#app').insertBefore(mapFooter,$('#about-dialog'));}
 compactMap.addEventListener('change',placeMapCredits);placeMapCredits();
-const identity=document.createElement('a');identity.className='resort-identity';identity.target='_blank';identity.rel='noopener';identity.hidden=true;$('.intro').append(identity);
+const identity=document.createElement('a');identity.className='resort-identity';identity.target='_blank';identity.rel='noopener';identity.hidden=true;$('.intro').prepend(identity);
 const collection=setupCollection(goTo);
 let atlas:AtlasScene | undefined;
 function ensureAtlas(){if(atlas)return;try{atlas=new AtlasScene($('#scene'),$('#map-labels'),id=>selectResort(id,true));atlas.riderSettings={...riderSettings};atlas.showWildlife=wildlifeVisible;}catch{$('#scene').innerHTML='<div class="canvas-error">3D map unavailable. Try a browser with WebGL enabled.</div>';}}
