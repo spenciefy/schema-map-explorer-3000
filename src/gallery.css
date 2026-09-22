@@ -224,7 +224,7 @@ button:active:not(:disabled){filter:brightness(.9)}
 .resort-logo[src*="solitude"],.resort-logo[src*="panorama"],.resort-logo[src*="sun-peaks"],.resort-logo[src*="fernie"],.resort-logo[src*="niseko"],
 .resort-identity img[src*="solitude"],.resort-identity img[src*="panorama"],.resort-identity img[src*="sun-peaks"],.resort-identity img[src*="fernie"],.resort-identity img[src*="niseko"]{background:#293e35;border-radius:4px;padding:6px;box-sizing:border-box}
 
-#brand-home{width:44px;min-width:44px;height:44px;justify-content:center;padding:0;background:none;border:0;box-shadow:none}#brand-home:focus{outline:none}#brand-home:focus-visible span{text-decoration:underline;text-underline-offset:6px}#mountain-heading:focus{outline:none}
+#brand-home{width:44px;min-width:44px;height:44px;justify-content:center;padding:0;background:none;border:0;box-shadow:none}#brand-home:focus{outline:none}#brand-home:focus-visible .icon{border-bottom:1px solid currentColor}#mountain-heading:focus{outline:none}
 @media(max-width:760px){body:not(.gallery-view) .intro{left:76px}}
 
 /* Keep detail credits discreet and give the terrain more room. */
@@ -233,3 +233,5 @@ button:active:not(:disabled){filter:brightness(.9)}
  body:not(.gallery-view) footer,body:not(.gallery-view) footer a,body:not(.gallery-view) footer button,body:not(.gallery-view) footer .maker-credit{font-size:8px;line-height:1.3;color:#6e7d71}
  body:not(.gallery-view) #scene,body:not(.gallery-view) #map-labels{bottom:64px}
 }
+
+#brand-home>.icon{width:22px;height:22px;stroke-width:1.8}
