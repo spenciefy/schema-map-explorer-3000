@@ -6,6 +6,7 @@ export interface MapRoad {id:number;name:string;type:string;access:string;surfac
 export interface MountainData {imagery?:{url:string;mobileUrl:string;attribution:string;sourceUrl:string;season:string;projection:string;bbox:number[]};roads?:MapRoad[];buildings?:{id:number;name:string;points:Point[]}[];places?:MapPlace[];id:string;bbox:number[];center:Point;width:number;depth:number;gridSize:number;heights:number[];features:MapFeature[];peaks:{name:string;point:Point;elevation?:string}[];forests:Point[][];landcover?:string;forestHoles?:Point[][];source:{terrain:string;terrainAttribution:string;osmTimestamp:string;downloadedAt:string;sampleSpacingMeters:Point};}
 export const mapReferences:Record<string,{url:string;coverage:string;view:[number,number];note?:string;label?:string;frame?:'terrain'}>={
  ...westernMapReferences,
+ 'baqueira-beret':{url:'https://www.baqueira.es/en/trail-map',coverage:'Baqueira, Beret, Bonaigua & Baciver',view:[-1,.4]},
  northstar:{url:'https://www.northstarcalifornia.com/the-mountain/about-the-mountain/trail-map.aspx',coverage:'Mt. Pluto, Lookout Mountain & the Backside',view:[.3,-1]},
  alta:{url:'https://www.alta.com/plan-your-trip',coverage:'Alta · Little Cottonwood Canyon',view:[0,-1],note:'Alta is a skiers-only mountain.'},
  snowbird:{url:'https://www.snowbird.com/the-mountain/maps/winter-trail-map/',coverage:'Snowbird · Gad Valley, Peruvian Gulch & Mineral Basin',view:[-.3,-1]},

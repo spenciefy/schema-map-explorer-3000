@@ -13,6 +13,7 @@ const profiles:Record<string,Ecology>={
  alaska:{id:'alaska',name:'Alaskan spruce & hemlock',trees:['spruce','hemlock','birch'],colors:[0x48695f,0x5e7c70,0x728578],density:.7,treeline:750,wildlife:'hare',animalName:'Snowshoe hare',understory:'Bare alder-like scrub'},
 };
 export function ecologyFor(resort:Pick<Resort,'id'|'region'|'area'|'lat'|'lon'>):Ecology{
+ if(resort.region==='pyrenees')return {...profiles.alps,id:'pyrenees',name:'Pyrenean mountain pine & fir',trees:['pine','pine','fir'],treeline:2300,animalName:'Pyrenean chamois'};
  if(resort.region==='alps')return profiles.alps;
  if(resort.region==='japan'){
   if(resort.id==='iwanai')return {...profiles.hokkaido,name:'Iwanai winter woodland',treeline:1020,density:.95};

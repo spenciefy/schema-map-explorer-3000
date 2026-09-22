@@ -422,5 +422,12 @@
     "source": "https://tellurideskiresort.com/",
     "retrieved": "2026-09-21",
     "kind": "logo"
+  },
+  "baqueira-beret": {
+    "file": "/resort-logos/baqueira-beret.png",
+    "assetUrl": "https://www.google.com/s2/favicons?domain=baqueira.es&sz=128",
+    "source": "https://www.baqueira.es/",
+    "kind": "site-icon-cache",
+    "retrieved": "2026-09-21"
   }
 }

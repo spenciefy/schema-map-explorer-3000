@@ -1,5 +1,5 @@
 import { westernResorts } from './western-resorts.ts';
-export type Region = 'north-america' | 'alps' | 'japan';
+export type Region = 'north-america' | 'alps' | 'pyrenees' | 'japan';
 export type Pass = 'all' | 'ikon' | 'epic' | 'saved';
 export interface Resort {
   id: string; name: string; country: string; area: string; region: Region;
@@ -10,6 +10,7 @@ export interface Resort {
 export const regions: Record<Region, { name: string; subtitle: string; coordinates: string }> = {
   'north-america': { name: 'North America', subtitle: 'THE GREAT WEST', coordinates: '39°–51° N / 105°–123° W' },
   alps: { name: 'The Alps', subtitle: 'ACROSS THE HIGH ALPS', coordinates: '45°–47° N / 6°–12° E' },
+  pyrenees: { name: 'Pyrenees', subtitle: 'THE PYRENEES', coordinates: '42°–43° N / 0°–2° E' },
   japan: { name: 'Japan', subtitle: 'THE DEEP WINTER', coordinates: '36°–43° N / 137°–141° E' },
 };
 export const resorts: Resort[] = [
@@ -29,6 +30,7 @@ export const resorts: Resort[] = [
   {id:'verbier',name:'Verbier',country:'Switzerland',area:'Valais',region:'alps',pass:'epic',lat:46.1,lon:7.23,elevation:2700,x:-26,z:-35,height:38,radius:30,seed:17,snow:41,temp:-11,wind:15,description:'High alpine bowls above a village made for lingering.',url:'https://verbier4vallees.ch/'},
   {id:'zermatt',name:'Zermatt',country:'Switzerland',area:'Valais',region:'alps',pass:'ikon',lat:45.99,lon:7.75,elevation:2900,x:26,z:24,height:49,radius:32,seed:23,snow:27,temp:-14,wind:21,description:'A storybook village under a silhouette you would know anywhere.',url:'https://www.matterhornparadise.ch/'},
   {id:'dolomites',name:'Dolomiti Superski',country:'Italy',area:'South Tyrol',region:'alps',pass:'ikon',lat:46.5,lon:11.85,elevation:2300,x:57,z:-32,height:37,radius:30,seed:37,snow:19,temp:-5,wind:8,description:'Pale stone towers, espresso stops, and a whole horizon to explore.',url:'https://www.dolomitisuperski.com/'},
+  {id:'baqueira-beret',name:'Baqueira Beret',country:'Spain',area:'Catalonia',region:'pyrenees',pass:'independent',lat:42.699,lon:0.945,elevation:2200,x:0,z:0,height:35,radius:34,seed:83,snow:25,temp:-5,wind:12,description:'Open Pyrenean bowls above the Val d’Aran and Valls d’Àneu.',url:'https://www.baqueira.es/'},
   {id:'niseko',name:'Niseko United',country:'Japan',area:'Hokkaido',region:'japan',pass:'ikon',lat:42.86,lon:140.69,elevation:950,x:-18,z:-31,height:38,radius:42,seed:3,snow:64,temp:-13,wind:12,description:'Quiet birch forests and the kind of snow you dream about all summer.',url:'https://www.niseko.ne.jp/en/'},
   {id:'iwanai',name:'Iwanai',country:'Japan',area:'Hokkaido',region:'japan',pass:'independent',lat:42.935,lon:140.514,elevation:850,x:0,z:0,height:38,radius:34,seed:79,snow:58,temp:-11,wind:14,description:'Above the sea, through the birch. One little chair and a mountain of cat-ski terrain.',url:'https://iwanairesort.com/en/terrain-niseko'},
   {id:'rusutsu',name:'Rusutsu',country:'Japan',area:'Hokkaido',region:'japan',pass:'epic',lat:42.74,lon:140.91,elevation:800,x:50,z:20,height:27,radius:33,seed:43,snow:56,temp:-11,wind:8,description:'A fresh canvas between the trees, with another storm on the way.',url:'https://rusutsu.com/en/'},

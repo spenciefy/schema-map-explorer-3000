@@ -9,5 +9,16 @@
     ],
     "mapUrl": "https://iwanairesort.com/en/lift/iwanai",
     "gridSize": 513
+  },
+  {
+    "id": "baqueira-beret",
+    "bbox": [
+      42.65,
+      0.92,
+      42.785,
+      1.055
+    ],
+    "mapUrl": "https://www.baqueira.es/",
+    "gridSize": 257
   }
 ]
