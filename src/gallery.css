@@ -264,3 +264,10 @@ body:not(.gallery-view) #settings-toggle{min-height:44px;padding:0 18px;backgrou
  .detail-bottom{display:none}
  body:not(.gallery-view) #app>.bottom-deck{bottom:calc(28px + env(safe-area-inset-bottom))}
 }
+
+/* Equal side columns keep the maker credit at the viewport center. */
+.detail-bottom footer{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:20px;width:100%}
+.detail-bottom footer>span:first-child{flex-wrap:wrap;white-space:normal;gap:4px 8px;min-width:0}
+.detail-bottom footer .maker-credit{text-align:center;justify-self:center}
+.detail-bottom footer .rotation-hint{display:block;justify-self:end;text-align:right;white-space:normal}
+.rider-settings footer .rotation-hint{display:none}
