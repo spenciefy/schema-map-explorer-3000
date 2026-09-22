@@ -96,7 +96,7 @@ $('.topbar').append($('.intro'));
 const mapAttribution=document.createElement('div');mapAttribution.className='mobile-map-attribution';mapAttribution.innerHTML='<a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap</a><a href="https://registry.opendata.aws/terrain-tiles/" target="_blank" rel="noopener">Mapzen</a>';
 $('#app').append(mapAttribution);
 const compactMap=matchMedia('(max-width:760px), (max-width:1024px) and (pointer:coarse), (max-height:520px) and (pointer:coarse)');
-function placeMapCredits(){if(compactMap.matches){$('#rider-settings').append(mapFooter);$('#app').append(detailControls);}else{detailBottom.append(mapFooter,detailControls);}}
+function placeMapCredits(){$('#app').append(detailControls);if(compactMap.matches)$('#rider-settings').append(mapFooter);else detailBottom.append(mapFooter);}
 compactMap.addEventListener('change',placeMapCredits);placeMapCredits();
 const identity=document.createElement('a');identity.className='resort-identity';identity.target='_blank';identity.rel='noopener';identity.hidden=true;$('.intro').prepend(identity);
 const collection=setupCollection(goTo);
